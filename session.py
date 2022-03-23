@@ -14,6 +14,12 @@ ADD_PARTICIPANT_BUTTON_TEXT = 'Add Participant'
 DELETE_PARTICIPANT_BUTTON_TEXT = 'Delete Participant'
 SELECT_PARTY_TEXT = 'Select a Party'
 SELECT_PREFERENCE_PROFILE = 'Select a Preference Profile'
+PARTY_DOMAINPREFERENCE_SEPERATOR_SYMBOL = ' -> '
+DOMAIN_PREFERENCE_SEPERATOR_SYMBOL = '/'
+INEQUALITY_oOF_TWO_DOMAINS_ERROR_MESSAGE = 'Please Select both parties preferences from the same domain!'
+MIN_MAX_PARTICIPANTS = 2
+INITIAL_DEADLINE_TIME = 60
+MAX_DEADLINE_TIME = 3600000
 
 
 class Session:
@@ -155,21 +161,26 @@ class Session:
                  pady=5).grid(row=14, column=0)
         self.var_deadline = tk.StringVar()
         self.spinbox_deadline = tk.Spinbox(
-            self.frame_session, from_=1, to=3600, textvariable=self.var_deadline)
+            self.frame_session, from_=1, to=MAX_DEADLINE_TIME, textvariable=self.var_deadline)
         self.spinbox_deadline.delete(0, 'end')
-        self.spinbox_deadline.insert(0, 60)
+        self.spinbox_deadline.insert(0, INITIAL_DEADLINE_TIME)
         self.spinbox_deadline.grid(row=14, column=1)
+        self.var_time_type = tk.StringVar()
+        self.time_type = ttk.OptionMenu(
+            self.frame_session, self.var_time_type, 's', *['s', 'ms'])
+        self.time_type.config(width=3)
+        self.time_type.grid(row=14, column=2)
 
     # This method add participants if there is no error
     def add_participant(self):
-        if self.listbox_party_and_preference.size() >= 1:
+        if self.listbox_party_and_preference.size() >= MIN_MAX_PARTICIPANTS-1:
             self.btn_add_participant.config(state='disable')
         number_of_items = self.listbox_party_and_preference.size()
         if self.var_party_name.get() == SELECT_PARTY_TEXT or self.var_preference_profile_name.get() == SELECT_PREFERENCE_PROFILE:
             return messagebox.showerror(
                 title='Error!', message=ADD_PARTICIPANT_ERROR_MESSAGE)
         self.listbox_party_and_preference.insert(
-            number_of_items+1, f"{self.var_party_name.get()} -> {self.var_domain_name.get()}/{self.var_preference_profile_name.get()}")
+            number_of_items+1, f"{self.var_party_name.get()}{PARTY_DOMAINPREFERENCE_SEPERATOR_SYMBOL}{self.var_domain_name.get()}{DOMAIN_PREFERENCE_SEPERATOR_SYMBOL}{self.var_preference_profile_name.get()}")
 
     def start_negotiation_session(self):
         message = 'Please select'
@@ -179,12 +190,28 @@ class Session:
             message += ' domain,'
         if self.var_analyse_name.get() == SELECT_ANALYSE_TEXT:
             message += ' Analyse,'
-        if self.listbox_party_and_preference.size() < 2:
-            message += ' participatnts,'
+        if self.listbox_party_and_preference.size() < MIN_MAX_PARTICIPANTS:
+            message += ' 2 participatnts,'
 
         if message != 'Please select':
             return messagebox.showerror(
                 title='Error!', message=message)
+
+        first_party_preference_text = self.listbox_party_and_preference.get(0)
+        second_party_preference_text = self.listbox_party_and_preference.get(1)
+
+        first_domain_preference_text = str(first_party_preference_text).rsplit(
+            PARTY_DOMAINPREFERENCE_SEPERATOR_SYMBOL)[1]
+        second_domain_preference_text = str(second_party_preference_text).rsplit(
+            PARTY_DOMAINPREFERENCE_SEPERATOR_SYMBOL)[1]
+
+        first_domain_text = str(first_domain_preference_text).rsplit(
+            DOMAIN_PREFERENCE_SEPERATOR_SYMBOL)[0]
+        second_domain_text = str(second_domain_preference_text).rsplit(
+            DOMAIN_PREFERENCE_SEPERATOR_SYMBOL)[0]
+        if first_domain_text != second_domain_text:
+            return messagebox.showerror(
+                title='Error!', message=INEQUALITY_oOF_TWO_DOMAINS_ERROR_MESSAGE)
 
 
 if __name__ == '__main__':
