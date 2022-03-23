@@ -5,6 +5,7 @@ from tkinter import messagebox
 from os import listdir
 from os.path import isfile, join
 import os
+import controller
 
 SELECT_PROTOCOL_TEXT = 'Select a Protocol'
 SELECT_DOMAIN_TEXT = 'Select a Domain'
@@ -14,9 +15,11 @@ ADD_PARTICIPANT_BUTTON_TEXT = 'Add Participant'
 DELETE_PARTICIPANT_BUTTON_TEXT = 'Delete Participant'
 SELECT_PARTY_TEXT = 'Select a Party'
 SELECT_PREFERENCE_PROFILE = 'Select a Preference Profile'
+WRONG_DIR_PATH_ERROR = 'The directory path is wrong!'
+LESS_THAN_TWO_PREFERENCES = 'The directory path has less the two preferences!'
+INEQUALITY_OF_TWO_DOMAINS_ERROR = 'Please Select both parties preferences from the same domain!'
 PARTY_DOMAINPREFERENCE_SEPERATOR_SYMBOL = ' -> '
 DOMAIN_PREFERENCE_SEPERATOR_SYMBOL = '/'
-INEQUALITY_oOF_TWO_DOMAINS_ERROR_MESSAGE = 'Please Select both parties preferences from the same domain!'
 MIN_MAX_PARTICIPANTS = 2
 INITIAL_DEADLINE_TIME = 60
 MAX_DEADLINE_TIME = 3600000
@@ -25,7 +28,11 @@ MAX_DEADLINE_TIME = 3600000
 class Session:
     def __init__(self, window):
         self.window = window
+        self.init_controller()
         self.create_session_gui()
+
+    def init_controller(self):
+        self.controller = controller.Controller()
 
     def create_session_gui(self):
         self.frame_session = tk.Frame(self.window)
@@ -104,7 +111,7 @@ class Session:
     # Option menu in order to select the domain
     def create_domain_menu(self):
         tk.Label(self.frame_session, text='Domain ').grid(row=1, column=0)
-        self.domain_lists = [name for name in os.listdir(".\Domains")]
+        self.domain_lists = self.controller.fetch_domains()
         self.var_domain_name = tk.StringVar()
         self.var_domain_name.set(SELECT_DOMAIN_TEXT)
         self.optionMenu_domain = tk.OptionMenu(
@@ -130,9 +137,7 @@ class Session:
     def create_select_party(self):
         tk.Label(self.frame_session, text=' Party Name ', padx=15).grid(
             row=6, column=0)
-        party_path = '.\Agents'
-        self.party_list = [f for f in listdir(
-            party_path) if isfile(join(party_path, f))]
+        self.party_list = self.controller.fech_agents()
         self.var_party_name = tk.StringVar()
         self.var_party_name.set(SELECT_PARTY_TEXT)
         self.optionMenu_party = tk.OptionMenu(
@@ -144,16 +149,19 @@ class Session:
     def create_select_preference(self, selected_domain):
         tk.Label(self.frame_session, text='Preference Profile').grid(
             row=7, column=0)
-        path = '.\Domains'+'\\'+selected_domain
-        if isdir(path):
-            self.preference_profile_list = [name for name in os.listdir(path)]
-            self.var_preference_profile_name = tk.StringVar()
-            self.var_preference_profile_name.set(SELECT_PREFERENCE_PROFILE)
-            self.optionMenu_preference_profile = tk.OptionMenu(
-                self.frame_session, self.var_preference_profile_name, *self.preference_profile_list)
-            self.optionMenu_preference_profile.config(width=25)
-            self.optionMenu_preference_profile.grid(
-                row=7, column=1, columnspan=2, sticky='we')
+        preference_profile_list = self.controller.fetch_preferences_of_domain(
+            selected_domain)
+        if preference_profile_list == None:
+            return messagebox.showerror('Error', WRONG_DIR_PATH_ERROR)
+        if len(preference_profile_list) <= 1:
+            return messagebox.showerror('Error', LESS_THAN_TWO_PREFERENCES)
+        self.var_preference_profile_name = tk.StringVar()
+        self.var_preference_profile_name.set(SELECT_PREFERENCE_PROFILE)
+        self.optionMenu_preference_profile = tk.OptionMenu(
+            self.frame_session, self.var_preference_profile_name, *preference_profile_list)
+        self.optionMenu_preference_profile.config(width=25)
+        self.optionMenu_preference_profile.grid(
+            row=7, column=1, columnspan=2, sticky='we')
 
     # Show Deadline time
     def create_deadline_menu(self):
@@ -211,7 +219,7 @@ class Session:
             DOMAIN_PREFERENCE_SEPERATOR_SYMBOL)[0]
         if first_domain_text != second_domain_text:
             return messagebox.showerror(
-                title='Error!', message=INEQUALITY_oOF_TWO_DOMAINS_ERROR_MESSAGE)
+                title='Error!', message=INEQUALITY_OF_TWO_DOMAINS_ERROR)
 
 
 if __name__ == '__main__':
