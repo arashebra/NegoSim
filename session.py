@@ -1,3 +1,4 @@
+from email.message import Message
 from genericpath import isdir
 import tkinter as tk
 from tkinter import ttk
@@ -55,10 +56,8 @@ class Session:
             row=5, column=0, columnspan=10, sticky='we')
 
         self.create_select_party()
-        # self.create_select_preference()
 
         # Button in order to add participant
-
         self.btn_add_participant = ttk.Button(
             self.frame_session, text=ADD_PARTICIPANT_BUTTON_TEXT, command=self.add_participant)
         self.btn_add_participant.grid(
@@ -147,15 +146,15 @@ class Session:
 
     # Option menu in order to select the preference profile
     def create_select_preference(self, selected_domain):
-        tk.Label(self.frame_session, text='Preference Profile').grid(
-            row=7, column=0)
+        self.var_preference_profile_name = tk.StringVar()
         preference_profile_list = self.controller.fetch_preferences_of_domain(
             selected_domain)
         if preference_profile_list == None:
             return messagebox.showerror('Error', WRONG_DIR_PATH_ERROR)
         if len(preference_profile_list) <= 1:
             return messagebox.showerror('Error', LESS_THAN_TWO_PREFERENCES)
-        self.var_preference_profile_name = tk.StringVar()
+        tk.Label(self.frame_session, text='Preference Profile').grid(
+            row=7, column=0)
         self.var_preference_profile_name.set(SELECT_PREFERENCE_PROFILE)
         self.optionMenu_preference_profile = tk.OptionMenu(
             self.frame_session, self.var_preference_profile_name, *preference_profile_list)
@@ -181,6 +180,10 @@ class Session:
 
     # This method add participants if there is no error
     def add_participant(self):
+        if self.var_domain_name.get() == SELECT_DOMAIN_TEXT:
+            return messagebox.showerror('Error', 'Please Select a negotiation domain!')
+        if self.var_preference_profile_name.get() == '':
+            return messagebox.showerror('Error', 'Your selected domain has problem, \n Please select another domain!')
         if self.listbox_party_and_preference.size() >= MIN_MAX_PARTICIPANTS-1:
             self.btn_add_participant.config(state='disable')
         number_of_items = self.listbox_party_and_preference.size()
@@ -205,21 +208,34 @@ class Session:
             return messagebox.showerror(
                 title='Error!', message=message)
 
-        first_party_preference_text = self.listbox_party_and_preference.get(0)
-        second_party_preference_text = self.listbox_party_and_preference.get(1)
-
-        first_domain_preference_text = str(first_party_preference_text).rsplit(
-            PARTY_DOMAINPREFERENCE_SEPERATOR_SYMBOL)[1]
-        second_domain_preference_text = str(second_party_preference_text).rsplit(
-            PARTY_DOMAINPREFERENCE_SEPERATOR_SYMBOL)[1]
-
-        first_domain_text = str(first_domain_preference_text).rsplit(
-            DOMAIN_PREFERENCE_SEPERATOR_SYMBOL)[0]
-        second_domain_text = str(second_domain_preference_text).rsplit(
-            DOMAIN_PREFERENCE_SEPERATOR_SYMBOL)[0]
-        if first_domain_text != second_domain_text:
+        first_domain_name, _ = self.get_domain_preference(0)
+        second_domain_name, _ = self.get_domain_preference(1)
+        if first_domain_name != second_domain_name:
             return messagebox.showerror(
                 title='Error!', message=INEQUALITY_OF_TWO_DOMAINS_ERROR)
+
+    def get_text_from_listbox(self, row):
+        text = self.listbox_party_and_preference.get(
+            row)
+        return text
+
+    def text_splitor(self, text, seperator):
+        seperated_text_list = str(text).split(seperator)
+        return seperated_text_list
+
+    def get_party(self, row):
+        party_domain_preference_text = self.get_text_from_listbox(row)
+        party_text = self.text_splitor(
+            party_domain_preference_text, PARTY_DOMAINPREFERENCE_SEPERATOR_SYMBOL)[0]
+        return party_text
+
+    def get_domain_preference(self, row):
+        party_domain_preference_text = self.get_text_from_listbox(row)
+        domain_preference_text = self.text_splitor(
+            party_domain_preference_text, PARTY_DOMAINPREFERENCE_SEPERATOR_SYMBOL)[1]
+        domain_name, preference_name = self.text_splitor(
+            domain_preference_text, DOMAIN_PREFERENCE_SEPERATOR_SYMBOL)
+        return domain_name, preference_name
 
 
 if __name__ == '__main__':
