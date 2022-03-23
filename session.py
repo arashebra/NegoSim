@@ -1,11 +1,6 @@
-from email.message import Message
-from genericpath import isdir
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
-from os import listdir
-from os.path import isfile, join
-import os
 import controller
 
 SELECT_PROTOCOL_TEXT = 'Select a Protocol'
@@ -19,8 +14,10 @@ SELECT_PREFERENCE_PROFILE = 'Select a Preference Profile'
 WRONG_DIR_PATH_ERROR = 'The directory path is wrong!'
 LESS_THAN_TWO_PREFERENCES = 'The directory path has less the two preferences!'
 INEQUALITY_OF_TWO_DOMAINS_ERROR = 'Please Select both parties preferences from the same domain!'
-PARTY_DOMAINPREFERENCE_SEPERATOR_SYMBOL = ' -> '
-DOMAIN_PREFERENCE_SEPERATOR_SYMBOL = '/'
+SELECTED_DOMAIN_PROBLEM_ERROR = 'Your selected domain has problem, \n Please select another domain!'
+SESSION_WITH_MORETHAN_TWO_PARTICIPATNT_ERROR = "Session can only run with two participant \n Please delete one of participants"
+PARTY_DOMAINPREFERENCE_SEPARATOR_SYMBOL = ' -> '
+DOMAIN_PREFERENCE_SEPARATOR_SYMBOL = '/'
 MIN_MAX_PARTICIPANTS = 2
 INITIAL_DEADLINE_TIME = 60
 MAX_DEADLINE_TIME = 3600000
@@ -181,17 +178,18 @@ class Session:
     # This method add participants if there is no error
     def add_participant(self):
         if self.var_domain_name.get() == SELECT_DOMAIN_TEXT:
-            return messagebox.showerror('Error', 'Please Select a negotiation domain!')
+            return messagebox.showerror('Error', 'Please '+SELECT_DOMAIN_TEXT)
         if self.var_preference_profile_name.get() == '':
-            return messagebox.showerror('Error', 'Your selected domain has problem, \n Please select another domain!')
-        if self.listbox_party_and_preference.size() >= MIN_MAX_PARTICIPANTS-1:
-            self.btn_add_participant.config(state='disable')
+            return messagebox.showerror('Error', SELECTED_DOMAIN_PROBLEM_ERROR)
+
         number_of_items = self.listbox_party_and_preference.size()
         if self.var_party_name.get() == SELECT_PARTY_TEXT or self.var_preference_profile_name.get() == SELECT_PREFERENCE_PROFILE:
             return messagebox.showerror(
                 title='Error!', message=ADD_PARTICIPANT_ERROR_MESSAGE)
         self.listbox_party_and_preference.insert(
-            number_of_items+1, f"{self.var_party_name.get()}{PARTY_DOMAINPREFERENCE_SEPERATOR_SYMBOL}{self.var_domain_name.get()}{DOMAIN_PREFERENCE_SEPERATOR_SYMBOL}{self.var_preference_profile_name.get()}")
+            number_of_items+1, f"{self.var_party_name.get()}{PARTY_DOMAINPREFERENCE_SEPARATOR_SYMBOL}{self.var_domain_name.get()}{DOMAIN_PREFERENCE_SEPARATOR_SYMBOL}{self.var_preference_profile_name.get()}")
+        if self.listbox_party_and_preference.size() >= MIN_MAX_PARTICIPANTS:
+            self.btn_add_participant.config(state='disable')
 
     def start_negotiation_session(self):
         message = 'Please select'
@@ -208,6 +206,10 @@ class Session:
             return messagebox.showerror(
                 title='Error!', message=message)
 
+        if self.listbox_party_and_preference.size() > MIN_MAX_PARTICIPANTS:
+            return messagebox.showerror(
+                title='Error!', message=SESSION_WITH_MORETHAN_TWO_PARTICIPATNT_ERROR)
+
         first_domain_name, _ = self.get_domain_preference(0)
         second_domain_name, _ = self.get_domain_preference(1)
         if first_domain_name != second_domain_name:
@@ -219,22 +221,22 @@ class Session:
             row)
         return text
 
-    def text_splitor(self, text, seperator):
-        seperated_text_list = str(text).split(seperator)
+    def text_splitor(self, text, separator):
+        seperated_text_list = str(text).split(separator)
         return seperated_text_list
 
     def get_party(self, row):
         party_domain_preference_text = self.get_text_from_listbox(row)
         party_text = self.text_splitor(
-            party_domain_preference_text, PARTY_DOMAINPREFERENCE_SEPERATOR_SYMBOL)[0]
+            party_domain_preference_text, PARTY_DOMAINPREFERENCE_SEPARATOR_SYMBOL)[0]
         return party_text
 
     def get_domain_preference(self, row):
         party_domain_preference_text = self.get_text_from_listbox(row)
         domain_preference_text = self.text_splitor(
-            party_domain_preference_text, PARTY_DOMAINPREFERENCE_SEPERATOR_SYMBOL)[1]
+            party_domain_preference_text, PARTY_DOMAINPREFERENCE_SEPARATOR_SYMBOL)[1]
         domain_name, preference_name = self.text_splitor(
-            domain_preference_text, DOMAIN_PREFERENCE_SEPERATOR_SYMBOL)
+            domain_preference_text, DOMAIN_PREFERENCE_SEPARATOR_SYMBOL)
         return domain_name, preference_name
 
 
