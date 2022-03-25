@@ -12,11 +12,11 @@ from core.Offer import Offer
 
 
 class OpponentModelInterface:
-    def get_initial_opponent_preference() -> Preference:
+    def get_initial_opponent_preference(self) -> Preference:
         pass
 
-    def get_preference() -> Preference:
+    def get_preference(self) -> Preference:
         pass
 
-    def update_preferece(offer: Offer) -> Preference:
+    def update_preferece(self, offer: Offer) -> Preference:
         pass

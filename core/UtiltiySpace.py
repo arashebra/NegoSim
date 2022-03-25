@@ -13,11 +13,11 @@ from core.Offer import Offer
 
 
 class UtiltiySpace:
-    def get_preference() -> Preference:
+    def get_preference(self) -> Preference:
         pass
 
-    def get_utility(Bid: Bid) -> double:
+    def get_utility(self, Bid: Bid) -> float:
         pass
 
-    def get_utility_distict(offer: Offer) -> double:
+    def get_utility_distict(self, offer: Offer) -> float:
         pass

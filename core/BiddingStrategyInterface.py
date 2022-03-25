@@ -14,5 +14,5 @@ from abc import ABC, abstractmethod
 class BiddingStrategyInterface(ABC):
 
     @abstractmethod
-    def send_bid(timline) -> Bid:
+    def send_bid(self, timline) -> Bid:
         raise NotImplementedError()

@@ -10,5 +10,5 @@
 
 
 class Preference:
-    def get_preference():
+    def get_preference(self):
         pass

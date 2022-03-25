@@ -14,10 +14,10 @@ from abc import ABC, abstractmethod
 class ElicitationStrategyInterface(ABC):
 
     @abstractmethod
-    def ask_offer_rank_from_user(offer: Offer) -> list:
+    def ask_offer_rank_from_user(self, offer: Offer) -> list:
         """This method returns a list of ranked bids
         """
         raise NotImplementedError()
 
-    def ask_offer_utility_from_user(offer: Offer) -> float:
+    def ask_offer_utility_from_user(self, offer: Offer) -> float:
         raise NotImplementedError()

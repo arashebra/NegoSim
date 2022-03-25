@@ -11,7 +11,7 @@ from core.TimeLine import TimeLine
 
 
 class ProtocolInterface:
-    def ask_bid_from_party() -> void:
+    def ask_bid_from_party(self):
         """This method ask an bid from party according to order and negotiation state then
         convert it to offer and add it to the table offers and update negotiation state
 
@@ -21,10 +21,10 @@ class ProtocolInterface:
         """
         pass
 
-    def determine_order() -> String:
+    def determine_order(self) -> str:
         pass
 
-    def get_offer_on_table(party_name: String) -> Tuple:
+    def get_offer_on_table(self, party_name: str) -> tuple:
         """This method gets a party name in string type and returns a tuple of offers
         related to the party name that has got through the object that has called the
         method.
@@ -34,5 +34,5 @@ class ProtocolInterface:
         """
         pass
 
-    def get_time_line() -> TimeLine:
+    def get_time_line(self) -> TimeLine:
         pass

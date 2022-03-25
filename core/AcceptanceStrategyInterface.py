@@ -14,7 +14,7 @@ from abc import ABC, abstractmethod
 class AcceptanceStrategyInterface(ABC):
 
     @abstractmethod
-    def is_acceptable(offer: Offer) -> int:
+    def is_acceptable(self, offer: Offer) -> int:
         """this method returns 0 refer to reject opponent's offer or 1 refer to accept
         opponent offer.
         """

@@ -10,5 +10,5 @@
 
 
 class TimeLine:
-    def get_time() -> double:
+    def get_time(self) -> float:
         pass

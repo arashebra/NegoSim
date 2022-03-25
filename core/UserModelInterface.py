@@ -14,5 +14,5 @@ from abc import ABC, abstractmethod
 class UserModelInterface(ABC):
 
     @abstractmethod
-    def generate_initial_preference() -> Preference:
+    def generate_initial_preference(self) -> Preference:
         raise NotImplementedError()

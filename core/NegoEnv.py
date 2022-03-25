@@ -13,17 +13,15 @@ from core.AbstractNegoParty import AbstractNegoParty
 
 
 class NegoEnv:
-    m_NegoTable = NegoTable()
+    nego_table = NegoTable()
+    protocol_interface = ProtocolInterface()
+    nego_party = AbstractNegoParty()
 
-    m_ProtocolInterface = ProtocolInterface()
-
-    m_AbstractNegoParty = AbstractNegoParty()
-
-    def get_name() -> String:
+    def get_name(self) -> str:
         pass
 
-    def get_nego_table() -> NegoTable:
+    def get_nego_table(self) -> NegoTable:
         pass
 
-    def get_protocol() -> ProtocolInterface:
+    def get_protocol(self) -> ProtocolInterface:
         pass

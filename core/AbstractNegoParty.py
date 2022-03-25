@@ -13,36 +13,41 @@ from core.ElicitationStrategyInterface import ElicitationStrategyInterface
 from core.OpponentModelInterface import OpponentModelInterface
 from core.UserModelInterface import UserModelInterface
 from core.NegoPartyInterface import NegoPartyInterface
+from core.Bid import Bid
+from abc import ABC, abstractmethod
 
 
 class AbstractNegoParty(NegoPartyInterface):
-    m_ElicitationStrategyInterface = ElicitationStrategyInterface()
+    elicitation_strategy = ElicitationStrategyInterface()
+    user_model = UserModelInterface()
+    bidding_strategy = BiddingStrategyInterface()
+    opponent_model = OpponentModelInterface()
+    acceptance_strategy = AcceptanceStrategyInterface()
 
-    m_UserModelInterface = UserModelInterface()
+    @abstractmethod
+    def get_party_name(self) -> str:
+        raise NotImplementedError()
 
-    m_BiddingStrategyInterface = BiddingStrategyInterface()
+    @abstractmethod
+    def set_acceptance_strategy(self, acceptance_strategy: AcceptanceStrategyInterface):
+        raise NotImplementedError()
 
-    m_OpponentModelInterface = OpponentModelInterface()
+    @abstractmethod
+    def set_bidding_strategy(self, bidding_strategy: BiddingStrategyInterface):
+        raise NotImplementedError()
 
-    m_AcceptanceStrategyInterface = AcceptanceStrategyInterface()
+    @abstractmethod
+    def set_elicitation_strategy(self, elicitation_strategy: ElicitationStrategyInterface):
+        raise NotImplementedError()
 
-    def get_party_name() -> String:
-        pass
+    @abstractmethod
+    def set_opponent_model(self, opponent_model: OpponentModelInterface):
+        raise NotImplementedError()
 
-    def set_acceptance_strategy(acceptance_strategy: AcceptanceStrategyInterface) -> void:
-        pass
+    @abstractmethod
+    def set_user_model(self, user_model: UserModelInterface):
+        raise NotImplementedError()
 
-    def set_bidding_strategy(bidding_strategy: BiddingStrategyInterface) -> void:
-        pass
-
-    def set_elicitation_strategy(elicitation_strategy: ElicitationStrategyInterface) -> void:
-        pass
-
-    def set_opponent_model(opponent_model: OpponentModelInterface) -> void:
-        pass
-
-    def set_user_model(usel_model: UserModelInterface) -> void:
-        pass
-
-    def send_bid() -> Bid:
-        pass
+    @abstractmethod
+    def send_bid(self) -> Bid:
+        raise NotImplementedError()

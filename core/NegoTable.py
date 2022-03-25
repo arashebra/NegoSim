@@ -13,14 +13,14 @@ from core.TimeLine import TimeLine
 
 
 class NegoTable:
-    def get_negotiation_state() -> int:
+    def get_negotiation_state(self) -> int:
         pass
 
-    def get_offers_on_table(party: String) -> void:
+    def get_offers_on_table(self, party: str):
         pass
 
-    def get_parties() -> Tuple:
+    def get_parties(self) -> tuple:
         pass
 
-    def get_time() -> TimeLine:
+    def get_time(self) -> TimeLine:
         pass
