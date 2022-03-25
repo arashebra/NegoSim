@@ -324,7 +324,11 @@ preference = {
     'HDD': [0.38, {'1T': 25, '2T': 32, '3T': 35}]
 }
 
-bid = {}
+bid = {
+    'Brand': 'Lenovo',
+    'Monitor': '15',
+    'HDD': '1T'
+}
 
 # parties = ['party1', 'party2']
 
