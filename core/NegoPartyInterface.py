@@ -7,8 +7,12 @@
 # Original author: DP
 #
 #######################################################
+from Bid import Bid
+from abc import ABC, abstractmethod
 
 
-class NegoPartyInterface:
+class NegoPartyInterface(ABC):
+
+    @abstractmethod
     def send_bid() -> Bid:
-        pass
+        raise NotImplementedError()

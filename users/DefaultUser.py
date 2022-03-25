@@ -1,2 +1,5 @@
-class DefaultUser:
+from core.UserInterface import UserInterface
+
+
+class DefaultUser(UserInterface):
     pass
