@@ -100,12 +100,14 @@ class View:
 
         frame_domain_set = ttk.Frame(notebook_component)
         frame_domain = ttk.Frame(notebook_component)
+        frame_user = ttk.Frame(notebook_component)
         frame_euboa = ttk.Frame(notebook_component)
         frame_protocol = ttk.Frame(notebook_component)
         frame_analyses = ttk.Frame(notebook_component)
 
         notebook_component.add(frame_domain_set, text=' Domain Set ')
         notebook_component.add(frame_domain, text=' Domain ')
+        notebook_component.add(frame_user, text=' User ')
         notebook_component.add(frame_euboa, text=' EUBOA Component')
         notebook_component.add(frame_protocol, text=' Protocols ')
         notebook_component.add(frame_analyses, text=' Analyses ')
