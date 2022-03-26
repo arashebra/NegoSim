@@ -38,11 +38,11 @@ class View:
         self.file_menu.add_command(
             label='Add Elisitation Strategy', command=self.add_elicitation_strategy_file)
         self.file_menu.add_command(
-            label='Add User Model', command=self.add_user_model_file)
+            label='Add User GUIContent', command=self.add_user_model_file)
         self.file_menu.add_command(
             label='Add Bidding Strategy', command=self.add_bidding_strategy_file)
         self.file_menu.add_command(
-            label='Add Opponent Model', command=self.add_opponent_model_file)
+            label='Add Opponent GUIContent', command=self.add_opponent_model_file)
         self.file_menu.add_command(
             label='Add Acceptance Strategy', command=self.add_acceptance_strategy_file)
         self.file_menu.add_command(

@@ -15,11 +15,11 @@ class Offer:
     """bid and the time that bid take on negotiation table.
     """
     def __init__(self, bid: Bid, time_line: TimeLine):
-        self.bid = Bid
+        self.bid = bid
         self.time_line = time_line
 
     def get_bid(self) -> Bid:
-        pass
+        return self.bid
 
     def get_time(self) -> TimeLine:
-        pass
+        return self.time_line

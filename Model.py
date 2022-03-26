@@ -5,17 +5,24 @@ import os
 from genericpath import isdir
 from xml.etree import ElementTree
 
-PARTY_PATH = '.\Agents'
-DOMAIN_PATH = '.\Domains'
+PARTY_PATH = './Agents'
+DOMAIN_PATH = './Domains'
+USER_PATH = 'users'
 
-
-class Model:
+class GUIContent:
     def __init__(self):
         pass
+
+    def fetch_users(self):
+        user_list = [f for f in listdir(
+            USER_PATH) if isfile(join(USER_PATH, f))]
+        user_list.remove('__init__.py')
+        return user_list
 
     def fetch_agents(self):
         party_list = [f for f in listdir(
             PARTY_PATH) if isfile(join(PARTY_PATH, f))]
+        party_list.remove('__init__.py')
         return party_list
 
     def fetch_domins(self):
@@ -39,12 +46,12 @@ class PreferenceXMLParser:
             }
     """
 
-    def __init__(self, xml_file):
+    def __init__(self, domain_name: str, xml_file: str):
         self.file_name = xml_file
+        self.domain_name = domain_name
 
     def get_preference(self):
-
-        full_file = os.path.abspath(os.path.join('data', self.file_name))
+        full_file = os.path.abspath(os.path.join(DOMAIN_PATH+'\\'+self.domain_name, self.file_name))
         dom = ElementTree.parse(full_file)
 
         preference = {}
@@ -69,5 +76,7 @@ class PreferenceXMLParser:
 
 
 if __name__ == '__main__':
-    model = Model()
-    print(model.fetch_preferences_of_domain('car'))
+    # model = GUIContent()
+    # print(model.fetch_users())
+    preferenceXMLParser = PreferenceXMLParser('laptop', 'laptop_buyer_utility.xml')
+    print(preferenceXMLParser.get_preference())

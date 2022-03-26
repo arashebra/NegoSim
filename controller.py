@@ -1,5 +1,5 @@
-import model
-from configurations import *
+import Model
+from Model import PreferenceXMLParser
 
 
 class Controller:
@@ -7,9 +7,13 @@ class Controller:
         self.init_model()
 
     def init_model(self):
-        self.model = model.Model()
+        self.model = Model.GUIContent()
 
-    def fech_agents(self):
+    def fetch_users(self):
+        users = self.model.fetch_users()
+        return users
+
+    def fetch_agents(self):
         agents = self.model.fetch_agents()
         return agents
 
@@ -20,3 +24,7 @@ class Controller:
     def fetch_preferences_of_domain(self, domain):
         preferences_of_domain = self.model.fetch_preferences_of_domain(domain)
         return preferences_of_domain
+
+    def fetch_preference_data_structure(self, domain_name: str, xml_file_name: str):
+        preference_data_structure = PreferenceXMLParser(domain_name, xml_file_name).get_preference()
+        return preference_data_structure

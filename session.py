@@ -26,6 +26,7 @@ MAX_DEADLINE_TIME = 3600000
 
 
 class Session:
+
     def __init__(self, window):
         self.my_row = 0
         self.window = window
@@ -65,7 +66,7 @@ class Session:
         self.my_row += 1
 
         self.create_select_party()
-
+        self.my_row += 2
         # Button in order to add participant
         self.btn_add_participant = ttk.Button(
             self.frame_session, text=ADD_PARTICIPANT_BUTTON_TEXT, command=self.add_participant)
@@ -116,8 +117,7 @@ class Session:
     def create_user_menu(self):
         tk.Label(self.frame_session, text='User ').grid(
             row=self.my_row, column=0)
-        self.user_list = ["User 1", "User 2",
-                          "User 3", "User 4"]
+        self.user_list = self.controller.fetch_users()
         self.var_user_name = tk.StringVar()
         self.var_user_name.set(SELECT_USER_TEXT)
         self.optionMenu_user = tk.OptionMenu(
@@ -154,7 +154,7 @@ class Session:
         self.optionMenu_domain.config(width=25)
         self.optionMenu_domain.grid(
             row=self.my_row, column=1, columnspan=2, sticky='we')
-        self.my_row += 1
+        self.my_row += 2
 
     # Option menu in order to select the analyse file
     def create_analyse_menu(self):
@@ -175,7 +175,7 @@ class Session:
     def create_select_party(self):
         tk.Label(self.frame_session, text=' Party Name ', padx=15).grid(
             row=self.my_row, column=0)
-        self.party_list = self.controller.fech_agents()
+        self.party_list = self.controller.fetch_agents()
         self.var_party_name = tk.StringVar()
         self.var_party_name.set(SELECT_PARTY_TEXT)
         self.optionMenu_party = tk.OptionMenu(
@@ -195,14 +195,15 @@ class Session:
         if len(preference_profile_list) <= 1:
             return messagebox.showerror('Error', LESS_THAN_TWO_PREFERENCES)
         tk.Label(self.frame_session, text='Preference Profile').grid(
-            row=self.my_row, column=0)
+            row=11, column=0)
         self.var_preference_profile_name.set(SELECT_PREFERENCE_PROFILE)
         self.optionMenu_preference_profile = tk.OptionMenu(
             self.frame_session, self.var_preference_profile_name, *preference_profile_list)
         self.optionMenu_preference_profile.config(width=25)
         self.optionMenu_preference_profile.grid(
-            row=self.my_row, column=1, columnspan=2, sticky='we')
+            row=11, column=1, columnspan=2, sticky='we')
         self.my_row += 1
+
 
     # Show Deadline time
     def create_deadline_menu(self):
@@ -280,6 +281,10 @@ class Session:
         return party_text
 
     def get_domain_preference(self, row):
+        """
+        :param row:
+        :return: elicited domain name and preference_name
+        """
         party_domain_preference_text = self.get_text_from_listbox(row)
         domain_preference_text = self.text_splitor(
             party_domain_preference_text, PARTY_DOMAINPREFERENCE_SEPARATOR_SYMBOL)[1]
