@@ -10,13 +10,11 @@ class DefaultUser(UserInterface):
         """
         pass
 
-
     def get_initial_preference(self) -> Preference:
         """This method returns initial preference. the initial preference could be
         completed or uncompleted related to certainty or uncertainty respectively.
         """
         pass
-
 
     def get_offer_rank(self, offer: Offer) -> list:
         """This method returns a list of bids that exist special bid which has been sent
@@ -24,11 +22,7 @@ class DefaultUser(UserInterface):
         """
         pass
 
-
     def get_utility(self, offer: Offer) -> float:
         """This method returns exact utility of an offer
         """
         pass
-
-
-d = DefaultUser()

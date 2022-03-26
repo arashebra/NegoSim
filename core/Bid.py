@@ -10,5 +10,21 @@
 
 
 class Bid:
-    def get_values(self) -> dict:
-        pass
+    """
+    bid = {
+    'Brand': 'Lenovo',
+    'Monitor': '15',
+    'HDD': '1T'
+    }
+    """
+
+    def __init__(self, issues_item: dict):
+        self.issues_items = issues_item
+
+    def get_issues_items(self) -> dict:
+        """
+        This method returns issues and their values
+        in dictionary data typ
+        :return: dict
+        """
+        return self.issues_items
