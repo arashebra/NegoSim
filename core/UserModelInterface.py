@@ -9,10 +9,15 @@
 #######################################################
 from core.Preference import Preference
 from abc import ABC, abstractmethod
+from core.Offer import Offer
 
 
 class UserModelInterface(ABC):
 
     @abstractmethod
     def generate_initial_preference(self) -> Preference:
+        raise NotImplementedError()
+
+    @abstractmethod
+    def get_utility(self, offer: Offer) -> float:
         raise NotImplementedError()

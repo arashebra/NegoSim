@@ -15,4 +15,8 @@ class NegoPartyInterface(ABC):
 
     @abstractmethod
     def send_bid(self) -> Bid:
+        """
+        send new bid, send same bid refer to accept, send {} refer to end negotiation
+        :return: Bid
+        """
         raise NotImplementedError()

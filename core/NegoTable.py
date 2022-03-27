@@ -7,20 +7,48 @@
 # Original author: DP
 #
 #######################################################
-from core.AnalyseMan import AnalyseMan
+from core.Offer import Offer
 from core.ProtocolInterface import ProtocolInterface
 from core.TimeLine import TimeLine
+from core.StateInfo import StateInfo
+from core.NegoPartyInterface import NegoPartyInterface
 
 
 class NegoTable:
-    def get_negotiation_state(self) -> int:
-        pass
 
-    def get_offers_on_table(self, party: str):
-        pass
+    def __init__(self, parties: tuple, state_info: StateInfo):
+        """
+        In initializing of AbstractProtocol a data structure will be created
+        in order to show offers_on_the_table. an example of this data structure was shown in the following:
+        {party1:[offer1, offer2, ...], party2:[offer1, offer2, ...], ...}
+        :param protocol:
+        :param parties: tuple of NegoPartyInterface object
+        :param state_info:
+        """
+        self.parties = parties
+        self.state_info = state_info
+        self.offers_on_the_table = {}
+        for party in self.parties:
+            self.offers_on_the_table[party] = []
+
+    def get_state_info(self) -> StateInfo:
+        return self.state_info
+
+    def get_offers_on_table(self):
+        return self.offers_on_the_table
 
     def get_parties(self) -> tuple:
-        pass
+        return self.parties
 
     def get_time(self) -> TimeLine:
-        pass
+        return self.protocol.get_time_line()
+
+    def add_offer(self, party: NegoPartyInterface, offer: Offer):
+        self.offers_on_the_table[party].append(offer)
+
+    def is_table_empty(self) -> bool:
+        for party in self.parties:
+            if self.offers_on_the_table[party]:
+                return False
+        return True
+

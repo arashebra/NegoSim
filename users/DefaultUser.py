@@ -1,27 +1,25 @@
 from core.Offer import Offer
+from core.Preference import Preference
 from core.UtilitySpace import UtilitySpace
-from core.UserInterface import UserInterface
+from core.AbstractUser import AbstractUser
 
 
-class DefaultUser(UserInterface):
+class DefaultUser(AbstractUser):
 
     """
     Default user answers all question that has got from
     elicitation strategy
     """
 
-    def __init__(self, utility_space):
-        self.utility_space = utility_space
-
     def get_initial_bids_rank(self) -> list:
         """This method returns list of ranked bids in uncertain situation.
         """
         pass
 
-    def get_initial_preference(self) -> UtilitySpace:
+    def get_initial_preference(self) -> Preference:
         """This method returns initial preference in certain situation.
         """
-        return self.utility_space
+        return self.preference
 
     def get_offer_rank(self, offer: Offer) -> list:
         """This method returns a list of bids that exist special bid which has been sent
@@ -32,7 +30,9 @@ class DefaultUser(UserInterface):
     def get_utility(self, offer: Offer) -> float:
         """This method returns exact utility of an offer
         """
-        return self.utility_space.get_utility(offer.get_bid())
+        utility_space = UtilitySpace(self.preference)
+        return utility_space.get_utility(offer.get_bid())
+
 
 
 # from core.Bid import Bid

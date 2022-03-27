@@ -28,3 +28,6 @@ class Bid:
         :return: dict
         """
         return self.issues_items
+
+    def is_equal(self, bid) -> bool:
+        return self.issues_items == bid.get_issues_items()

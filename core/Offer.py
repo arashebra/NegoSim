@@ -14,12 +14,12 @@ from core.TimeLine import TimeLine
 class Offer:
     """bid and the time that bid take on negotiation table.
     """
-    def __init__(self, bid: Bid, time_line: TimeLine):
+    def __init__(self, bid: Bid, time: float):
         self.bid = bid
-        self.time_line = time_line
+        self.time= time
 
     def get_bid(self) -> Bid:
         return self.bid
 
-    def get_time(self) -> TimeLine:
-        return self.time_line
+    def get_time(self) -> float:
+        return self.time
