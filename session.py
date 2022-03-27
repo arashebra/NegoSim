@@ -117,11 +117,11 @@ class Session:
     def create_user_menu(self):
         tk.Label(self.frame_session, text='User ').grid(
             row=self.my_row, column=0)
-        self.user_list = self.controller.fetch_users()
+        user_list = self.controller.fetch_users()
         self.var_user_name = tk.StringVar()
         self.var_user_name.set(SELECT_USER_TEXT)
         self.optionMenu_user = tk.OptionMenu(
-            self.frame_session, self.var_user_name, *self.user_list)
+            self.frame_session, self.var_user_name, *user_list)
         self.optionMenu_user.config(width=25)
         self.optionMenu_user.grid(
             row=self.my_row, column=1, columnspan=2, sticky='we')
@@ -131,12 +131,11 @@ class Session:
     def create_protocol_menu(self):
         tk.Label(self.frame_session, text='Protocol ').grid(
             row=self.my_row, column=0)
-        self.protocol_list = ["Protocol 1", "Protocol 2",
-                              "Protocol 3", "Protocol 4"]
+        protocol_list = self.controller.fetch_protocols()
         self.var_protocol_name = tk.StringVar()
         self.var_protocol_name.set(SELECT_PROTOCOL_TEXT)
         self.optionMenu_protocol = tk.OptionMenu(
-            self.frame_session, self.var_protocol_name, *self.protocol_list)
+            self.frame_session, self.var_protocol_name, *protocol_list)
         self.optionMenu_protocol.config(width=25)
         self.optionMenu_protocol.grid(
             row=self.my_row, column=1, columnspan=2, sticky='we')
@@ -146,11 +145,11 @@ class Session:
     def create_domain_menu(self):
         tk.Label(self.frame_session, text='Domain ').grid(
             row=self.my_row, column=0)
-        self.domain_lists = self.controller.fetch_domains()
+        domain_lists = self.controller.fetch_domains()
         self.var_domain_name = tk.StringVar()
         self.var_domain_name.set(SELECT_DOMAIN_TEXT)
         self.optionMenu_domain = tk.OptionMenu(
-            self.frame_session, self.var_domain_name, *self.domain_lists, command=self.create_select_preference)
+            self.frame_session, self.var_domain_name, *domain_lists, command=self.create_select_preference)
         self.optionMenu_domain.config(width=25)
         self.optionMenu_domain.grid(
             row=self.my_row, column=1, columnspan=2, sticky='we')
@@ -175,11 +174,11 @@ class Session:
     def create_select_party(self):
         tk.Label(self.frame_session, text=' Party Name ', padx=15).grid(
             row=self.my_row, column=0)
-        self.party_list = self.controller.fetch_agents()
+        party_list = self.controller.fetch_agents()
         self.var_party_name = tk.StringVar()
         self.var_party_name.set(SELECT_PARTY_TEXT)
         self.optionMenu_party = tk.OptionMenu(
-            self.frame_session, self.var_party_name, *self.party_list)
+            self.frame_session, self.var_party_name, *party_list)
         self.optionMenu_party.config(width=25)
         self.optionMenu_party.grid(
             row=self.my_row, column=1, columnspan=2, sticky='we')

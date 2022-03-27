@@ -49,5 +49,5 @@ class AbstractNegoParty(NegoPartyInterface):
         raise NotImplementedError()
 
     @abstractmethod
-    def send_bid(self) -> Bid:
+    def send_bid(self, timeline: TimeLine) -> Bid:
         raise NotImplementedError()

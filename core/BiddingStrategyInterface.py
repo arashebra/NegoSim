@@ -9,10 +9,10 @@
 #######################################################
 from core.Bid import Bid
 from abc import ABC, abstractmethod
-
+from core.TimeLine import TimeLine
 
 class BiddingStrategyInterface(ABC):
 
     @abstractmethod
-    def send_bid(self, timline) -> Bid:
+    def send_bid(self, timeline: TimeLine) -> Bid:
         raise NotImplementedError()

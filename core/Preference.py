@@ -33,7 +33,7 @@ class Preference:
         """
         self.preference_data_structure = Controller.fetch_preference_data_structure(domain_name, xml_file_name)
 
-    def get_preference(self):
+    def get_preference_data_structure(self):
         return self.preference_data_structure
 
     def get_issue_weight(self, issue: str):

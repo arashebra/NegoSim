@@ -13,6 +13,10 @@ class Controller:
         users = self.model.fetch_users()
         return users
 
+    def fetch_protocols(self):
+        protocols = self.model.fetch_protocols()
+        return protocols
+
     def fetch_agents(self):
         agents = self.model.fetch_agents()
         return agents

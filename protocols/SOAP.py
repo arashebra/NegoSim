@@ -18,7 +18,7 @@ class SOAP(AbstractProtocol):
                 if self.get_time_line().is_time_ended():
                     self.nego_table.get_state_info().negotiation_state = -1
                 if self.nego_table.get_state_info().negotiation_state == 0:
-                    bid = party.send_bid()
+                    bid = party.send_bid(self.get_time_line())
                     offer = Offer(bid, self.get_time())
                     self.nego_table.add_offer(party, offer)
 

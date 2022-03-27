@@ -9,14 +9,19 @@
 #######################################################
 from core.Preference import Preference
 from core.Offer import Offer
+from abc import ABC, abstractmethod
 
 
-class OpponentModelInterface:
+class OpponentModelInterface(ABC):
+
+    @abstractmethod
     def get_initial_opponent_preference(self) -> Preference:
         pass
 
+    @abstractmethod
     def get_preference(self) -> Preference:
         pass
 
-    def update_preferece(self, offer: Offer) -> Preference:
+    @abstractmethod
+    def update_preference(self, offer: Offer) -> Preference:
         pass

@@ -7,7 +7,9 @@ from xml.etree import ElementTree
 
 PARTY_PATH = './Agents'
 DOMAIN_PATH = './Domains'
-USER_PATH = 'users'
+USER_PATH = './users'
+PROTOCOL_PATH = './protocols'
+
 
 class GUIContent:
     def __init__(self):
@@ -18,6 +20,12 @@ class GUIContent:
             USER_PATH) if isfile(join(USER_PATH, f))]
         user_list.remove('__init__.py')
         return user_list
+
+    def fetch_protocols(self):
+        protocol_list = [f for f in listdir(
+            PROTOCOL_PATH) if isfile(join(PROTOCOL_PATH, f))]
+        protocol_list.remove('__init__.py')
+        return protocol_list
 
     def fetch_agents(self):
         party_list = [f for f in listdir(

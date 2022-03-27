@@ -9,12 +9,13 @@
 #######################################################
 from core.Bid import Bid
 from abc import ABC, abstractmethod
+from core.TimeLine import TimeLine
 
 
 class NegoPartyInterface(ABC):
 
     @abstractmethod
-    def send_bid(self) -> Bid:
+    def send_bid(self, timeline: TimeLine) -> Bid:
         """
         send new bid, send same bid refer to accept, send {} refer to end negotiation
         :return: Bid

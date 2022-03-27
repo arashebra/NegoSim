@@ -9,12 +9,13 @@
 #######################################################
 from core.Offer import Offer
 from abc import ABC, abstractmethod
-
+from core.Bid import Bid
+from core.OpponentModelInterface import OpponentModelInterface
 
 class AcceptanceStrategyInterface(ABC):
 
     @abstractmethod
-    def is_acceptable(self, offer: Offer) -> int:
+    def is_acceptable(self, offer: Offer, my_next_bid: Bid, opponent_model: OpponentModelInterface) -> int:
         """this method returns 0 refer to reject opponent's offer or 1 refer to accept
         opponent offer.
         """

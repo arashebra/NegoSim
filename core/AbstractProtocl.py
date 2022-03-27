@@ -36,7 +36,7 @@ class AbstractProtocol(ProtocolInterface):
         raise self.time_line.get_time()
 
     def get_time_line(self) -> TimeLine:
-        return self.get_time_line()
+        return self.time_line
 
     def get_nego_table(self) -> NegoTable:
         return self.nego_table
