@@ -2,6 +2,7 @@ from core.ProtocolInterface import ProtocolInterface
 from abc import abstractmethod
 from core.TimeLine import TimeLine
 from core.NegoTable import NegoTable
+from core.NegoPartyInterface import NegoPartyInterface
 
 
 class AbstractProtocol(ProtocolInterface):
@@ -40,3 +41,6 @@ class AbstractProtocol(ProtocolInterface):
 
     def get_nego_table(self) -> NegoTable:
         return self.nego_table
+
+    def get_parties(self) -> NegoPartyInterface:
+        return self.nego_table.get_parties()

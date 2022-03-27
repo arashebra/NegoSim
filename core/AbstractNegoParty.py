@@ -13,8 +13,10 @@ from core.ElicitationStrategyInterface import ElicitationStrategyInterface
 from core.OpponentModelInterface import OpponentModelInterface
 from core.UserModelInterface import UserModelInterface
 from core.NegoPartyInterface import NegoPartyInterface
+from core.TimeLine import TimeLine
 from core.Bid import Bid
-from abc import ABC, abstractmethod
+from core.Offer import Offer
+from abc import abstractmethod
 
 
 class AbstractNegoParty(NegoPartyInterface):
@@ -49,5 +51,5 @@ class AbstractNegoParty(NegoPartyInterface):
         raise NotImplementedError()
 
     @abstractmethod
-    def send_bid(self, timeline: TimeLine) -> Bid:
+    def send_bid(self, opponen_offer: Offer, timeline: TimeLine) -> Bid:
         raise NotImplementedError()
