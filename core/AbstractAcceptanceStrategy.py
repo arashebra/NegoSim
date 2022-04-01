@@ -7,7 +7,7 @@ from core.UtilitySpace import UtilitySpace
 class AbstractAcceptanceStrategy(AcceptanceStrategyInterface):
 
     def __init__(self, utility_space: UtilitySpace):
-        self.utility_space = utility_space
+        self.__utility_space = utility_space
 
     @abstractmethod
     def is_acceptable(self, offer: Offer) -> int:
@@ -17,4 +17,4 @@ class AbstractAcceptanceStrategy(AcceptanceStrategyInterface):
         raise NotImplementedError()
 
     def get_utility_space(self):
-        return self.utility_space
+        return self.__utility_space

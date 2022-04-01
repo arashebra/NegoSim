@@ -11,6 +11,7 @@ from core.Bid import Bid
 from abc import ABC, abstractmethod
 from core.TimeLine import TimeLine
 
+
 class BiddingStrategyInterface(ABC):
 
     @abstractmethod

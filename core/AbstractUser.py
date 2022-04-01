@@ -6,7 +6,7 @@ from core.Preference import Preference
 class AbstractUser(UserInterface):
 
     def __init__(self, preference: Preference):
-        self.preference = preference
+        self.__preference = preference
 
     def get_initial_bids_rank(self) -> list:
         """This method returns list of ranked bids in uncertain situation.
@@ -16,7 +16,7 @@ class AbstractUser(UserInterface):
     def get_initial_preference(self) -> Preference:
         """This method returns initial preference in certain situation.
         """
-        return self.preference
+        return self.__preference
 
     def get_offer_rank(self, offer: Offer) -> list:
         """This method returns a list of bids that exist special bid which has been sent

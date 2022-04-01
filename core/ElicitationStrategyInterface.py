@@ -11,6 +11,7 @@ from core.Offer import Offer
 from abc import ABC, abstractmethod
 from core.StateInfo import StateInfo
 
+
 class ElicitationStrategyInterface(ABC):
 
     @abstractmethod

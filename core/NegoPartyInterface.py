@@ -10,7 +10,7 @@
 from core.Bid import Bid
 from abc import ABC, abstractmethod
 from core.TimeLine import TimeLine
-from core.Offer import Offer
+
 
 class NegoPartyInterface(ABC):
 

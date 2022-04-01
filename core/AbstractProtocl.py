@@ -8,8 +8,8 @@ from core.NegoPartyInterface import NegoPartyInterface
 class AbstractProtocol(ProtocolInterface):
 
     def __init__(self, time_line: TimeLine, nego_table: NegoTable):
-        self.time_line = time_line
-        self.nego_table = nego_table
+        self.__time_line = time_line
+        self.__nego_table = nego_table
 
     @abstractmethod
     def negotiate(self):
@@ -34,13 +34,13 @@ class AbstractProtocol(ProtocolInterface):
         raise NotImplementedError()
 
     def get_time(self) -> float:
-        raise self.time_line.get_time()
+        raise self.__time_line.get_time()
 
     def get_time_line(self) -> TimeLine:
-        return self.time_line
+        return self.__time_line
 
     def get_nego_table(self) -> NegoTable:
-        return self.nego_table
+        return self.__nego_table
 
     def get_parties(self) -> NegoPartyInterface:
-        return self.nego_table.get_parties()
+        return self.__nego_table.get_parties()

@@ -10,6 +10,7 @@
 
 from controller import Controller
 
+
 class Preference:
     """
     preference has its own data structure and when an object asks preference, it returns that specific data structure.
@@ -31,13 +32,13 @@ class Preference:
         :param domain_name:
         :param preference_name:
         """
-        self.preference_data_structure = Controller.fetch_preference_data_structure(domain_name, xml_file_name)
+        self.__preference_data_structure = Controller.fetch_preference_data_structure(domain_name, xml_file_name)
 
     def get_preference_data_structure(self):
-        return self.preference_data_structure
+        return self.__preference_data_structure
 
     def get_issue_weight(self, issue: str):
-        return self.preference_data_structure[issue][0]
+        return self.__preference_data_structure[issue][0]
 
     def get_issue_item_value(self, issue: str, item: str):
         """
@@ -45,6 +46,6 @@ class Preference:
         :param value: str
         :return: value, max_value
         """
-        item_value_dict = self.preference_data_structure[issue][1]
+        item_value_dict = self.__preference_data_structure[issue][1]
         max_value = max(int(x) for x in item_value_dict.values())
         return int(item_value_dict[item]), max_value

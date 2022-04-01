@@ -11,6 +11,7 @@ from core.Preference import Preference
 from core.Offer import Offer
 from abc import ABC, abstractmethod
 
+
 class UserInterface(ABC):
     @abstractmethod
     def get_initial_bids_rank(self) -> list:

@@ -15,11 +15,17 @@ class Offer:
     """bid and the time that bid take on negotiation table.
     """
     def __init__(self, bid: Bid, time: float):
-        self.bid = bid
-        self.time= time
+        if not isinstance(bid, Bid):
+            raise TypeError('bid must be in type of Bid class!')
+        else:
+            self.__bid = bid
+        if not isinstance(time, float):
+            raise TypeError('time must be float!')
+        else:
+            self.__time = time
 
     def get_bid(self) -> Bid:
-        return self.bid
+        return self.__bid
 
     def get_time(self) -> float:
-        return self.time
+        return self.__time

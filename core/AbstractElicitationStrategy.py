@@ -8,10 +8,10 @@ from core.StateInfo import StateInfo
 class AbstractElicitationStrategy(ElicitationStrategyInterface):
 
     def __init__(self, user: UserInterface):
-        self.user = user
+        self.__user = user
 
     def ask_initial_preference_from_user(self):
-        initial_preference = self.user.get_initial_preference()
+        initial_preference = self.__user.get_initial_preference()
         return initial_preference
 
     @abstractmethod
@@ -26,10 +26,10 @@ class AbstractElicitationStrategy(ElicitationStrategyInterface):
     def ask_offer_rank_from_user(self, offer: Offer) -> list:
         """This method returns a list of ranked bids
         """
-        self.user.get_utility(offer)
+        self.__user.get_utility(offer)
 
     def ask_offer_utility_from_user(self, offer: Offer) -> float:
         raise NotImplementedError()
 
     def get_user(self) -> UserInterface:
-        return self.user
+        return self.__user

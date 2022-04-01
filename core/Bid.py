@@ -19,7 +19,9 @@ class Bid:
     """
 
     def __init__(self, issues_item: dict):
-        self.issues_items = issues_item
+        if not isinstance(issues_item, dict):
+            raise TypeError('Please send issue_item as dictionary!')
+        self.__issues_items = issues_item
 
     def get_issues_items(self) -> dict:
         """
@@ -27,7 +29,9 @@ class Bid:
         in dictionary data typ
         :return: dict
         """
-        return self.issues_items
+        return self.__issues_items
 
     def is_equal(self, bid) -> bool:
-        return self.issues_items == bid.get_issues_items()
+        if not isinstance(bid, Bid):
+            raise TypeError('Please send an object from Bid Class!')
+        return self.__issues_items == bid.get_issues_items()

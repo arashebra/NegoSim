@@ -11,20 +11,20 @@ import time
 
 class TimeLine:
     def __init__(self, deadline: int):
-        self.beginning_time = time.time()
-        self.current_time = time.time()
-        self.deadline = deadline
+        self.__beginning_time = time.time()
+        self.__current_time = time.time()
+        self.__deadline = deadline
 
     def get_beginning_time(self) -> float:
-        return self.beginning_time
+        return self.__beginning_time
 
     def get_time(self) -> float:
-        self.current_time = time.time()
+        self.__current_time = time.time()
         return self.current_time
 
     def is_time_ended(self):
         """
         :return: True if deadline has been reached
         """
-        self.current_time = self.get_time()
-        return self.current_time - self.beginning_time >= self.deadline
+        self.__current_time = self.get_time()
+        return self.__current_time - self.__beginning_time >= self.__deadline

@@ -8,7 +8,7 @@ from core.Offer import Offer
 class AbstractUserModel(UserModelInterface):
 
     def __init__(self, elicitation_strategy: ElicitationStrategyInterface):
-        self.elicitation_strategy = elicitation_strategy
+        self.__elicitation_strategy = elicitation_strategy
 
     @abstractmethod
     def generate_initial_preference(self) -> Preference:
@@ -19,4 +19,4 @@ class AbstractUserModel(UserModelInterface):
         raise NotImplementedError()
 
     def get_elicitation_strategy(self):
-        return self.elicitation_strategy
+        return self.__elicitation_strategy
