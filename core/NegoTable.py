@@ -8,8 +8,6 @@
 #
 #######################################################
 from core.Offer import Offer
-from core.NegoPartyInterface import NegoPartyInterface
-from core.TimeLine import TimeLine
 from core.StateInfo import StateInfo
 from core.NegoPartyInterface import NegoPartyInterface
 
@@ -21,7 +19,6 @@ class NegoTable:
         In initializing of AbstractProtocol a data structure will be created
         in order to show offers_on_the_table. an example of this data structure was shown in the following:
         {party1:[offer1, offer2, ...], party2:[offer1, offer2, ...], ...}
-        :param protocol:
         :param parties: tuple of NegoPartyInterface object
         :param state_info:
         """
@@ -48,10 +45,11 @@ class NegoTable:
     def get_parties(self) -> tuple:
         return self.__parties
 
-    def get_time(self) -> TimeLine:
-        return self.__protocol.get_time_line()
-
     def add_offer(self, party: NegoPartyInterface, offer: Offer):
+        if not isinstance(party, NegoPartyInterface):
+            raise TypeError('party argument must be an instance of NegoPartyInterface')
+        if not isinstance(offer, Offer):
+            raise TypeError('offer argument must be an instance of Offer')
         self.__offers_on_the_table[party].append(offer)
 
     def is_table_empty(self) -> bool:

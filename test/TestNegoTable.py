@@ -33,17 +33,24 @@ class TestNegoTable(unittest.TestCase):
         nego_table = NegoTable(parties, state_info)
         self.assertIsInstance(nego_table.get_state_info(), StateInfo)
 
-    def test_is_table_empty(self):
-        self.assertTrue(TestNegoTable.nego_table.is_table_empty(), True)
-        offer1 = Mock(spec_set=Offer)
-        TestNegoTable.nego_table.add_offer(TestNegoTable.party1, offer1)
-        self.assertFalse(TestNegoTable.nego_table.is_table_empty(), True)
+    # def test_is_table_empty(self):
+    #     self.assertTrue(TestNegoTable.nego_table.is_table_empty())
+    #     offer1 = Mock(spec_set=Offer)
+    #     TestNegoTable.nego_table.add_offer(TestNegoTable.party1, offer1)
+    #     self.assertFalse(TestNegoTable.nego_table.is_table_empty())
 
     def test_get_parties(self):
         parties = TestNegoTable.nego_table.get_parties()
         self.assertIsInstance(parties, tuple)
         for party in parties:
             self.assertIsInstance(party, NegoPartyInterface)
+
+    # def test_get_offers_on_table(self):
+    #     print(TestNegoTable.nego_table.get_offers_on_table())
+    #     offer1 = Mock(spec_set=Offer)
+    #     TestNegoTable.nego_table.add_offer(TestNegoTable.party1, offer1)
+    #     print(TestNegoTable.nego_table.get_offers_on_table())
+
 
     # def test_add_offer(self):
     #     offer1 = Mock(spec_set=Offer)

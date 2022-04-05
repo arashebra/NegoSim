@@ -9,6 +9,11 @@ from core.Preference import Preference
 class AbstractBiddingStrategy(BiddingStrategyInterface):
 
     def __init__(self, opponent_model: OpponentModelInterface, preference: Preference):
+        if not isinstance(opponent_model, OpponentModelInterface):
+            raise TypeError('opponent_model argument must be an instance of OpponentModelInterface')
+        if not isinstance(preference, Preference):
+            raise TypeError('preference argument must be an instance of Preference')
+
         self.__opponent_model = opponent_model
         self.__preference = preference
 

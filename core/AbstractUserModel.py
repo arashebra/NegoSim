@@ -8,6 +8,8 @@ from core.Offer import Offer
 class AbstractUserModel(UserModelInterface):
 
     def __init__(self, elicitation_strategy: ElicitationStrategyInterface):
+        if not isinstance(elicitation_strategy, ElicitationStrategyInterface):
+            raise TypeError('elicitation_strategy argument must be an instance of ElicitationStrategyInterface')
         self.__elicitation_strategy = elicitation_strategy
 
     @abstractmethod

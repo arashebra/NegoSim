@@ -7,6 +7,8 @@ from core.UtilitySpace import UtilitySpace
 class AbstractAcceptanceStrategy(AcceptanceStrategyInterface):
 
     def __init__(self, utility_space: UtilitySpace):
+        if not isinstance(utility_space, UtilitySpace):
+            raise TypeError('utility_space argument must be an instance of UtilitySpace')
         self.__utility_space = utility_space
 
     @abstractmethod

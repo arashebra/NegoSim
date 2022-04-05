@@ -32,6 +32,10 @@ class Preference:
         :param domain_name:
         :param preference_name:
         """
+        if not isinstance(domain_name, str):
+            raise TypeError('domain_name argument must be a string')
+        if not isinstance(xml_file_name, str):
+            raise TypeError('xml_file_name argument must be a string')
         self.__preference_data_structure = Controller.fetch_preference_data_structure(domain_name, xml_file_name)
 
     def get_preference_data_structure(self):
@@ -42,10 +46,14 @@ class Preference:
 
     def get_issue_item_value(self, issue: str, item: str):
         """
+        :param item:
         :param issue: str
-        :param value: str
         :return: value, max_value
         """
+        if not isinstance(issue, str):
+            raise TypeError('issue argument must be an instance of string')
+        if not isinstance(item, str):
+            raise TypeError('item argument must be an instance of string')
         item_value_dict = self.__preference_data_structure[issue][1]
         max_value = max(int(x) for x in item_value_dict.values())
         return int(item_value_dict[item]), max_value

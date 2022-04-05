@@ -8,6 +8,8 @@ from core.StateInfo import StateInfo
 class AbstractElicitationStrategy(ElicitationStrategyInterface):
 
     def __init__(self, user: UserInterface):
+        if not isinstance(user, UserInterface):
+            raise TypeError('user argument must be an instance of UserInterface')
         self.__user = user
 
     def ask_initial_preference_from_user(self):

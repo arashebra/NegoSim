@@ -8,6 +8,10 @@ from core.NegoPartyInterface import NegoPartyInterface
 class AbstractProtocol(ProtocolInterface):
 
     def __init__(self, time_line: TimeLine, nego_table: NegoTable):
+        if not isinstance(time_line, TimeLine):
+            raise TypeError('time_line argument must be an instance of TimeLine')
+        if not isinstance(nego_table, NegoTable):
+            raise TypeError('nego_table argument must be an instance of NegoTable')
         self.__time_line = time_line
         self.__nego_table = nego_table
 

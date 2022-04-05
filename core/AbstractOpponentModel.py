@@ -7,6 +7,8 @@ from abc import ABC, abstractmethod
 class AbstractOpponentModel(OpponentModelInterface):
 
     def __init__(self, preference: Preference):
+        if not isinstance(preference, Preference):
+            raise TypeError('preference must be an instance of Preference')
         self.__preference = preference
         self.__preference_data_structure = self.__preference.get_preference_data_structure()
         for issue in self.__preference_data_structure:

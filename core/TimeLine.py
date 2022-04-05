@@ -9,18 +9,21 @@
 #######################################################
 import time
 
+
 class TimeLine:
-    def __init__(self, deadline: int):
+    def __init__(self, deadline: float):
+        if not isinstance(deadline, float):
+            raise TypeError('deadline argument must be a float')
         self.__beginning_time = time.time()
         self.__current_time = time.time()
         self.__deadline = deadline
 
-    def get_beginning_time(self) -> float:
-        return self.__beginning_time
+    # def get_beginning_time(self) -> float:
+    #     return self.__beginning_time
 
     def get_time(self) -> float:
         self.__current_time = time.time()
-        return self.current_time
+        return (self.__current_time - self.__beginning_time) / self.__deadline
 
     def is_time_ended(self):
         """

@@ -6,6 +6,8 @@ from core.Preference import Preference
 class AbstractUser(UserInterface):
 
     def __init__(self, preference: Preference):
+        if not isinstance(preference, Preference):
+            raise TypeError('preference argument must be an instance of Preference')
         self.__preference = preference
 
     def get_initial_bids_rank(self) -> list:
