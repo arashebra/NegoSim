@@ -1,34 +1,37 @@
 from core.NegoPartyInterface import NegoPartyInterface
-from core.BiddingStrategyInterface import BiddingStrategyInterface
-from core.OpponentModelInterface import OpponentModelInterface
-from core.AcceptanceStrategyInterface import AcceptanceStrategyInterface
 from core.Preference import Preference
 from core.UtilitySpace import UtilitySpace
 from core.Bid import Bid
-from core.ProtocolInterface import ProtocolInterface
+from acceptance_strategies.ACNext import ACNext
 from core.TimeLine import TimeLine
+from opponent_models.DefaultOpponentModel import DefaultOpponentModel
+from bidding_strategies.RandomStrategy import RandomStrategy
 
 
 class RandomParty2(NegoPartyInterface):
 
-    def __init__(self, protocol: ProtocolInterface, preference: Preference, bidding_strategy: BiddingStrategyInterface,
-                 opponent_model: OpponentModelInterface, acceptance_strategy: AcceptanceStrategyInterface):
-        self.protocol = protocol
-        self.bidding_strategy = bidding_strategy
-        self.opponent_model = opponent_model
-        self.acceptance_strategy = acceptance_strategy
+    def __init__(self, preference: Preference):
+        self.opponent_model = DefaultOpponentModel(preference=preference)
+        self.bidding_strategy = RandomStrategy(opponent_model=self.opponent_model, preference=preference)
+        utility_space = UtilitySpace(preference=preference)
+        self.acceptance_strategy = ACNext(utility_space=utility_space)
         self.preference = preference
         self.utility_space = UtilitySpace(self.preference)
 
-    def send_bid(self, timeline: TimeLine) -> Bid:
+    def send_bid(self, protocol, timeline: TimeLine) -> Bid:
         """
         send new bid, send same bid refer to accept, send {} refer to end negotiation
         :return: Bid
         """
-        parties = self.protocol.get_parties()
+        parties = protocol.get_parties()
         opponent = list(filter(lambda party: party is not self, parties))[0]
-        opponen_offer = self.protocol.get_offers_on_table(opponent)
+        opponen_offers = protocol.get_offers_on_table(opponent)
         bid = self.bidding_strategy.send_bid(timeline)
-        if self.acceptance_strategy.is_acceptable(offer=opponen_offer, my_next_bid=bid, opponent_model=self.opponent_model):
-            return opponen_offer.get_bid()
+        if len(opponen_offers) > 0:
+            self.opponent_model.update_preference(opponen_offers[len(opponen_offers)-1])
+            if self.acceptance_strategy.is_acceptable(offer=opponen_offers[len(opponen_offers)-1], my_next_bid=bid, opponent_model=self.opponent_model):
+                return opponen_offers[len(opponen_offers)-1].get_bid()
         return bid
+
+    def get_name(self):
+        return 'Random2'

@@ -1,3 +1,4 @@
 PROGRAM_NAME = 'NEGOSIM (Negotiation Simulator)'
 HEIGHT_GUI = 400
 WIDTH_GUI = 300
+AGENTS_PACKAGE_NAME = 'Agents'

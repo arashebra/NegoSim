@@ -33,13 +33,13 @@ class RandomParty1(NegoPartyInterface):
 
         bid = make_random_bid()
         if len(opponen_offer) > 0:
-            print(self.utility_space.get_utility(opponen_offer[len(opponen_offer) - 1].get_bid()), '>=',
-                  self.utility_space.get_utility(bid))
+            # print(self.utility_space.get_utility(opponen_offer[len(opponen_offer) - 1].get_bid()), '>=',
+            #       self.utility_space.get_utility(bid))
             if self.utility_space.get_utility(
                     opponen_offer[len(opponen_offer) - 1].get_bid()) >= self.utility_space.get_utility(bid):
-                print(self.get_name(), opponen_offer[len(opponen_offer) - 1].get_bid().get_issues_items())
+                # print(self.get_name(), opponen_offer[len(opponen_offer) - 1].get_bid().get_issues_items())
                 return opponen_offer[len(opponen_offer) - 1].get_bid()
-        print(self.get_name(), bid.get_issues_items())
+        # print(self.get_name(), bid.get_issues_items())
         return bid
 
     def get_name(self):

@@ -15,7 +15,7 @@ from core.TimeLine import TimeLine
 class NegoPartyInterface(ABC):
 
     @abstractmethod
-    def send_bid(self, timeline: TimeLine) -> Bid:
+    def send_bid(self, protocol, timeline: TimeLine) -> Bid:
         """
         send new bid, send same bid refer to accept, send {} refer to end negotiation
         :return: Bid

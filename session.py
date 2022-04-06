@@ -1,15 +1,16 @@
+import importlib
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 import controller
 from core.NegoTable import NegoTable
-from core.NegoPartyInterface import NegoPartyInterface
 from core.Preference import Preference
 from protocols.SOAP import SOAP
 from core.TimeLine import TimeLine
 from core.StateInfo import StateInfo
-from Agents.RandomParty1 import RandomParty1
-from Agents.StupidParty1 import StupidParty1
+import importlib.util
+from configurations import *
+
 
 WINDOW_NAME = 'New Session'
 SELECT_USER_TEXT = 'Select a User'
@@ -276,22 +277,34 @@ class Session:
 
     def start_negotiation(self, first_preference_name, second_preference_name):
         time_line = TimeLine(float(self.var_deadline.get()))
-
         preference1 = Preference(self.var_domain_name.get(), first_preference_name)
-        klass1 = globals()[self.text_splitor(self.get_party(0), '.')[0]]
-        party1 = klass1(preference=preference1)
-        # party1 = RandomParty1(preference=preference1)
-
         preference2 = Preference(self.var_domain_name.get(), second_preference_name)
-        klass2 = globals()[self.text_splitor(self.get_party(1), '.')[0]]
-        party2 = klass2(preference=preference2)
-        # party2 = StupidParty1(preference=preference2)
+        try:
+            file_name1 = self.text_splitor(self.get_party(0), '.')[0]
+            spec1 = importlib.util.spec_from_file_location(file_name1, f"{AGENTS_PACKAGE_NAME}/{file_name1}.py")
+            foo1 = importlib.util.module_from_spec(spec1)
+            spec1.loader.exec_module(foo1)
+            party1_class = getattr(foo1, file_name1)
+            party1 = party1_class(preference1)
 
-        state_info = StateInfo(time_line=time_line, my_agent_offers=[], opponent_offers={})
-        nego_table = NegoTable(parties=(party1, party2), state_info=state_info)
-        protocol = SOAP(time_line=time_line, nego_table=nego_table)
+            file_name2 = self.text_splitor(self.get_party(1), '.')[0]
+            spec2 = importlib.util.spec_from_file_location(file_name2, f"{AGENTS_PACKAGE_NAME}/{file_name2}.py")
+            foo2 = importlib.util.module_from_spec(spec2)
+            spec2.loader.exec_module(foo2)
+            party2_class = getattr(foo2, file_name2)
+            party2 = party2_class(preference2)
 
-        protocol.negotiate()
+            state_info = StateInfo(time_line=time_line, my_agent_offers=[], opponent_offers={})
+            nego_table = NegoTable(parties=(party1, party2), state_info=state_info)
+            protocol = SOAP(time_line=time_line, nego_table=nego_table)
+
+            protocol.negotiate()
+
+        except (ImportError, AttributeError) as e:
+            raise ImportError('NegoSim could not import :)')
+
+
+
 
     def get_text_from_listbox(self, row):
         text = self.listbox_party_and_preference.get(
