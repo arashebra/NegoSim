@@ -56,5 +56,5 @@ class Preference:
         if not isinstance(item, str):
             raise TypeError('item argument must be an instance of string')
         item_value_dict = self.__preference_data_structure[issue][1]
-        max_value = max(int(x) for x in item_value_dict.values())
-        return int(item_value_dict[item]), max_value
+        max_value = max(float(x) for x in item_value_dict.values())
+        return float(item_value_dict[item]), max_value

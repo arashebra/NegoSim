@@ -262,31 +262,36 @@ class Session:
             return messagebox.showerror(
                 title='Error!', message=message)
 
+        if self.listbox_party_and_preference.size() > MIN_MAX_PARTICIPANTS:
+            return messagebox.showerror(
+                title='Error!', message=SESSION_WITH_MORETHAN_TWO_PARTICIPATNT_ERROR)
+
+        first_domain_name, first_preference_name = self.get_domain_preference(0)
+        second_domain_name, second_preference_name = self.get_domain_preference(1)
+        if first_domain_name != second_domain_name:
+            return messagebox.showerror(
+                title='Error!', message=INEQUALITY_OF_TWO_DOMAINS_ERROR)
+
+        self.start_negotiation(first_preference_name, second_preference_name)
+
+    def start_negotiation(self, first_preference_name, second_preference_name):
         time_line = TimeLine(float(self.var_deadline.get()))
 
-        preference1 = Preference('laptop', 'laptop_buyer_utility.xml')
-        party1 = RandomParty1(preference=preference1)
+        preference1 = Preference(self.var_domain_name.get(), first_preference_name)
+        klass1 = globals()[self.text_splitor(self.get_party(0), '.')[0]]
+        party1 = klass1(preference=preference1)
+        # party1 = RandomParty1(preference=preference1)
 
-        preference2 = Preference('laptop', 'laptop_seller_utility.xml')
-        party2 = StupidParty1(preference=preference2)
+        preference2 = Preference(self.var_domain_name.get(), second_preference_name)
+        klass2 = globals()[self.text_splitor(self.get_party(1), '.')[0]]
+        party2 = klass2(preference=preference2)
+        # party2 = StupidParty1(preference=preference2)
 
         state_info = StateInfo(time_line=time_line, my_agent_offers=[], opponent_offers={})
         nego_table = NegoTable(parties=(party1, party2), state_info=state_info)
         protocol = SOAP(time_line=time_line, nego_table=nego_table)
 
         protocol.negotiate()
-
-
-
-        if self.listbox_party_and_preference.size() > MIN_MAX_PARTICIPANTS:
-            return messagebox.showerror(
-                title='Error!', message=SESSION_WITH_MORETHAN_TWO_PARTICIPATNT_ERROR)
-
-        first_domain_name, _ = self.get_domain_preference(0)
-        second_domain_name, _ = self.get_domain_preference(1)
-        if first_domain_name != second_domain_name:
-            return messagebox.showerror(
-                title='Error!', message=INEQUALITY_OF_TWO_DOMAINS_ERROR)
 
     def get_text_from_listbox(self, row):
         text = self.listbox_party_and_preference.get(
