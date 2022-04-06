@@ -21,3 +21,10 @@ class NegoPartyInterface(ABC):
         :return: Bid
         """
         raise NotImplementedError()
+
+    @abstractmethod
+    def get_name(self):
+        """
+        :return: Party Name
+        """
+        raise NotImplementedError()

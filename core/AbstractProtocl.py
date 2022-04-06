@@ -38,7 +38,7 @@ class AbstractProtocol(ProtocolInterface):
         raise NotImplementedError()
 
     def get_time(self) -> float:
-        raise self.__time_line.get_time()
+        return self.__time_line.get_time()
 
     def get_time_line(self) -> TimeLine:
         return self.__time_line

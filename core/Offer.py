@@ -14,18 +14,25 @@ from core.TimeLine import TimeLine
 class Offer:
     """bid and the time that bid take on negotiation table.
     """
+
     def __init__(self, bid: Bid, time: float):
         if not isinstance(bid, Bid):
             raise TypeError('bid must be in type of Bid class!')
-        else:
-            self.__bid = bid
         if not isinstance(time, float):
             raise TypeError('time must be float!')
-        else:
-            self.__time = time
+        self.__bid = bid
+        self.__time = time
 
     def get_bid(self) -> Bid:
         return self.__bid
 
     def get_time(self) -> float:
         return self.__time
+
+    def __repr__(self):
+        s = '{'
+        for issue, item in self.get_bid().get_issues_items().items():
+            s += f'{issue} = {item}, '
+        s += '}'
+        s += f' => {self.get_time()}'
+        return s

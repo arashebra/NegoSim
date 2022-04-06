@@ -36,7 +36,8 @@ class Preference:
             raise TypeError('domain_name argument must be a string')
         if not isinstance(xml_file_name, str):
             raise TypeError('xml_file_name argument must be a string')
-        self.__preference_data_structure = Controller.fetch_preference_data_structure(domain_name, xml_file_name)
+        controller = Controller()
+        self.__preference_data_structure = controller.fetch_preference_data_structure(domain_name, xml_file_name)
 
     def get_preference_data_structure(self):
         return self.__preference_data_structure

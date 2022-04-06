@@ -35,3 +35,10 @@ class Bid:
         if not isinstance(bid, Bid):
             raise TypeError('Please send an object from Bid Class!')
         return self.__issues_items == bid.get_issues_items()
+
+    def __repr__(self):
+        s = '{'
+        for issue, item in self.get_issues_items().items():
+            s += f'{issue} = {item}, '
+        s += '}'
+        return s

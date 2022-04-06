@@ -2,6 +2,14 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 import controller
+from core.NegoTable import NegoTable
+from core.NegoPartyInterface import NegoPartyInterface
+from core.Preference import Preference
+from protocols.SOAP import SOAP
+from core.TimeLine import TimeLine
+from core.StateInfo import StateInfo
+from Agents.RandomParty1 import RandomParty1
+from Agents.StupidParty1 import StupidParty1
 
 WINDOW_NAME = 'New Session'
 SELECT_USER_TEXT = 'Select a User'
@@ -203,7 +211,6 @@ class Session:
             row=11, column=1, columnspan=2, sticky='we')
         self.my_row += 1
 
-
     # Show Deadline time
     def create_deadline_menu(self):
         tk.Label(self.frame_session, text=' Deadline ',
@@ -224,7 +231,7 @@ class Session:
     # This method add participants if there is no error
     def add_participant(self):
         if self.var_domain_name.get() == SELECT_DOMAIN_TEXT:
-            return messagebox.showerror('Error', 'Please '+SELECT_DOMAIN_TEXT)
+            return messagebox.showerror('Error', 'Please ' + SELECT_DOMAIN_TEXT)
         if self.var_preference_profile_name.get() == '':
             return messagebox.showerror('Error', SELECTED_DOMAIN_PROBLEM_ERROR)
 
@@ -233,7 +240,8 @@ class Session:
             return messagebox.showerror(
                 title='Error!', message=ADD_PARTICIPANT_ERROR_MESSAGE)
         self.listbox_party_and_preference.insert(
-            number_of_items+1, f"{self.var_party_name.get()}{PARTY_DOMAINPREFERENCE_SEPARATOR_SYMBOL}{self.var_domain_name.get()}{DOMAIN_PREFERENCE_SEPARATOR_SYMBOL}{self.var_preference_profile_name.get()}")
+            number_of_items + 1,
+            f"{self.var_party_name.get()}{PARTY_DOMAINPREFERENCE_SEPARATOR_SYMBOL}{self.var_domain_name.get()}{DOMAIN_PREFERENCE_SEPARATOR_SYMBOL}{self.var_preference_profile_name.get()}")
         if self.listbox_party_and_preference.size() >= MIN_MAX_PARTICIPANTS:
             self.btn_add_participant.config(state='disable')
 
@@ -253,6 +261,22 @@ class Session:
         if message != 'Please select':
             return messagebox.showerror(
                 title='Error!', message=message)
+
+        time_line = TimeLine(float(self.var_deadline.get()))
+
+        preference1 = Preference('laptop', 'laptop_buyer_utility.xml')
+        party1 = RandomParty1(preference=preference1)
+
+        preference2 = Preference('laptop', 'laptop_seller_utility.xml')
+        party2 = StupidParty1(preference=preference2)
+
+        state_info = StateInfo(time_line=time_line, my_agent_offers=[], opponent_offers={})
+        nego_table = NegoTable(parties=(party1, party2), state_info=state_info)
+        protocol = SOAP(time_line=time_line, nego_table=nego_table)
+
+        protocol.negotiate()
+
+
 
         if self.listbox_party_and_preference.size() > MIN_MAX_PARTICIPANTS:
             return messagebox.showerror(

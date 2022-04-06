@@ -52,4 +52,6 @@ class StateInfo:
     def get_negotiation_state(self):
         return self.__negotiation_state
 
+    def set_negotiation_state(self, negotiation_state):
+        self.__negotiation_state = negotiation_state
 

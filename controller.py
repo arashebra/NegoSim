@@ -32,3 +32,8 @@ class Controller:
     def fetch_preference_data_structure(self, domain_name: str, xml_file_name: str):
         preference_data_structure = PreferenceXMLParser(domain_name, xml_file_name).get_preference()
         return preference_data_structure
+
+
+if __name__ == '__main__':
+    c = Controller()
+    print(c.fetch_preference_data_structure('laptop', 'laptop_buyer_utility.xml'))

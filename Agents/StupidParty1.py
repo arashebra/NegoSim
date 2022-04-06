@@ -9,7 +9,7 @@ from core.TimeLine import TimeLine
 import random
 
 
-class RandomParty1(NegoPartyInterface):
+class StupidParty1(NegoPartyInterface):
 
     def __init__(self, preference: Preference):
         self.preference = preference
@@ -33,14 +33,12 @@ class RandomParty1(NegoPartyInterface):
 
         bid = make_random_bid()
         if len(opponen_offer) > 0:
-            print(self.utility_space.get_utility(opponen_offer[len(opponen_offer) - 1].get_bid()), '>=',
-                  self.utility_space.get_utility(bid))
-            if self.utility_space.get_utility(
-                    opponen_offer[len(opponen_offer) - 1].get_bid()) >= self.utility_space.get_utility(bid):
+            print(self.utility_space.get_utility(opponen_offer[len(opponen_offer) - 1].get_bid()), '>=', self.utility_space.get_utility(bid) )
+            if self.utility_space.get_utility(opponen_offer[len(opponen_offer) - 1].get_bid()) >= self.utility_space.get_utility(bid):
                 print(self.get_name(), opponen_offer[len(opponen_offer) - 1].get_bid().get_issues_items())
                 return opponen_offer[len(opponen_offer) - 1].get_bid()
         print(self.get_name(), bid.get_issues_items())
         return bid
 
     def get_name(self):
-        return 'Random1'
+        return 'Stupid1'
