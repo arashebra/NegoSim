@@ -281,18 +281,10 @@ class Session:
         preference2 = Preference(self.var_domain_name.get(), second_preference_name)
         try:
             file_name1 = self.text_splitor(self.get_party(0), '.')[0]
-            spec1 = importlib.util.spec_from_file_location(file_name1, f"{AGENTS_PACKAGE_NAME}/{file_name1}.py")
-            foo1 = importlib.util.module_from_spec(spec1)
-            spec1.loader.exec_module(foo1)
-            party1_class = getattr(foo1, file_name1)
-            party1 = party1_class(preference1)
+            party1 = self.create_object_by_path(AGENTS_PACKAGE_NAME,file_name1, preference1)
 
             file_name2 = self.text_splitor(self.get_party(1), '.')[0]
-            spec2 = importlib.util.spec_from_file_location(file_name2, f"{AGENTS_PACKAGE_NAME}/{file_name2}.py")
-            foo2 = importlib.util.module_from_spec(spec2)
-            spec2.loader.exec_module(foo2)
-            party2_class = getattr(foo2, file_name2)
-            party2 = party2_class(preference2)
+            party2 = self.create_object_by_path(AGENTS_PACKAGE_NAME, file_name2, preference2)
 
             state_info = StateInfo(time_line=time_line, my_agent_offers=[], opponent_offers={})
             nego_table = NegoTable(parties=(party1, party2), state_info=state_info)
@@ -304,7 +296,13 @@ class Session:
             raise ImportError('NegoSim could not import :)')
 
 
-
+    def create_object_by_path(self, package_name, file_name, *init_args ):
+        spec = importlib.util.spec_from_file_location(file_name, f"{package_name}/{file_name}.py")
+        foo = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(foo)
+        klass = getattr(foo, file_name)
+        obj = klass(*init_args)
+        return obj
 
     def get_text_from_listbox(self, row):
         text = self.listbox_party_and_preference.get(

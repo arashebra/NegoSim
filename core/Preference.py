@@ -58,3 +58,20 @@ class Preference:
         item_value_dict = self.__preference_data_structure[issue][1]
         max_value = max(float(x) for x in item_value_dict.values())
         return float(item_value_dict[item]), max_value
+
+    def __repr__(self):
+        s = '{'
+        for issue, weight_item_value in self.__preference_data_structure.items():
+            s += issue
+            s += ': ['
+            s += weight_item_value[0]
+            s += ', {'
+            for item, value in (weight_item_value[1]).items():
+                s += item
+                s += ': '
+                s += value
+                s += ', '
+            s += '}, '
+            s += '] '
+        s += '}'
+        return s

@@ -33,6 +33,26 @@ class Controller:
         preference_data_structure = PreferenceXMLParser(domain_name, xml_file_name).get_preference()
         return preference_data_structure
 
+    def fetch_elicitation_strategies(self):
+        elicitation_strategies = self.model.fetch_elicitation_strategies()
+        return elicitation_strategies
+
+    def fetch_user_models(self):
+        user_models = self.model.fetch_user_models()
+        return user_models
+
+    def fetch_bidding_strategies(self):
+        bidding_strategies = self.model.fetch_bidding_strategies()
+        return bidding_strategies
+
+    def fetch_opponent_models(self):
+        opponent_models = self.model.fetch_opponent_models()
+        return opponent_models
+
+    def fetch_acceptance_strategies(self):
+        acceptance_strategies = self.model.fetch_acceptance_strategies()
+        return acceptance_strategies
+
 
 if __name__ == '__main__':
     c = Controller()

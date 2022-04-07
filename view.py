@@ -5,6 +5,7 @@ from tkinter import ttk
 import session
 import tournament
 
+EUBOA_SEPERATOR = ' ---> '
 
 class View:
     def __init__(self, parent, controller):
@@ -105,12 +106,52 @@ class View:
         frame_protocol = ttk.Frame(notebook_component)
         frame_analyses = ttk.Frame(notebook_component)
 
+        listbox_domain = tk.Listbox(frame_domain)
+        i = 1
+        for item in self.controller.fetch_domains():
+            listbox_domain.insert(i, item)
+            i += 1
+        listbox_domain.pack(fill='both')
+
+        listbox_user = tk.Listbox(frame_user)
+        i = 1
+        for item in self.controller.fetch_users():
+            listbox_user.insert(i, item)
+            i += 1
+        listbox_user.pack(fill='both')
+
+        listbox_euboa = tk.Listbox(frame_euboa)
+        i = 1
+        for item in self.controller.fetch_elicitation_strategies():
+            listbox_euboa.insert(i, 'Elicitation Strategy'+EUBOA_SEPERATOR+item)
+            i += 1
+        for item in self.controller.fetch_user_models():
+            listbox_euboa.insert(i, 'User Model'+EUBOA_SEPERATOR+item)
+            i += 1
+        for item in self.controller.fetch_bidding_strategies():
+            listbox_euboa.insert(i, 'Bidding Strategy'+EUBOA_SEPERATOR+item)
+            i += 1
+        for item in self.controller.fetch_opponent_models():
+            listbox_euboa.insert(i, 'Opponent Model' + EUBOA_SEPERATOR + item)
+            i += 1
+        for item in self.controller.fetch_acceptance_strategies():
+            listbox_euboa.insert(i, 'Acceptance Strategy' + EUBOA_SEPERATOR + item)
+            i += 1
+        listbox_euboa.pack(fill='both')
+
+        listbox_protocol = tk.Listbox(frame_protocol)
+        i = 1
+        for item in self.controller.fetch_protocols():
+            listbox_protocol.insert(i, 'Protocol'+EUBOA_SEPERATOR+item)
+        listbox_protocol.pack(fill='both')
+
         notebook_component.add(frame_domain_set, text=' Domain Set ')
         notebook_component.add(frame_domain, text=' Domain ')
         notebook_component.add(frame_user, text=' User ')
         notebook_component.add(frame_euboa, text=' EUBOA Component')
         notebook_component.add(frame_protocol, text=' Protocols ')
         notebook_component.add(frame_analyses, text=' Analyses ')
+
 
 
 if __name__ == '__main__':

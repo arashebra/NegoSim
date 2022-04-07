@@ -11,6 +11,6 @@ class ACNext(AbstractAcceptanceStrategy):
         """
         utility = self.get_utility_space().get_utility(offer.get_bid())
         next_utility = self.get_utility_space().get_utility(my_next_bid)
-        if utility >= next_utility:
+        if utility >= next_utility and utility >= 0.7:
             return 1
         return 0

@@ -5,11 +5,6 @@ import os
 from genericpath import isdir
 from xml.etree import ElementTree
 
-PARTY_PATH = './Agents'
-DOMAIN_PATH = './Domains'
-USER_PATH = './users'
-PROTOCOL_PATH = './protocols'
-
 
 class GUIContent:
     def __init__(self):
@@ -19,18 +14,24 @@ class GUIContent:
         user_list = [f for f in listdir(
             USER_PATH) if isfile(join(USER_PATH, f))]
         user_list.remove('__init__.py')
+        if user_list.count('__pycache__') > 0:
+            user_list.remove('__pycache_')
         return user_list
 
     def fetch_protocols(self):
         protocol_list = [f for f in listdir(
             PROTOCOL_PATH) if isfile(join(PROTOCOL_PATH, f))]
         protocol_list.remove('__init__.py')
+        if protocol_list.count('__pycache__') > 0:
+            protocol_list.remove('__pycache_')
         return protocol_list
 
     def fetch_agents(self):
         party_list = [f for f in listdir(
             PARTY_PATH) if isfile(join(PARTY_PATH, f))]
         party_list.remove('__init__.py')
+        if party_list.count('__pycache__') > 0:
+            party_list.remove('__pycache_')
         return party_list
 
     def fetch_domins(self):
@@ -38,12 +39,56 @@ class GUIContent:
         return domain_lists
 
     def fetch_preferences_of_domain(self, domain):
-        path = '.\Domains' + '\\' + domain
+        path = DOMAIN_PATH + '/' + domain
         if isdir(path):
             preference_profile_list = [name for name in os.listdir(path)]
             return preference_profile_list
         return None
 
+    def fetch_elicitation_strategies(self):
+        if isdir(ELICITATION_STRATEGIES_PATH):
+            elicitation_strategies_list = [name for name in os.listdir(ELICITATION_STRATEGIES_PATH)]
+            elicitation_strategies_list.remove('__init__.py')
+            if elicitation_strategies_list.count('__pycache__') > 0:
+                elicitation_strategies_list.remove('__pycache__')
+            return elicitation_strategies_list
+        return None
+
+    def fetch_user_models(self):
+        if isdir(ELICITATION_STRATEGIES_PATH):
+            user_models_list = [name for name in os.listdir(USER_MODEL_PATH)]
+            user_models_list.remove('__init__.py')
+            if user_models_list.count('__pycache__') > 0:
+                user_models_list.remove('__pycache_')
+            return user_models_list
+        return None
+
+    def fetch_bidding_strategies(self):
+        if isdir(ELICITATION_STRATEGIES_PATH):
+            bidding_strategies_list = [name for name in os.listdir(BIDDING_STRATEGIES_PATH)]
+            bidding_strategies_list.remove('__init__.py')
+            if bidding_strategies_list.count('__pycache__') > 0:
+                bidding_strategies_list.remove('__pycache__')
+            return bidding_strategies_list
+        return None
+
+    def fetch_opponent_models(self):
+        if isdir(ELICITATION_STRATEGIES_PATH):
+            opponent_models_list = [name for name in os.listdir(OPPONENT_MODEL_PATH)]
+            opponent_models_list.remove('__init__.py')
+            if opponent_models_list.count('__pycache__') > 0:
+                opponent_models_list.remove('__pycache__')
+            return opponent_models_list
+        return None
+
+    def fetch_acceptance_strategies(self):
+        if isdir(ACCEPTANCE_STRATEGIES_PATH):
+            acceptance_strategies_list = [name for name in os.listdir(OPPONENT_MODEL_PATH)]
+            acceptance_strategies_list.remove('__init__.py')
+            if acceptance_strategies_list.count('__pycache__') > 0:
+                acceptance_strategies_list.remove('__pycache__')
+            return acceptance_strategies_list
+        return None
 
 class PreferenceXMLParser:
     """
@@ -84,7 +129,8 @@ class PreferenceXMLParser:
 
 
 if __name__ == '__main__':
-    # model = GUIContent()
+    model = GUIContent()
+    print(model.fetch_acceptance_strategies())
     # print(model.fetch_users())
-    preferenceXMLParser = PreferenceXMLParser('laptop', 'laptop_buyer_utility.xml')
-    print(preferenceXMLParser.get_preference())
+    # preferenceXMLParser = PreferenceXMLParser('laptop', 'laptop_buyer_utility.xml')
+    # print(preferenceXMLParser.get_preference())
