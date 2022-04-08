@@ -11,12 +11,11 @@ from bidding_strategies.RandomStrategy import RandomStrategy
 class RandomParty2(NegoPartyInterface):
 
     def __init__(self, preference: Preference):
-        self.opponent_model = DefaultOpponentModel(preference=preference)
-        self.bidding_strategy = RandomStrategy(opponent_model=self.opponent_model, preference=preference)
-        utility_space = UtilitySpace(preference=preference)
-        self.acceptance_strategy = ACNext(utility_space=utility_space)
         self.preference = preference
-        self.utility_space = UtilitySpace(self.preference)
+        self.opponent_model = DefaultOpponentModel(preference=self.preference)
+        self.bidding_strategy = RandomStrategy(opponent_model=self.opponent_model, preference=self.preference)
+        self.utility_space = UtilitySpace(preference=self.preference)
+        self.acceptance_strategy = ACNext(utility_space=self.utility_space)
 
     def send_bid(self, protocol, timeline: TimeLine) -> Bid:
         """
@@ -28,9 +27,11 @@ class RandomParty2(NegoPartyInterface):
         opponen_offers = protocol.get_offers_on_table(opponent)
         bid = self.bidding_strategy.send_bid(timeline)
         if len(opponen_offers) > 0:
-            self.opponent_model.update_preference(opponen_offers[len(opponen_offers)-1])
-            if self.acceptance_strategy.is_acceptable(offer=opponen_offers[len(opponen_offers)-1], my_next_bid=bid, opponent_model=self.opponent_model):
-                return opponen_offers[len(opponen_offers)-1].get_bid()
+            op_offer = opponen_offers[len(opponen_offers) - 1]
+            self.opponent_model.update_preference(op_offer)
+            if self.acceptance_strategy.is_acceptable(offer=op_offer, my_next_bid=bid,
+                                                      opponent_model=self.opponent_model):
+                return op_offer.get_bid()
         return bid
 
     def get_name(self):

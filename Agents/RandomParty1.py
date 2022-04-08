@@ -12,8 +12,8 @@ import random
 class RandomParty1(NegoPartyInterface):
 
     def __init__(self, preference: Preference):
-        self.preference = preference
-        self.utility_space = UtilitySpace(self.preference)
+        self.__preference = preference
+        self.__utility_space = UtilitySpace(self.__preference)
 
     def send_bid(self, protocol, timeline: TimeLine) -> Bid:
         """
@@ -26,19 +26,19 @@ class RandomParty1(NegoPartyInterface):
 
         def make_random_bid():
             issue_item = {}
-            for issue, item_value in self.preference.get_preference_data_structure().items():
+            for issue, item_value in self.__preference.get_preference_data_structure().items():
                 issue_item[issue] = random.choice(list(item_value[1]))
             bid1 = Bid(issue_item)
             return bid1
 
         bid = make_random_bid()
         if len(opponen_offer) > 0:
-            # print(self.utility_space.get_utility(opponen_offer[len(opponen_offer) - 1].get_bid()), '>=',
-            #       self.utility_space.get_utility(bid))
-            if self.utility_space.get_utility(
-                    opponen_offer[len(opponen_offer) - 1].get_bid()) >= self.utility_space.get_utility(bid):
+            op_bid = opponen_offer[len(opponen_offer) - 1].get_bid()
+            # print(self.get_name(), '--->', self.__utility_space.get_utility(op_bid), '>=',
+                  # self.__utility_space.get_utility(bid),' and ' ,self.__utility_space.get_utility(op_bid) ,'> 0.7')
+            if self.__utility_space.get_utility(op_bid) >= self.__utility_space.get_utility(bid) and self.__utility_space.get_utility(op_bid) > 0.7:
                 # print(self.get_name(), opponen_offer[len(opponen_offer) - 1].get_bid().get_issues_items())
-                return opponen_offer[len(opponen_offer) - 1].get_bid()
+                return op_bid
         # print(self.get_name(), bid.get_issues_items())
         return bid
 

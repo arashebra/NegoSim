@@ -2,6 +2,8 @@ from core.AcceptanceStrategyInterface import AcceptanceStrategyInterface
 from core.Offer import Offer
 from abc import ABC, abstractmethod
 from core.UtilitySpace import UtilitySpace
+from core.OpponentModelInterface import OpponentModelInterface
+from core.Bid import Bid
 
 
 class AbstractAcceptanceStrategy(AcceptanceStrategyInterface):
@@ -12,7 +14,7 @@ class AbstractAcceptanceStrategy(AcceptanceStrategyInterface):
         self.__utility_space = utility_space
 
     @abstractmethod
-    def is_acceptable(self, offer: Offer) -> int:
+    def is_acceptable(self, offer: Offer, my_next_bid: Bid, opponent_model: OpponentModelInterface) -> int:
         """this method returns 0 refer to reject opponent's offer or 1 refer to accept
         opponent offer.
         """

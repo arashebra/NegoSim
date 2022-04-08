@@ -39,6 +39,6 @@ class Bid:
     def __repr__(self):
         s = '{'
         for issue, item in self.get_issues_items().items():
-            s += f'{issue} = {item}, '
+            s += f'{issue}: {item}, '
         s += '}'
         return s

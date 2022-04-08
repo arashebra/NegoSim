@@ -279,9 +279,10 @@ class Session:
         time_line = TimeLine(float(self.var_deadline.get()))
         preference1 = Preference(self.var_domain_name.get(), first_preference_name)
         preference2 = Preference(self.var_domain_name.get(), second_preference_name)
+
         try:
             file_name1 = self.text_splitor(self.get_party(0), '.')[0]
-            party1 = self.create_object_by_path(AGENTS_PACKAGE_NAME,file_name1, preference1)
+            party1 = self.create_object_by_path(AGENTS_PACKAGE_NAME, file_name1, preference1)
 
             file_name2 = self.text_splitor(self.get_party(1), '.')[0]
             party2 = self.create_object_by_path(AGENTS_PACKAGE_NAME, file_name2, preference2)

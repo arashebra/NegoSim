@@ -24,7 +24,7 @@ class Preference:
 
     def __init__(self, domain_name: str, xml_file_name: str):
         """
-        preference = {
+        preference_data_structure = {
             'Brand': [0.45, {'Lenovo': 10, 'Assus': 20, 'Mac': 30}],
             'Monitor': [0.18, {'15': 30, '10': 25, '11': 20}],
             'HDD': [0.38, {'1T': 25, '2T': 32, '3T': 35}]
@@ -36,6 +36,10 @@ class Preference:
             raise TypeError('domain_name argument must be a string')
         if not isinstance(xml_file_name, str):
             raise TypeError('xml_file_name argument must be a string')
+
+        self.__domain_name = domain_name
+        self.__xml_file_name = xml_file_name
+
         controller = Controller()
         self.__preference_data_structure = controller.fetch_preference_data_structure(domain_name, xml_file_name)
 
@@ -59,17 +63,21 @@ class Preference:
         max_value = max(float(x) for x in item_value_dict.values())
         return float(item_value_dict[item]), max_value
 
+    def __copy__(self):
+        new_instance = Preference(self.__domain_name, self.__xml_file_name)
+        return new_instance
+
     def __repr__(self):
         s = '{'
         for issue, weight_item_value in self.__preference_data_structure.items():
             s += issue
             s += ': ['
-            s += weight_item_value[0]
+            s += str(weight_item_value[0])
             s += ', {'
             for item, value in (weight_item_value[1]).items():
-                s += item
+                s += str(item)
                 s += ': '
-                s += value
+                s += str(value)
                 s += ', '
             s += '}, '
             s += '] '

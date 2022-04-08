@@ -2,6 +2,7 @@ from core.OpponentModelInterface import OpponentModelInterface
 from core.Preference import Preference
 from core.Offer import Offer
 from abc import ABC, abstractmethod
+import copy
 
 
 class AbstractOpponentModel(OpponentModelInterface):
@@ -9,7 +10,7 @@ class AbstractOpponentModel(OpponentModelInterface):
     def __init__(self, preference: Preference):
         if not isinstance(preference, Preference):
             raise TypeError('preference must be an instance of Preference')
-        self.__preference = preference
+        self.__preference = copy.copy(preference)
         self.__preference_data_structure = self.__preference.get_preference_data_structure()
         for issue in self.__preference_data_structure:
             self.__preference_data_structure[issue][0] = 1.0 / len(self.__preference_data_structure)

@@ -7,6 +7,7 @@ import tournament
 
 EUBOA_SEPERATOR = ' ---> '
 
+
 class View:
     def __init__(self, parent, controller):
         self.parent = parent
