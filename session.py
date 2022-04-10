@@ -50,6 +50,7 @@ class Session:
         self.controller = controller.Controller()
 
     def progressbar_session_visualization(self, progress, protocol):
+
         b = [False for j in range(5)]
         while protocol.get_nego_table().get_state_info().get_negotiation_state() == 0:
             t = protocol.get_time()
@@ -65,7 +66,7 @@ class Session:
                 progress["value"] = 60
                 root.update()
                 b[2] = True
-            elif not b[3] and t > 0.8 and t <= 0.8:
+            elif not b[3] and t > 0.6 and t <= 0.8:
                 progress["value"] = 80
                 root.update()
                 b[3] = True
@@ -78,6 +79,7 @@ class Session:
 
 
     def create_visualization_window(self, frame):
+
         preference1 = self.controller.fetch_preference(self.var_domain_name.get(),
                                                        self.get_domain_preference(0)[1])
         preference2 = self.controller.fetch_preference(self.var_domain_name.get(),
@@ -92,16 +94,26 @@ class Session:
         chart.scatter_chart(data=data, col_name1=self.get_domain_preference(0)[1],
                             col_name2=self.get_domain_preference(1)[1], frame=frame, position='top')
 
-        frame_left = tk.Frame(master=frame)
-        frame_left.pack(side='left', fill='both')
-        frame_mid = tk.Frame(master=frame)
-        frame_mid.pack(side='left')
-        frame_right = tk.Frame(master=frame)
-        frame_right.pack(side='left', fill='both')
-
         all_offers = self.protocol.get_nego_table().get_offers_on_table()
         party1 = self.protocol.get_parties()[0]
         party2 = self.protocol.get_parties()[1]
+
+        nego_state = self.protocol.get_nego_table().get_state_info().get_negotiation_state()
+        s = ''
+        if nego_state == 1:
+            s += f"Agreement by {party2.get_name() if len(all_offers[party1])==len(all_offers[party2]) else party1.get_name()}"
+        else:
+            s += "negotiation ended without agreement"
+        tk.Label(master=frame, text=f'Status : {s}').pack(side='top')
+
+        frame_left = tk.Frame(master=frame)
+        frame_mid = tk.Frame(master=frame)
+        frame_right = tk.Frame(master=frame)
+        frame_left.pack(side='left', fill='both')
+        frame_mid.pack(side='left')
+        frame_right.pack(side='left', fill='both')
+
+
 
         tk.Label(master=frame_left, text=f'{party1.get_name()}').pack(side='top')
         tk.Label(master=frame_mid, text='  Vs  ').pack(side='top')
@@ -133,6 +145,11 @@ class Session:
         listbox_party2_bids.insert(tk.END, *all_offers[party2])
 
 
+    def create_progress_bar(self, row):
+        self.my_row += 1
+        self.progress = Progressbar(self.frame_session, orient=tk.HORIZONTAL, length=100, mode='determinate')
+        self.progress.grid(row=row, column=0, columnspan=3, sticky='we', pady=10)
+        self.my_row += 1
 
 
     def create_session_gui(self):
@@ -215,6 +232,7 @@ class Session:
         self.btn_add_participant.config(state='enable')
 
     def create_user_menu(self):
+        self.my_row += 1
         tk.Label(self.frame_session, text='User ').grid(
             row=self.my_row, column=0)
         user_list = self.controller.fetch_users()
@@ -338,6 +356,7 @@ class Session:
             self.btn_add_participant.config(state='disable')
 
     def start_negotiation_session(self):
+
         message = 'Please select'
         if self.var_user_name.get() == SELECT_USER_TEXT:
             message += ' User,'
@@ -366,18 +385,16 @@ class Session:
 
         self.frame_visualization = tk.Frame(self.window)
         self.frame_visualization.grid(row=0, column=11)
-
         self.start_negotiation(first_preference_name, second_preference_name)
 
         self.create_visualization_window(self.frame_visualization)
+
+
 
     def start_negotiation(self, first_preference_name, second_preference_name):
         time_line = TimeLine(float(self.var_deadline.get()))
         preference1 = Preference(self.var_domain_name.get(), first_preference_name)
         preference2 = Preference(self.var_domain_name.get(), second_preference_name)
-
-        self.progress = Progressbar(self.frame_visualization, orient=tk.HORIZONTAL, length=100, mode='determinate')
-        self.progress.pack(side='top', fill='both')
 
         try:
             file_name1 = self.text_splitor(self.get_party(0), '.')[0]
@@ -390,13 +407,24 @@ class Session:
             nego_table = NegoTable(parties=(party1, party2), state_info=state_info)
             self.protocol = SOAP(time_line=time_line, nego_table=nego_table)
 
-            thread_progressbar = Thread(target=lambda: self.progressbar_session_visualization(self.progress, self.protocol))
-            thread_progressbar.start()
 
-            self.protocol.negotiate()
+            self.create_progress_bar(0)
+            # self.progressbar_session_visualization(self.progress, self.protocol)
+            thread_progressbar = Thread(target=lambda: self.progressbar_session_visualization(self.progress, self.protocol))
+            #
+
+            t = Thread(target=self.protocol.negotiate())
+
+            thread_progressbar.start()
+            t.start()
+
+            # thread_progressbar.join()
+            # t.join()
+
+
 
         except (ImportError, AttributeError) as e:
-            raise ImportError('NegoSim could not import :)')
+            raise ImportError('NegoSim could not import :)', e)
 
     def create_object_by_path(self, package_name, file_name, *init_args):
         spec = importlib.util.spec_from_file_location(file_name, f"{package_name}/{file_name}.py")

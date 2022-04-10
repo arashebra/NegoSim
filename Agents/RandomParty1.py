@@ -1,5 +1,4 @@
 from core.NegoPartyInterface import NegoPartyInterface
-import time
 from core.Preference import Preference
 from core.UtilitySpace import UtilitySpace
 from core.Bid import Bid
@@ -18,7 +17,6 @@ class RandomParty1(NegoPartyInterface):
         send new bid, send same bid refer to accept, send {} refer to end negotiation
         :return: Bid
         """
-        time.sleep(2)
         parties = protocol.get_parties()
         opponent = list(filter(lambda party: party is not self, parties))[0]
         opponen_offer = protocol.get_offers_on_table(opponent)
