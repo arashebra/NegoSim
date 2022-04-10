@@ -1,16 +1,12 @@
 from configurations import *
-import controller
 import tkinter as tk
 from tkinter import ttk
 import session
 import tournament
-import pandas as pd
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import controller
-from controller import PreferenceXMLParser
 from core.BidSpace import BidSpace
 from tkinter import messagebox
+from visualization.Charts import Charts
 
 
 EUBOA_SEPERATOR = ' ---> '
@@ -213,7 +209,7 @@ class View:
         notebook_component.add(frame_protocol, text=' Protocols ')
         notebook_component.add(frame_analyses, text=' Analyses ')
 
-    def close_digram(self, btn_preference_visualization, frame_right):
+    def close_diagram(self, btn_preference_visualization, frame_right):
         frame_right.destroy()
         btn_preference_visualization.config(state='active')
 
@@ -222,14 +218,13 @@ class View:
         if self.var_selected_preference1_name.get() == SELECT_PREFERENCE_1 or self.var_selected_preference2_name.get() == SELECT_PREFERENCE_2:
             return messagebox.showerror('Error', 'Please select both preference 1 and 2!')
 
-
         btn_preference_visualization.config(state='disable')
 
         frame_right = tk.Frame(self.parent)
         frame_right.pack(side='bottom', fill='x')
 
         ttk.Button(master=frame_right, text='Close',
-                   command=lambda: self.close_digram(btn_preference_visualization, frame_right)).pack(fill='x')
+                   command=lambda: self.close_diagram(btn_preference_visualization, frame_right)).pack(fill='x')
 
         preference1 = self.controller.fetch_preference(self.selected_domain_name, self.var_selected_preference1_name.get())
         preference2 = self.controller.fetch_preference(self.selected_domain_name, self.var_selected_preference2_name.get())
@@ -238,16 +233,10 @@ class View:
         data = {self.var_selected_preference1_name.get(): bid_space1.get_all_bids_utility(),
                 self.var_selected_preference2_name.get(): bid_space2.get_all_bids_utility()
                 }
-        df = pd.DataFrame(data, columns=[self.var_selected_preference1_name.get(), self.var_selected_preference2_name.get()])
-        figure = plt.Figure(figsize=(5, 4), dpi=100)
-        ax = figure.add_subplot(111)
-        ax.scatter(df[self.var_selected_preference1_name.get()], df[self.var_selected_preference2_name.get()], color='r')
-        scatter_plt = FigureCanvasTkAgg(figure, frame_right)
-        scatter_plt.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH)
-        ax.legend(['Bids'])
-        ax.set_xlabel(self.var_selected_preference1_name.get())
-        ax.set_ylabel(self.var_selected_preference2_name.get())
-        ax.set_title(f'{self.var_selected_preference1_name.get()} Vs. {self.var_selected_preference2_name.get()}')
+
+        chart = Charts()
+        chart.scatter_chart(data=data, col_name1=self.var_selected_preference1_name.get(),
+                            col_name2=self.var_selected_preference2_name.get(), frame=frame_right, position='top')
 
 
 if __name__ == '__main__':
