@@ -8,9 +8,13 @@ from core.Preference import Preference
 from protocols.SOAP import SOAP
 from core.TimeLine import TimeLine
 from core.StateInfo import StateInfo
+from core.BidSpace import BidSpace
+from visualization.Charts import Charts
 import importlib.util
+from tkinter.ttk import Progressbar
+import time
 from configurations import *
-
+from threading import Thread
 
 WINDOW_NAME = 'New Session'
 SELECT_USER_TEXT = 'Select a User'
@@ -45,7 +49,94 @@ class Session:
     def init_controller(self):
         self.controller = controller.Controller()
 
+    def progressbar_session_visualization(self, progress, protocol):
+        b = [False for j in range(5)]
+        while protocol.get_nego_table().get_state_info().get_negotiation_state() == 0:
+            t = protocol.get_time()
+            if not b[0] and t <= 0.2:
+                progress["value"] = 20
+                root.update()
+                b[0] = True
+            elif not b[1] and  t > 0.2 and t <= 0.4:
+                progress["value"] = 40
+                root.update()
+                b[1] = True
+            elif not b[2] and t > 0.4 and t <= 0.6:
+                progress["value"] = 60
+                root.update()
+                b[2] = True
+            elif not b[3] and t > 0.8 and t <= 0.8:
+                progress["value"] = 80
+                root.update()
+                b[3] = True
+            elif not b[4] and t >= 1:
+                progress["value"] = 100
+                root.update()
+                b[4] = True
+        if progress["value"] != 100:
+            progress["value"] = 100
+
+
+    def create_visualization_window(self, frame):
+        preference1 = self.controller.fetch_preference(self.var_domain_name.get(),
+                                                       self.get_domain_preference(0)[1])
+        preference2 = self.controller.fetch_preference(self.var_domain_name.get(),
+                                                       self.get_domain_preference(1)[1])
+        bid_space1 = BidSpace(preference1)
+        bid_space2 = BidSpace(preference2)
+        data = {self.get_domain_preference(0)[1]: bid_space1.get_all_bids_utility(),
+                self.get_domain_preference(1)[1]: bid_space2.get_all_bids_utility()
+                }
+
+        chart = Charts()
+        chart.scatter_chart(data=data, col_name1=self.get_domain_preference(0)[1],
+                            col_name2=self.get_domain_preference(1)[1], frame=frame, position='top')
+
+        frame_left = tk.Frame(master=frame)
+        frame_left.pack(side='left', fill='both')
+        frame_mid = tk.Frame(master=frame)
+        frame_mid.pack(side='left')
+        frame_right = tk.Frame(master=frame)
+        frame_right.pack(side='left', fill='both')
+
+        all_offers = self.protocol.get_nego_table().get_offers_on_table()
+        party1 = self.protocol.get_parties()[0]
+        party2 = self.protocol.get_parties()[1]
+
+        tk.Label(master=frame_left, text=f'{party1.get_name()}').pack(side='top')
+        tk.Label(master=frame_mid, text='  Vs  ').pack(side='top')
+        tk.Label(master=frame_right, text=f'{party2.get_name()}').pack(side='top')
+
+        scr1_horizontal = tk.Scrollbar(master=frame_left, orient=tk.HORIZONTAL)
+        scr1_horizontal.pack(side='bottom', fill='x')
+        listbox_party1_bids = tk.Listbox(master=frame_left, width=50)
+        listbox_party1_bids.pack(side='left', fill='both')
+        listbox_party1_bids.config(xscrollcommand=scr1_horizontal.set)
+        scr1_horizontal.config(command=listbox_party1_bids.xview)
+        scr1_vertical = tk.Scrollbar(master=frame_left)
+        scr1_vertical.pack(side='right', fill='y')
+        listbox_party1_bids.config(yscrollcommand=scr1_vertical.set)
+        scr1_vertical.config(command=listbox_party1_bids.yview)
+        listbox_party1_bids.insert(tk.END, *all_offers[party1])
+
+
+        scr2_horizontal = tk.Scrollbar(master=frame_right, orient=tk.HORIZONTAL)
+        scr2_horizontal.pack(side='bottom', fill='x')
+        listbox_party2_bids = tk.Listbox(master=frame_right, width=50)
+        listbox_party2_bids.pack(side='left', fill='both')
+        listbox_party2_bids.config(xscrollcommand=scr2_horizontal.set)
+        scr2_horizontal.config(command=listbox_party2_bids.xview)
+        scr2_vertical = tk.Scrollbar(master=frame_right)
+        scr2_vertical.pack(side='right', fill='y')
+        listbox_party2_bids.config(yscrollcommand=scr2_vertical.set)
+        scr2_vertical.config(command=listbox_party2_bids.yview)
+        listbox_party2_bids.insert(tk.END, *all_offers[party2])
+
+
+
+
     def create_session_gui(self):
+
         self.frame_session = tk.Frame(self.window)
         self.frame_session.grid(
             row=0, column=0, columnspan=10, padx=40, pady=10)
@@ -273,12 +364,20 @@ class Session:
             return messagebox.showerror(
                 title='Error!', message=INEQUALITY_OF_TWO_DOMAINS_ERROR)
 
+        self.frame_visualization = tk.Frame(self.window)
+        self.frame_visualization.grid(row=0, column=11)
+
         self.start_negotiation(first_preference_name, second_preference_name)
+
+        self.create_visualization_window(self.frame_visualization)
 
     def start_negotiation(self, first_preference_name, second_preference_name):
         time_line = TimeLine(float(self.var_deadline.get()))
         preference1 = Preference(self.var_domain_name.get(), first_preference_name)
         preference2 = Preference(self.var_domain_name.get(), second_preference_name)
+
+        self.progress = Progressbar(self.frame_visualization, orient=tk.HORIZONTAL, length=100, mode='determinate')
+        self.progress.pack(side='top', fill='both')
 
         try:
             file_name1 = self.text_splitor(self.get_party(0), '.')[0]
@@ -289,15 +388,17 @@ class Session:
 
             state_info = StateInfo(time_line=time_line, my_agent_offers=[], opponent_offers={})
             nego_table = NegoTable(parties=(party1, party2), state_info=state_info)
-            protocol = SOAP(time_line=time_line, nego_table=nego_table)
+            self.protocol = SOAP(time_line=time_line, nego_table=nego_table)
 
-            protocol.negotiate()
+            thread_progressbar = Thread(target=lambda: self.progressbar_session_visualization(self.progress, self.protocol))
+            thread_progressbar.start()
+
+            self.protocol.negotiate()
 
         except (ImportError, AttributeError) as e:
             raise ImportError('NegoSim could not import :)')
 
-
-    def create_object_by_path(self, package_name, file_name, *init_args ):
+    def create_object_by_path(self, package_name, file_name, *init_args):
         spec = importlib.util.spec_from_file_location(file_name, f"{package_name}/{file_name}.py")
         foo = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(foo)
@@ -320,7 +421,7 @@ class Session:
             party_domain_preference_text, PARTY_DOMAINPREFERENCE_SEPARATOR_SYMBOL)[0]
         return party_text
 
-    def get_domain_preference(self, row):
+    def get_domain_preference(self, row) -> str:
         """
         :param row:
         :return: elicited domain name and preference_name
