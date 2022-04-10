@@ -4,14 +4,24 @@ import tkinter as tk
 from tkinter import ttk
 import session
 import tournament
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import controller
+from controller import PreferenceXMLParser
+from core.BidSpace import BidSpace
+from tkinter import messagebox
+
 
 EUBOA_SEPERATOR = ' ---> '
-
+SELECT_PREFERENCE_2 = 'Please Select Preference 2'
+SELECT_PREFERENCE_1 = 'Please Select Preference 1'
 
 class View:
     def __init__(self, parent, controller):
         self.parent = parent
         self.controller = controller
+        self.b = False
         self.init_GUI()
 
     def init_GUI(self):
@@ -97,22 +107,72 @@ class View:
         self.parent.config(menu=self.menu_bar)
 
     def create_main_window(self):
-        notebook_component = ttk.Notebook(self.parent, height=400)
-        notebook_component.grid(row=0, column=0)
+
+        frame_left_bottom = tk.Frame(self.parent)
+        frame_left_bottom.pack(side='bottom', fill='x')
+
+        frame_left = tk.Frame(self.parent)
+        frame_left.pack(side='left')
+
+        self.create_notebook_window(frame_left)
+
+    def listbox_domain_clickEvent(self, event):
+        selection = event.widget.curselection()
+        if len(selection) > 0:
+            index = selection[0]
+            self.selected_domain_name = event.widget.get(index)
+            preference_list = self.controller.fetch_preferences_of_domain(self.selected_domain_name)
+            if len(preference_list) > 0:
+                self.create_visualization_tools(preference_list)
+
+    def create_visualization_tools(self, preference_lists):
+        self.frame_visualization_tools.destroy()
+        self.frame_visualization_tools = tk.Frame(master=self.frame_domain, width=100, height=10)
+        self.frame_visualization_tools.pack(side='bottom')
+
+        btn_preference_visualization = ttk.Button(master=self.frame_visualization_tools, text='Visualize', width=67,
+                                                  command=lambda: self.create_chart(
+                                                      btn_preference_visualization))
+
+        btn_preference_visualization.pack(side='bottom', pady=2, padx=2, ipady=5)
+
+        self.var_selected_preference2_name = tk.StringVar()
+        self.var_selected_preference2_name.set(SELECT_PREFERENCE_2)
+        optionMenu_select_preference2 = tk.OptionMenu(self.frame_visualization_tools,
+                                                      self.var_selected_preference2_name, *preference_lists)
+        optionMenu_select_preference2.pack(side='bottom')
+
+        self.var_selected_preference1_name = tk.StringVar()
+        self.var_selected_preference1_name.set(SELECT_PREFERENCE_1)
+        optionMenu_select_preference1 = tk.OptionMenu(self.frame_visualization_tools,
+                                                      self.var_selected_preference1_name, *preference_lists)
+        optionMenu_select_preference1.pack(side='bottom')
+
+
+
+
+
+    def create_notebook_window(self, frame):
+        notebook_component = ttk.Notebook(frame, height=400)
+        # notebook_component.grid(row=0, column=0)
+        notebook_component.pack(side=tk.LEFT, fill=tk.BOTH)
 
         frame_domain_set = ttk.Frame(notebook_component)
-        frame_domain = ttk.Frame(notebook_component)
+        self.frame_domain = ttk.Frame(notebook_component)
         frame_user = ttk.Frame(notebook_component)
         frame_euboa = ttk.Frame(notebook_component)
         frame_protocol = ttk.Frame(notebook_component)
         frame_analyses = ttk.Frame(notebook_component)
 
-        listbox_domain = tk.Listbox(frame_domain)
+        listbox_domain = tk.Listbox(self.frame_domain)
         i = 1
         for item in self.controller.fetch_domains():
             listbox_domain.insert(i, item)
             i += 1
         listbox_domain.pack(fill='both')
+        listbox_domain.bind('<<ListboxSelect>>', self.listbox_domain_clickEvent)
+        self.frame_visualization_tools = tk.Frame(master=self.frame_domain, width=100, height=10)
+        self.frame_visualization_tools.pack(side='bottom')
 
         listbox_user = tk.Listbox(frame_user)
         i = 1
@@ -124,13 +184,13 @@ class View:
         listbox_euboa = tk.Listbox(frame_euboa)
         i = 1
         for item in self.controller.fetch_elicitation_strategies():
-            listbox_euboa.insert(i, 'Elicitation Strategy'+EUBOA_SEPERATOR+item)
+            listbox_euboa.insert(i, 'Elicitation Strategy' + EUBOA_SEPERATOR + item)
             i += 1
         for item in self.controller.fetch_user_models():
-            listbox_euboa.insert(i, 'User Model'+EUBOA_SEPERATOR+item)
+            listbox_euboa.insert(i, 'User Model' + EUBOA_SEPERATOR + item)
             i += 1
         for item in self.controller.fetch_bidding_strategies():
-            listbox_euboa.insert(i, 'Bidding Strategy'+EUBOA_SEPERATOR+item)
+            listbox_euboa.insert(i, 'Bidding Strategy' + EUBOA_SEPERATOR + item)
             i += 1
         for item in self.controller.fetch_opponent_models():
             listbox_euboa.insert(i, 'Opponent Model' + EUBOA_SEPERATOR + item)
@@ -143,16 +203,51 @@ class View:
         listbox_protocol = tk.Listbox(frame_protocol)
         i = 1
         for item in self.controller.fetch_protocols():
-            listbox_protocol.insert(i, 'Protocol'+EUBOA_SEPERATOR+item)
+            listbox_protocol.insert(i, 'Protocol' + EUBOA_SEPERATOR + item)
         listbox_protocol.pack(fill='both')
 
         notebook_component.add(frame_domain_set, text=' Domain Set ')
-        notebook_component.add(frame_domain, text=' Domain ')
+        notebook_component.add(self.frame_domain, text=' Domain ')
         notebook_component.add(frame_user, text=' User ')
         notebook_component.add(frame_euboa, text=' EUBOA Component')
         notebook_component.add(frame_protocol, text=' Protocols ')
         notebook_component.add(frame_analyses, text=' Analyses ')
 
+    def close_digram(self, btn_preference_visualization, frame_right):
+        frame_right.destroy()
+        btn_preference_visualization.config(state='active')
+
+    def create_chart(self, btn_preference_visualization):
+
+        if self.var_selected_preference1_name.get() == SELECT_PREFERENCE_1 or self.var_selected_preference2_name.get() == SELECT_PREFERENCE_2:
+            return messagebox.showerror('Error', 'Please select both preference 1 and 2!')
+
+
+        btn_preference_visualization.config(state='disable')
+
+        frame_right = tk.Frame(self.parent)
+        frame_right.pack(side='bottom', fill='x')
+
+        ttk.Button(master=frame_right, text='Close',
+                   command=lambda: self.close_digram(btn_preference_visualization, frame_right)).pack(fill='x')
+
+        preference1 = self.controller.fetch_preference(self.selected_domain_name, self.var_selected_preference1_name.get())
+        preference2 = self.controller.fetch_preference(self.selected_domain_name, self.var_selected_preference2_name.get())
+        bid_space1 = BidSpace(preference1)
+        bid_space2 = BidSpace(preference2)
+        data = {self.var_selected_preference1_name.get(): bid_space1.get_all_bids_utility(),
+                self.var_selected_preference2_name.get(): bid_space2.get_all_bids_utility()
+                }
+        df = pd.DataFrame(data, columns=[self.var_selected_preference1_name.get(), self.var_selected_preference2_name.get()])
+        figure = plt.Figure(figsize=(5, 4), dpi=100)
+        ax = figure.add_subplot(111)
+        ax.scatter(df[self.var_selected_preference1_name.get()], df[self.var_selected_preference2_name.get()], color='r')
+        scatter_plt = FigureCanvasTkAgg(figure, frame_right)
+        scatter_plt.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH)
+        ax.legend(['Bids'])
+        ax.set_xlabel(self.var_selected_preference1_name.get())
+        ax.set_ylabel(self.var_selected_preference2_name.get())
+        ax.set_title(f'{self.var_selected_preference1_name.get()} Vs. {self.var_selected_preference2_name.get()}')
 
 
 if __name__ == '__main__':

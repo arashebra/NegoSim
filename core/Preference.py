@@ -7,8 +7,7 @@
 # Original author: Arash Ebrahimnezhad
 # 
 #######################################################
-
-from controller import Controller
+import controller
 
 
 class Preference:
@@ -40,8 +39,8 @@ class Preference:
         self.__domain_name = domain_name
         self.__xml_file_name = xml_file_name
 
-        controller = Controller()
-        self.__preference_data_structure = controller.fetch_preference_data_structure(domain_name, xml_file_name)
+        my_controler = controller.Controller()
+        self.__preference_data_structure = my_controler.fetch_preference_data_structure(domain_name, xml_file_name)
 
     def get_preference_data_structure(self):
         return self.__preference_data_structure

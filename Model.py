@@ -90,6 +90,7 @@ class GUIContent:
             return acceptance_strategies_list
         return None
 
+
 class PreferenceXMLParser:
     """
         preference = {
@@ -103,7 +104,7 @@ class PreferenceXMLParser:
         self.file_name = xml_file
         self.domain_name = domain_name
 
-    def get_preference(self):
+    def get_preference_data_structure(self):
         full_file = os.path.abspath(os.path.join(DOMAIN_PATH+'\\'+self.domain_name, self.file_name))
         dom = ElementTree.parse(full_file)
 
@@ -133,4 +134,4 @@ if __name__ == '__main__':
     print(model.fetch_acceptance_strategies())
     # print(model.fetch_users())
     # preferenceXMLParser = PreferenceXMLParser('laptop', 'laptop_buyer_utility.xml')
-    # print(preferenceXMLParser.get_preference())
+    # print(preferenceXMLParser.get_preference_data_structure())

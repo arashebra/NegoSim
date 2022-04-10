@@ -1,5 +1,6 @@
 import Model
 from Model import PreferenceXMLParser
+from core.Preference import Preference
 
 
 class Controller:
@@ -30,7 +31,7 @@ class Controller:
         return preferences_of_domain
 
     def fetch_preference_data_structure(self, domain_name: str, xml_file_name: str):
-        preference_data_structure = PreferenceXMLParser(domain_name, xml_file_name).get_preference()
+        preference_data_structure = PreferenceXMLParser(domain_name, xml_file_name).get_preference_data_structure()
         return preference_data_structure
 
     def fetch_elicitation_strategies(self):
@@ -53,6 +54,9 @@ class Controller:
         acceptance_strategies = self.model.fetch_acceptance_strategies()
         return acceptance_strategies
 
+    def fetch_preference(self, domain_name, xml_file):
+        preference = Preference(domain_name, xml_file)
+        return preference
 
 if __name__ == '__main__':
     c = Controller()
