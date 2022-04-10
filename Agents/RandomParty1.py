@@ -1,7 +1,4 @@
 from core.NegoPartyInterface import NegoPartyInterface
-from core.BiddingStrategyInterface import BiddingStrategyInterface
-from core.OpponentModelInterface import OpponentModelInterface
-from core.AcceptanceStrategyInterface import AcceptanceStrategyInterface
 from core.Preference import Preference
 from core.UtilitySpace import UtilitySpace
 from core.Bid import Bid
