@@ -6,16 +6,16 @@ from acceptance_strategies.ACNext import ACNext
 from core.TimeLine import TimeLine
 from opponent_models.DefaultOpponentModel import DefaultOpponentModel
 from bidding_strategies.RandomStrategy import RandomStrategy
+from core.AbstractNegoParty import AbstractNegoParty
 
 
-class RandomParty2(NegoPartyInterface):
+class RandomParty2(AbstractNegoParty):
 
     def __init__(self, preference: Preference):
-        self.preference = preference
-        self.opponent_model = DefaultOpponentModel(preference=self.preference)
-        self.bidding_strategy = RandomStrategy(opponent_model=self.opponent_model, preference=self.preference)
-        self.utility_space = UtilitySpace(preference=self.preference)
-        self.acceptance_strategy = ACNext(utility_space=self.utility_space)
+        super(RandomParty2, self).__init__(preference)
+        self.opponent_model = DefaultOpponentModel(preference=self.get_preference())
+        self.bidding_strategy = RandomStrategy(opponent_model=self.opponent_model, preference=self.get_preference())
+        self.acceptance_strategy = ACNext(utility_space=self.get_utilitiy_space())
 
     def send_bid(self, protocol, timeline: TimeLine) -> Bid:
         """

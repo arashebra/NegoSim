@@ -1,4 +1,4 @@
-from core.NegoPartyInterface import NegoPartyInterface
+from core.AbstractNegoParty import AbstractNegoParty
 from core.Preference import Preference
 from core.UtilitySpace import UtilitySpace
 from core.Bid import Bid
@@ -6,11 +6,11 @@ from core.TimeLine import TimeLine
 import random
 
 
-class RandomParty1(NegoPartyInterface):
-
-    def __init__(self, preference: Preference):
-        self.__preference = preference
-        self.__utility_space = UtilitySpace(self.__preference)
+class RandomParty1(AbstractNegoParty):
+    #
+    # def __init__(self, preference: Preference):
+    #     self.__preference = preference
+    #     self.__utility_space = UtilitySpace(self.__preference)
 
     def send_bid(self, protocol, timeline: TimeLine) -> Bid:
         """
@@ -23,7 +23,7 @@ class RandomParty1(NegoPartyInterface):
 
         def make_random_bid():
             issue_item = {}
-            for issue, item_value in self.__preference.get_preference_data_structure().items():
+            for issue, item_value in self.get_preference().get_preference_data_structure().items():
                 issue_item[issue] = random.choice(list(item_value[1]))
             bid1 = Bid(issue_item)
             return bid1
@@ -33,7 +33,7 @@ class RandomParty1(NegoPartyInterface):
             op_bid = opponen_offer[len(opponen_offer) - 1].get_bid()
             # print(self.get_name(), '--->', self.__utility_space.get_utility(op_bid), '>=',
                   # self.__utility_space.get_utility(bid),' and ' ,self.__utility_space.get_utility(op_bid) ,'> 0.7')
-            if self.__utility_space.get_utility(op_bid) >= self.__utility_space.get_utility(bid) and self.__utility_space.get_utility(op_bid) > 0.7:
+            if self.get_utilitiy_space().get_utility(op_bid) >= self.get_utilitiy_space().get_utility(bid) and self.get_utilitiy_space().get_utility(op_bid) > 0.7:
                 # print(self.get_name(), opponen_offer[len(opponen_offer) - 1].get_bid().get_issues_items())
                 return op_bid
         # print(self.get_name(), bid.get_issues_items())
