@@ -5,7 +5,6 @@ from tkinter import messagebox
 import controller
 from core.NegoTable import NegoTable
 from core.Preference import Preference
-from protocols.SOAP import SOAP
 from core.TimeLine import TimeLine
 from core.StateInfo import StateInfo
 from core.BidSpace import BidSpace

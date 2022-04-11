@@ -99,6 +99,15 @@ class GUIContent:
             return analysis_men_list
         return None
 
+    def fetch_tournament_gui_segments(self):
+        if isdir(TOURNAMENT_GUI_SEGMENT_PATH):
+            tournament_gui_segments = [name for name in os.listdir(TOURNAMENT_GUI_SEGMENT_PATH)]
+            tournament_gui_segments.remove('__init__.py')
+            if tournament_gui_segments.count('__pycache__') > 0:
+                tournament_gui_segments.remove('__pycache__')
+            return tournament_gui_segments
+        return None
+
 
 class PreferenceXMLParser:
     """

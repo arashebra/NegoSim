@@ -62,6 +62,9 @@ class Controller:
         analysis_men = self.model.fetch_analysis_men()
         return analysis_men
 
+    def fetch_tournament_gui_segments(self):
+        tournament_gui_segments = self.model.fetch_tournament_gui_segments()
+        return tournament_gui_segments
 
 if __name__ == '__main__':
     c = Controller()
