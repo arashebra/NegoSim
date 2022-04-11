@@ -28,6 +28,13 @@ class TestUtilitySpace(unittest.TestCase):
         utility_space = UtilitySpace(preference)
         self.assertAlmostEqual(0.439864, utility_space.get_utility(self.bid), places=4)
 
+    def test_get_utility3(self):
+        m_issue_item = {'Laptop': 'HP', 'Harddisk': '120 Gb', 'External Monitor': "23'' LCD", }
+        bid = Bid(m_issue_item)
+        preference = Preference('laptop', 'laptop_bayer_utility.xml')
+        utility_space = UtilitySpace(preference)
+        self.assertAlmostEqual(1.0, utility_space.get_utility(bid), places=4)
+
 
 if __name__ == '__main__':
     unittest.main()

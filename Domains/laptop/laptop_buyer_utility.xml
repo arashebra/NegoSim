@@ -30,5 +30,10 @@
 </weight> 
 <weight index="4" value="0.1767567099260568"> 
 </weight> 
-</objective> 
-</utility_space> 
+</objective>
+<discount_factor value="1.0">
+</discount_factor>
+<reservation value="0.0">
+</reservation>
+</utility_space>
+

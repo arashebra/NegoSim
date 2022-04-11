@@ -4,6 +4,7 @@ from core.Preference import Preference
 from core.UtilitySpace import UtilitySpace
 from core.TimeLine import TimeLine
 from core.Bid import Bid
+import random
 
 
 class AbstractNegoParty(NegoPartyInterface, ABC):
@@ -17,6 +18,17 @@ class AbstractNegoParty(NegoPartyInterface, ABC):
 
     def get_utilitiy_space(self):
         return self.__utility_space
+
+    def generate_random_bid(self):
+        issue_items = {}
+        preference_data_structure = self.get_preference().get_preference_data_structure()
+        for issue in preference_data_structure:
+            if issue != 'discount_factor' and issue != 'reservation':
+                issue_item = list((preference_data_structure[issue][1]).keys())
+                issue_items[issue] = random.choice(issue_item)
+
+        bid = Bid(issue_items)
+        return bid
 
     @abstractmethod
     def send_bid(self, protocol, timeline: TimeLine) -> Bid:

@@ -66,6 +66,18 @@ class Preference:
         new_instance = Preference(self.__domain_name, self.__xml_file_name)
         return new_instance
 
+    def get_d(self):
+        '''
+        :return: discount_factor
+        '''
+        return self.__d
+
+    def get_reservation(self):
+        '''
+        :return: reservation
+        '''
+        return self.__reservation
+
     def __repr__(self):
         s = '{'
         for issue, weight_item_value in self.__preference_data_structure.items():

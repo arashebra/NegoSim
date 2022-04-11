@@ -22,14 +22,17 @@ class BidSpace:
         values = self.preference.get_preference_data_structure().values()
         for x in values:
             q.append(list(x[1]))
-        print(tuple(itertools.product(*q)))
+        return tuple(itertools.product(*q))
 
     def get_all_bids_with_utility(self):
         issues = self.preference.get_preference_data_structure().keys()
         issue_item = {}
         bids_with_utility = {}
         q = []
-        values = self.preference.get_preference_data_structure().values()
+        mValues = self.preference.get_preference_data_structure()
+        mValues.popitem() # remove distinct factor
+        mValues.popitem() # remove reservation value
+        values = mValues.values()
         for x in values:
             q.append(list(x[1]))
         for i in itertools.product(*q):

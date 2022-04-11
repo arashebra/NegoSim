@@ -1,6 +1,4 @@
-from core.NegoPartyInterface import NegoPartyInterface
 from core.Preference import Preference
-from core.UtilitySpace import UtilitySpace
 from core.Bid import Bid
 from acceptance_strategies.ACNext import ACNext
 from core.TimeLine import TimeLine

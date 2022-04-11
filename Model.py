@@ -126,6 +126,14 @@ class PreferenceXMLParser:
                 preference[issue].insert(0, weights[i].attrib['value'])
                 i += 1
 
+        discount_factor = dom.find('discount_factor')
+        if discount_factor is not None:
+            preference['discount_factor'] = discount_factor.attrib['value']
+
+        reservation = dom.find('reservation')
+        if reservation is not None:
+            preference['reservation'] = reservation.attrib['value']
+
         return preference
 
 
