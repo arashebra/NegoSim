@@ -44,4 +44,11 @@ class UtilitySpace:
         return utility
 
     def get_utility_distinct(self, offer: Offer) -> float:
-        pass
+        '''
+        If there is time pressure
+        :param offer:
+        :return: distinct utility (a float number between [0, 1]
+        '''
+        bid = offer.get_bid()
+        time = offer.get_time()
+        # return self.get_utility()* (d**time)

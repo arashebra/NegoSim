@@ -12,7 +12,6 @@ from core.BidSpace import BidSpace
 from visualization.Charts import Charts
 import importlib.util
 from tkinter.ttk import Progressbar
-import time
 from configurations import *
 from threading import Thread
 
