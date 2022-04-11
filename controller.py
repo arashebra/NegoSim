@@ -58,6 +58,11 @@ class Controller:
         preference = Preference(domain_name, xml_file)
         return preference
 
+    def fetch_analysis_men(self):
+        analysis_men = self.model.fetch_analysis_men()
+        return analysis_men
+
+
 if __name__ == '__main__':
     c = Controller()
     print(c.fetch_preference_data_structure('laptop', 'laptop_buyer_utility.xml'))

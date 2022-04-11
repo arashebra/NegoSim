@@ -55,7 +55,7 @@ class GUIContent:
         return None
 
     def fetch_user_models(self):
-        if isdir(ELICITATION_STRATEGIES_PATH):
+        if isdir(USER_MODEL_PATH):
             user_models_list = [name for name in os.listdir(USER_MODEL_PATH)]
             user_models_list.remove('__init__.py')
             if user_models_list.count('__pycache__') > 0:
@@ -64,7 +64,7 @@ class GUIContent:
         return None
 
     def fetch_bidding_strategies(self):
-        if isdir(ELICITATION_STRATEGIES_PATH):
+        if isdir(BIDDING_STRATEGIES_PATH):
             bidding_strategies_list = [name for name in os.listdir(BIDDING_STRATEGIES_PATH)]
             bidding_strategies_list.remove('__init__.py')
             if bidding_strategies_list.count('__pycache__') > 0:
@@ -74,7 +74,7 @@ class GUIContent:
 
     def fetch_opponent_models(self):
         if isdir(ELICITATION_STRATEGIES_PATH):
-            opponent_models_list = [name for name in os.listdir(OPPONENT_MODEL_PATH)]
+            opponent_models_list = [name for name in os.listdir(ELICITATION_STRATEGIES_PATH)]
             opponent_models_list.remove('__init__.py')
             if opponent_models_list.count('__pycache__') > 0:
                 opponent_models_list.remove('__pycache__')
@@ -83,11 +83,20 @@ class GUIContent:
 
     def fetch_acceptance_strategies(self):
         if isdir(ACCEPTANCE_STRATEGIES_PATH):
-            acceptance_strategies_list = [name for name in os.listdir(OPPONENT_MODEL_PATH)]
+            acceptance_strategies_list = [name for name in os.listdir(ACCEPTANCE_STRATEGIES_PATH)]
             acceptance_strategies_list.remove('__init__.py')
             if acceptance_strategies_list.count('__pycache__') > 0:
                 acceptance_strategies_list.remove('__pycache__')
             return acceptance_strategies_list
+        return None
+
+    def fetch_analysis_men(self):
+        if isdir(ANALYSIS_PATH):
+            analysis_men_list = [name for name in os.listdir(ANALYSIS_PATH)]
+            analysis_men_list.remove('__init__.py')
+            if analysis_men_list.count('__pycache__') > 0:
+                analysis_men_list.remove('__pycache__')
+            return analysis_men_list
         return None
 
 

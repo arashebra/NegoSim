@@ -57,7 +57,7 @@ class Session:
                 progress["value"] = 20
                 root.update()
                 b[0] = True
-            elif not b[1] and  t > 0.2 and t <= 0.4:
+            elif not b[1] and t > 0.2 and t <= 0.4:
                 progress["value"] = 40
                 root.update()
                 b[1] = True
@@ -76,7 +76,6 @@ class Session:
         if progress["value"] != 100:
             progress["value"] = 100
 
-
     def create_visualization_window(self, frame):
 
         preference1 = self.controller.fetch_preference(self.var_domain_name.get(),
@@ -94,13 +93,14 @@ class Session:
                             col_name2=self.get_domain_preference(1)[1], frame=frame, position='top')
 
         all_offers = self.protocol.get_nego_table().get_offers_on_table()
+
         party1 = self.protocol.get_parties()[0]
         party2 = self.protocol.get_parties()[1]
 
         nego_state = self.protocol.get_nego_table().get_state_info().get_negotiation_state()
         s = ''
         if nego_state == 1:
-            s += f"Agreement by {party2.get_name() if len(all_offers[party1])==len(all_offers[party2]) else party1.get_name()}"
+            s += f"Agreement by {party2.get_name() if len(all_offers[party1]) == len(all_offers[party2]) else party1.get_name()}"
         else:
             s += "negotiation ended without agreement"
         tk.Label(master=frame, text=f'Status : {s}').pack(side='top')
@@ -112,11 +112,11 @@ class Session:
         frame_mid.pack(side='left')
         frame_right.pack(side='left', fill='both')
 
-
-
         tk.Label(master=frame_left, text=f'{party1.get_name()}').pack(side='top')
         tk.Label(master=frame_mid, text='  Vs  ').pack(side='top')
         tk.Label(master=frame_right, text=f'{party2.get_name()}').pack(side='top')
+
+        analysis_data = self.analysis_man.get_analysis_data()
 
         scr1_horizontal = tk.Scrollbar(master=frame_left, orient=tk.HORIZONTAL)
         scr1_horizontal.pack(side='bottom', fill='x')
@@ -129,7 +129,7 @@ class Session:
         listbox_party1_bids.config(yscrollcommand=scr1_vertical.set)
         scr1_vertical.config(command=listbox_party1_bids.yview)
         listbox_party1_bids.insert(tk.END, *all_offers[party1])
-
+        listbox_party1_bids.insert(tk.END, analysis_data)
 
         scr2_horizontal = tk.Scrollbar(master=frame_right, orient=tk.HORIZONTAL)
         scr2_horizontal.pack(side='bottom', fill='x')
@@ -142,6 +142,7 @@ class Session:
         listbox_party2_bids.config(yscrollcommand=scr2_vertical.set)
         scr2_vertical.config(command=listbox_party2_bids.yview)
         listbox_party2_bids.insert(tk.END, *all_offers[party2])
+        listbox_party2_bids.insert(tk.END, analysis_data)
 
 
     def create_progress_bar(self, row):
@@ -149,7 +150,6 @@ class Session:
         self.progress = Progressbar(self.frame_session, orient=tk.HORIZONTAL, length=100, mode='determinate')
         self.progress.grid(row=row, column=0, columnspan=3, sticky='we', pady=10)
         self.my_row += 1
-
 
     def create_session_gui(self):
 
@@ -276,8 +276,7 @@ class Session:
     def create_analyse_menu(self):
         tk.Label(self.frame_session, text='Analyse file ').grid(
             row=self.my_row, column=0)
-        self.analyse_list = ["analyse 1", "analyse 2",
-                             "analyse 3", "analyse 4"]
+        self.analyse_list = self.controller.fetch_analysis_men()
         self.var_analyse_name = tk.StringVar()
         self.var_analyse_name.set(SELECT_ANALYSE_TEXT)
         self.optionMenu_analyse = tk.OptionMenu(
@@ -388,8 +387,6 @@ class Session:
 
         self.create_visualization_window(self.frame_visualization)
 
-
-
     def start_negotiation(self, first_preference_name, second_preference_name):
         time_line = TimeLine(float(self.var_deadline.get()))
         preference1 = Preference(self.var_domain_name.get(), first_preference_name)
@@ -404,18 +401,25 @@ class Session:
 
             state_info = StateInfo(time_line=time_line, my_agent_offers=[], opponent_offers={})
             nego_table = NegoTable(parties=(party1, party2), state_info=state_info)
-            self.protocol = SOAP(time_line=time_line, nego_table=nego_table)
+            protocol_name = self.text_splitor(self.var_protocol_name.get(), '.')[0]
+            self.protocol = self.create_object_by_path('protocols', protocol_name, time_line, nego_table)
+
+            analysis_man_name = self.text_splitor(self.var_analyse_name.get(), '.')[0]
+            self.analysis_man = self.create_object_by_path('analysis', analysis_man_name,  party1, party2, nego_table, preference1, preference2)
 
 
             self.create_progress_bar(0)
             # self.progressbar_session_visualization(self.progress, self.protocol)
-            thread_progressbar = Thread(target=lambda: self.progressbar_session_visualization(self.progress, self.protocol))
+            thread_progressbar = Thread(
+                target=lambda: self.progressbar_session_visualization(self.progress, self.protocol))
             #
 
             t = Thread(target=self.protocol.negotiate())
 
             thread_progressbar.start()
             t.start()
+
+            print(self.analysis_man.get_analysis_data())
 
             # thread_progressbar.join()
             # t.join()

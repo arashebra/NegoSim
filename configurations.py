@@ -12,4 +12,5 @@ USER_MODEL_PATH = './user_models'
 BIDDING_STRATEGIES_PATH = './bidding_strategies'
 OPPONENT_MODEL_PATH = './opponent_models'
 ACCEPTANCE_STRATEGIES_PATH = './acceptance_strategies'
+ANALYSIS_PATH = './analysis'
 

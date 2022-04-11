@@ -41,6 +41,12 @@ class Preference:
 
         my_controler = controller.Controller()
         self.__preference_data_structure = my_controler.fetch_preference_data_structure(domain_name, xml_file_name)
+        self.__d = 1.0
+        self.__reservation = 0.0
+        if 'discount_factor' in self.__preference_data_structure:
+            self.__d = float(self.__preference_data_structure['discount_factor'])
+        if 'reservation' in self.__preference_data_structure:
+            self.__reservation = float(self.__preference_data_structure['reservation'])
 
     def get_preference_data_structure(self):
         return self.__preference_data_structure
