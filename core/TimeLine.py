@@ -9,21 +9,23 @@
 #######################################################
 import time
 
-
+# ((time.time_ns()-t1)/(10**9))/100
 class TimeLine:
     def __init__(self, deadline: float):
         if not isinstance(deadline, float):
             raise TypeError('deadline argument must be a float')
-        self.__beginning_time = time.time()
-        self.__current_time = time.time()
+        self.__beginning_time = time.time_ns()
+        self.__current_time = time.time_ns()
         self.__deadline = deadline
+        self.__nan_to_second = (10**9)
 
     # def get_beginning_time(self) -> float:
     #     return self.__beginning_time
 
     def get_time(self) -> float:
-        self.__current_time = time.time()
-        return (self.__current_time - self.__beginning_time) / self.__deadline
+        self.__current_time = time.time_ns()
+        # return (self.__current_time - self.__beginning_time) / self.__deadline
+        return ((self.__current_time - self.__beginning_time)) / (self.__deadline*self.__nan_to_second)
 
     def is_time_ended(self):
         """

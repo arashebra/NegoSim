@@ -159,6 +159,7 @@ class View:
         frame_euboa = ttk.Frame(notebook_component)
         frame_protocol = ttk.Frame(notebook_component)
         frame_analyses = ttk.Frame(notebook_component)
+        frame_plugins = ttk.Frame(notebook_component)
 
         listbox_domain = tk.Listbox(self.frame_domain)
         i = 1
@@ -202,12 +203,25 @@ class View:
             listbox_protocol.insert(i, 'Protocol' + EUBOA_SEPERATOR + item)
         listbox_protocol.pack(fill='both')
 
-        notebook_component.add(frame_domain_set, text=' Domain Set ')
+        listbox_analysis = tk.Listbox(frame_analyses)
+        i = 1
+        for item in self.controller.fetch_analysis_men():
+            listbox_analysis.insert(i, item)
+        listbox_analysis.pack(fill='both')
+
+        listbox_plugins = tk.Listbox(frame_plugins)
+        i = 1
+        for item in self.controller.fetch_tournament_gui_segments():
+            listbox_plugins.insert(i, item)
+        listbox_plugins.pack(fill='both')
+
+        # notebook_component.add(frame_domain_set, text=' Domain Set ')
         notebook_component.add(self.frame_domain, text=' Domain ')
         notebook_component.add(frame_user, text=' User ')
         notebook_component.add(frame_euboa, text=' EUBOA Component')
         notebook_component.add(frame_protocol, text=' Protocols ')
         notebook_component.add(frame_analyses, text=' Analyses ')
+        notebook_component.add(frame_plugins, text=' Theme plugins ')
 
     def close_diagram(self, btn_preference_visualization, frame_right):
         frame_right.destroy()
