@@ -1,9 +1,9 @@
 from abc import ABC
-from core.SegmentInterface import SegmentInterface
+from core.AbstractGUISegment import SegmentInterface
 from tkinter import Frame, StringVar, Listbox, END, Label
 
 
-class A2AgentsSegment(SegmentInterface, ABC):
+class S3AgentsSegment(SegmentInterface, ABC):
 
     def get_widget(self):
         frame = self.get_frame()
@@ -20,7 +20,7 @@ class A2AgentsSegment(SegmentInterface, ABC):
         list_agents1 = ['agent 1', 'agent 2', 'agent 3', 'agent 4']
         listbox_agents1.insert(END, *list_agents1)
 
-        lebel_Vs = Label(master=frame_left, text='Vs  Agents ')
+        lebel_Vs = Label(master=frame_left, text='Vs  Opponents ')
 
         listbox_agents2 = Listbox(master=frame_right, width=25, selectmode="multiple", exportselection=0)
         list_agents2 = ['agent 1', 'agent 2', 'agent 3', 'agent 4']
@@ -29,4 +29,4 @@ class A2AgentsSegment(SegmentInterface, ABC):
         return lebel1, listbox_agents1, lebel_Vs, listbox_agents2
 
     def get_name(self):
-        return 'A2AgentsSegment.py'
+        return 'S3AgentsSegment.py'

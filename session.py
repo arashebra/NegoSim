@@ -330,7 +330,7 @@ class Session:
         self.spinbox_deadline.grid(row=self.my_row, column=1)
         self.var_time_type = tk.StringVar()
         self.time_type = ttk.OptionMenu(
-            self.frame_session, self.var_time_type, 's', *['s', 'ms'])
+            self.frame_session, self.var_time_type, 's', *['s'])
         self.time_type.config(width=3)
         self.time_type.grid(row=self.my_row, column=2)
         self.my_row += 1

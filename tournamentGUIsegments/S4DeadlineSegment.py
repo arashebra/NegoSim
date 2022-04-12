@@ -1,5 +1,5 @@
 from abc import ABC
-from core.SegmentInterface import SegmentInterface
+from core.AbstractGUISegment import SegmentInterface
 from tkinter import Label, Spinbox, IntVar
 from tkinter import ttk
 
@@ -9,7 +9,7 @@ INITIAL_DEADLINE_TIME = 60
 MAX_DEADLINE_TIME = 3600000
 
 
-class A3DeadlineSegment(SegmentInterface, ABC):
+class S4DeadlineSegment(SegmentInterface, ABC):
 
     def get_widget(self):
         frame = self.get_frame()
@@ -20,10 +20,10 @@ class A3DeadlineSegment(SegmentInterface, ABC):
         spinbox_deadline.insert(0, INITIAL_DEADLINE_TIME)
 
         var_time_type = IntVar()
-        time_type = ttk.OptionMenu(frame, var_time_type, 's', *['s', 'ms'])
+        time_type = ttk.OptionMenu(frame, var_time_type, 's', *['s'])
         time_type.config(width=3)
 
         return lebel1, spinbox_deadline, time_type
 
     def get_name(self):
-        return 'A3DeadlineSegment.py'
+        return 'S4DeadlineSegment.py'
