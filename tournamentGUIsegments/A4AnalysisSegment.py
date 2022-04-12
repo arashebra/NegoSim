@@ -5,10 +5,12 @@ from tkinter import Frame, StringVar, Listbox, END, Label, OptionMenu
 
 class A4AnalysisSegment(SegmentInterface, ABC):
 
-    def get_widget(self, frame: Frame, var_dict: dict):
+    def get_widget(self):
+        frame = self.get_frame()
+        my_dict = self.get_var_dict()
         protocol_list = ["Analysis 1", "Analysis 2", "Analysis 3", "Analysis 4"]
-        var_dict[self.get_name()].set("Select a Analysis")
-        optionMenu_Analysis = OptionMenu(frame, var_dict[self.get_name()], *protocol_list)
+        my_dict[self.get_name()][0].set("Select a Analysis")
+        optionMenu_Analysis = OptionMenu(frame, my_dict[self.get_name()][0], *protocol_list)
 
         lable = Label(master=frame, text='Analysis ')
 

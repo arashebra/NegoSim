@@ -5,12 +5,13 @@ import tkinter as tk
 
 class A0ProtocolSegment(SegmentInterface, ABC):
 
-    def get_widget(self, frame, var_dict: dict):
+    def get_widget(self):
         protocol_list = ["Protocol 1", "Protocol 2", "Protocol 3", "Protocol 4"]
-        var_dict[self.get_name()].set("Select a Analysis")
-        optionMenu_protocol = tk.OptionMenu(frame, var_dict[self.get_name()], *protocol_list)
+        my_dict = self.get_var_dict()
+        my_dict[self.get_name()][0].set("Select a Analysis")
+        optionMenu_protocol = tk.OptionMenu(self.get_frame(), my_dict[self.get_name()][0], *protocol_list)
 
-        lable = tk.Label(master=frame, text='Protocol')
+        lable = tk.Label(master=self.get_frame(), text='Protocol')
 
         return lable, optionMenu_protocol
 

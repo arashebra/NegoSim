@@ -1,6 +1,4 @@
 import tkinter as tk
-from tkinter import ttk
-from tournamentGUIsegments.A0ProtocolSegment import A0ProtocolSegment
 from configurations import *
 import CreateObjectByPath
 from controller import Controller
@@ -13,30 +11,36 @@ class Tournament:
         self.create_tournament()
 
     def create_tournament(self):
-
         widget_names = self.controller.fetch_tournament_gui_segments()
         widgets = []
         frames = []
         var_dict = {}
-
+        segments = []
         for widget_name in widget_names:
-            var_dict[widget_name] = tk.StringVar()
-
+            var_dict[widget_name] = tuple(tk.StringVar() for x in range(10))
 
         for widget_name in widget_names:
             frame = tk.Frame(master=self.window)
             frames.append(frame)
-            obj = CreateObjectByPath.get_object(TOURNAMENT_GUI_SEGMENT_PATH, widget_name)
-            # print(var_dict[widget_name])
-            widgets_row = obj.get_widget(frame, var_dict)
+            obj = CreateObjectByPath.get_object(TOURNAMENT_GUI_SEGMENT_PATH, widget_name, frame, var_dict)
+            segments.append(obj)
+            widgets_row = obj.get_widget()
             widgets.append(widgets_row)
 
+        all_widgets_in_Gui = {}
         i = 0
         for widgets_row in widgets:
             frames[i].pack(side='top')
+            all_row_widgets = []
             for widget_col in widgets_row:
                 widget_col.pack(side='left', padx=5, pady=10)
+                all_row_widgets.append(widget_col)
+            all_widgets_in_Gui[i] = all_row_widgets
             i += 1
+
+        for obj in segments:
+            obj.set_gui_widgets(all_widgets_in_Gui)
+
 
     # def create_tournament(self):
     #     tournament_frame = tk.Frame(self.window)

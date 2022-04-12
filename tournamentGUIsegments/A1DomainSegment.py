@@ -5,7 +5,8 @@ from tkinter import Frame, StringVar, Listbox, END, Label
 
 class A1DomainSegment(SegmentInterface, ABC):
 
-    def get_widget(self, frame: Frame, var_dict: dict):
+    def get_widget(self):
+        frame = self.get_frame()
         listbox_domain = Listbox(master=frame, width=50, selectmode="multiple", exportselection=0)
         list_domain = ['domain 1', 'domain 2', 'domain 3', 'domain 4']
         listbox_domain.insert(END, *list_domain)

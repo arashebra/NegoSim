@@ -5,7 +5,8 @@ from tkinter import Frame, StringVar, Listbox, END, Label
 
 class A2AgentsSegment(SegmentInterface, ABC):
 
-    def get_widget(self, frame: Frame, var_dict: dict):
+    def get_widget(self):
+        frame = self.get_frame()
 
         frame_left = Frame(master=frame)
         frame_left.pack(side='left')
