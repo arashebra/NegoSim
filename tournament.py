@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from tournamentGUIsegments.ProtocolSegment import ProtocolSegment
+from tournamentGUIsegments.A0ProtocolSegment import A0ProtocolSegment
 from configurations import *
 import CreateObjectByPath
 from controller import Controller
@@ -14,19 +14,29 @@ class Tournament:
 
     def create_tournament(self):
 
-        widgets = self.controller.fetch_tournament_gui_segments()
+        widget_names = self.controller.fetch_tournament_gui_segments()
+        widgets = []
+        frames = []
+        var_dict = {}
 
-        for widget_name in widgets:
-            frame_protocol = tk.Frame(master=self.window)
-            frame_protocol.pack(side='top')
-            var_protocol_name = tk.StringVar()
+        for widget_name in widget_names:
+            var_dict[widget_name] = tk.StringVar()
+
+
+        for widget_name in widget_names:
+            frame = tk.Frame(master=self.window)
+            frames.append(frame)
             obj = CreateObjectByPath.get_object(TOURNAMENT_GUI_SEGMENT_PATH, widget_name)
-            widget_row = obj.get_widget(frame_protocol, var_protocol_name)
-            row = widget_row[1]
-            for widget_col in widget_row[0]:
+            # print(var_dict[widget_name])
+            widgets_row = obj.get_widget(frame, var_dict)
+            widgets.append(widgets_row)
+
+        i = 0
+        for widgets_row in widgets:
+            frames[i].pack(side='top')
+            for widget_col in widgets_row:
                 widget_col.pack(side='left', padx=5, pady=10)
-
-
+            i += 1
 
     # def create_tournament(self):
     #     tournament_frame = tk.Frame(self.window)
@@ -66,6 +76,6 @@ class Tournament:
 if __name__ == '__main__':
     root = tk.Tk()
     root.title('New Tournament')
-    root.geometry('400x400')
+    # root.geometry('400x400')
     Tournament(root)
     root.mainloop()
