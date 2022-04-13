@@ -61,12 +61,12 @@ class S5StartTournamentButtonSegment(SegmentInterface):
         deadline_var = deadline_var_tuple[0]
         deadline = deadline_var.get()
 
-        print(deadline)
-        print(selected_protocol)
-        print(selected_analysis)
-        print(selected_domains)
-        print(agent1_names)
-        print(opponent_names)
+        print('deadline: ', deadline)
+        print('Protocol: ', selected_protocol)
+        print('Analysis: ', selected_analysis)
+        print('Domain(s): ', selected_domains)
+        print('Agent(s) A: ', agent1_names)
+        print('Agent(s) B: ', opponent_names)
 
         bilateral_tournament = BilateralTournament(protocol_name=selected_protocol,
                                                    analysis_man_name=selected_analysis,
