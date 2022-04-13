@@ -65,3 +65,10 @@ class AbstractAnalysisMan(ABC):
         :return: a dict
         '''
         raise NotImplementedError()
+
+    @abstractmethod
+    def save_analysis_data(self):
+        '''
+        This method saves data in logs folder
+        '''
+        raise NotImplementedError()

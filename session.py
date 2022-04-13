@@ -13,6 +13,7 @@ import importlib.util
 from tkinter.ttk import Progressbar
 from configurations import *
 from threading import Thread
+from core.BilateralSession import BilateralSession
 
 WINDOW_NAME = 'New Session'
 SELECT_USER_TEXT = 'Select a User'
@@ -91,12 +92,15 @@ class Session:
         chart.scatter_chart(data=data, col_name1=self.get_domain_preference(0)[1],
                             col_name2=self.get_domain_preference(1)[1], frame=frame, position='top')
 
-        all_offers = self.protocol.get_nego_table().get_offers_on_table()
+        protocol = self.bilateral_session.get_protocol()
+        analysis_man = self.bilateral_session.get_analysis_man()
 
-        party1 = self.protocol.get_parties()[0]
-        party2 = self.protocol.get_parties()[1]
+        all_offers = protocol.get_nego_table().get_offers_on_table()
 
-        nego_state = self.protocol.get_nego_table().get_state_info().get_negotiation_state()
+        party1 = protocol.get_parties()[0]
+        party2 = protocol.get_parties()[1]
+
+        nego_state = protocol.get_nego_table().get_state_info().get_negotiation_state()
         s = ''
         if nego_state == 1:
             s += f"Agreement by {party2.get_name() if len(all_offers[party1]) == len(all_offers[party2]) else party1.get_name()}"
@@ -115,7 +119,7 @@ class Session:
         tk.Label(master=frame_mid, text='  Vs  ').pack(side='top')
         tk.Label(master=frame_right, text=f'{party2.get_name()}').pack(side='top')
 
-        analysis_data = self.analysis_man.get_analysis_data()
+        analysis_data = analysis_man.get_analysis_data()
 
         scr1_horizontal = tk.Scrollbar(master=frame_left, orient=tk.HORIZONTAL)
         scr1_horizontal.pack(side='bottom', fill='x')
@@ -142,7 +146,6 @@ class Session:
         scr2_vertical.config(command=listbox_party2_bids.yview)
         listbox_party2_bids.insert(tk.END, *all_offers[party2])
         listbox_party2_bids.insert(tk.END, analysis_data)
-
 
     def create_progress_bar(self, row):
         self.my_row += 1
@@ -382,63 +385,26 @@ class Session:
 
         self.frame_visualization = tk.Frame(self.window)
         self.frame_visualization.grid(row=0, column=11)
-        self.start_negotiation(first_preference_name, second_preference_name)
+        self.start_negotiation1()
 
         self.create_visualization_window(self.frame_visualization)
 
-    def start_negotiation(self, first_preference_name, second_preference_name):
-        time_line = TimeLine(float(self.var_deadline.get()))
-        preference1 = Preference(self.var_domain_name.get(), first_preference_name)
-        preference2 = Preference(self.var_domain_name.get(), second_preference_name)
-
-        try:
-            file_name1 = self.text_splitor(self.get_party(0), '.')[0]
-            party1 = self.create_object_by_path(AGENTS_PACKAGE_NAME, file_name1, preference1)
-
-            file_name2 = self.text_splitor(self.get_party(1), '.')[0]
-            party2 = self.create_object_by_path(AGENTS_PACKAGE_NAME, file_name2, preference2)
-
-            state_info = StateInfo(time_line=time_line, my_agent_offers=[], opponent_offers={})
-            nego_table = NegoTable(parties=(party1, party2), state_info=state_info)
-            protocol_name = self.text_splitor(self.var_protocol_name.get(), '.')[0]
-            self.protocol = self.create_object_by_path('protocols', protocol_name, time_line, nego_table)
-
-            analysis_man_name = self.text_splitor(self.var_analyse_name.get(), '.')[0]
-            self.analysis_man = self.create_object_by_path('analysis', analysis_man_name,
-                                                           party1, party2, nego_table,
-                                                           preference1, preference2,
-                                                           party1.get_opponent_model(),
-                                                           party2.get_opponent_model())
-
-
-            self.create_progress_bar(0)
-            # self.progressbar_session_visualization(self.progress, self.protocol)
-            thread_progressbar = Thread(
-                target=lambda: self.progressbar_session_visualization(self.progress, self.protocol))
-            #
-
-            t = Thread(target=self.protocol.negotiate())
-
-            thread_progressbar.start()
-            t.start()
-
-            print(self.analysis_man.get_analysis_data())
-
-            # thread_progressbar.join()
-            # t.join()
-
-
-
-        except (ImportError, AttributeError) as e:
-            raise ImportError('NegoSim could not import :)', e)
-
-    def create_object_by_path(self, package_name, file_name, *init_args):
-        spec = importlib.util.spec_from_file_location(file_name, f"{package_name}/{file_name}.py")
-        foo = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(foo)
-        klass = getattr(foo, file_name)
-        obj = klass(*init_args)
-        return obj
+    def start_negotiation1(self):
+        first_domain_name, first_preference_name = self.get_domain_preference(0)
+        second_domain_name, second_preference_name = self.get_domain_preference(1)
+        protocol_name = self.var_protocol_name.get()
+        analysis_man_name = self.var_analyse_name.get()
+        file_name1 = self.get_party(0)
+        file_name2 = self.get_party(1)
+        deadline = float(self.var_deadline.get())
+        self.bilateral_session = BilateralSession(protocol_name=protocol_name,
+                                                  analysis_man_name=analysis_man_name,
+                                                  party1_name=file_name1, party2_name=file_name2,
+                                                  domain_name=self.var_domain_name.get(),
+                                                  first_preference_name=first_preference_name,
+                                                  second_preference_name=second_preference_name,
+                                                  deadline=deadline)
+        self.bilateral_session.start_session()
 
     def get_text_from_listbox(self, row):
         text = self.listbox_party_and_preference.get(
