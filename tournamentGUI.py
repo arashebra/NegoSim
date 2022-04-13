@@ -2,7 +2,6 @@ import tkinter as tk
 from configurations import *
 import CreateObjectByPath
 from controller import Controller
-from core.BilateralTournament import BilateralSession
 
 
 class Tournament:

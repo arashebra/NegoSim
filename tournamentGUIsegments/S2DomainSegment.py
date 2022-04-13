@@ -1,14 +1,16 @@
 from abc import ABC
 from core.AbstractGUISegment import SegmentInterface
-from tkinter import Frame, StringVar, Listbox, END, Label
+from tkinter import Listbox, END, Label
+from controller import Controller
 
 
 class S2DomainSegment(SegmentInterface, ABC):
 
     def get_widget(self):
+        ctrl = Controller()
         frame = self.get_frame()
         listbox_domain = Listbox(master=frame, width=50, selectmode="multiple", exportselection=0)
-        list_domain = ['domain 1', 'domain 2', 'domain 3', 'domain 4']
+        list_domain = ctrl.fetch_domains()
         listbox_domain.insert(END, *list_domain)
 
         lebel_Vs = Label(master=frame, text='Domains ')

@@ -1,8 +1,8 @@
 from configurations import *
 import tkinter as tk
 from tkinter import ttk
-import session
-import tournament
+import sessionGUI
+import tournamentGUI
 import controller
 from core.BidSpace import BidSpace
 from tkinter import messagebox
@@ -86,7 +86,7 @@ class View:
         window_session = tk.Toplevel(self.parent)
         # window_session.geometry("400x400")
         window_session.title("New Session")
-        session.Session(window_session)
+        sessionGUI.Session(window_session)
 
     def tornument_window(self):
         self.open_tornument_window()
@@ -95,7 +95,7 @@ class View:
         tornument_window = tk.Toplevel(self.parent)
         tornument_window.geometry("400x400")
         tornument_window.title("New Tornument")
-        tournament.Tournament(tornument_window)
+        tournamentGUI.Tournament(tornument_window)
 
     def create_help_menu(self):
         self.help_menu = tk.Menu(self.menu_bar, tearoff=0)

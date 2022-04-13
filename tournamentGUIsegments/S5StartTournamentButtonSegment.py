@@ -1,6 +1,7 @@
 from core.AbstractGUISegment import SegmentInterface
 from tkinter import messagebox
 from tkinter.ttk import Button
+from core.BilateralTournament import BilateralTournament
 
 
 class S5StartTournamentButtonSegment(SegmentInterface):
@@ -58,9 +59,20 @@ class S5StartTournamentButtonSegment(SegmentInterface):
 
         deadline_var_tuple = self.get_var_dict()['S4DeadlineSegment.py']
         deadline_var = deadline_var_tuple[0]
-        print(deadline_var.get())
+        deadline = deadline_var.get()
 
-        print(selected_protocol, ' - ', selected_analysis, ' - ')
+        print(deadline)
+        print(selected_protocol)
+        print(selected_analysis)
         print(selected_domains)
         print(agent1_names)
         print(opponent_names)
+
+        bilateral_tournament = BilateralTournament(protocol_name=selected_protocol,
+                                                   analysis_man_name=selected_analysis,
+                                                   deadline=deadline,
+                                                   party1_names=agent1_names,
+                                                   party2_names=opponent_names,
+                                                   domain_names=selected_domains)
+
+        bilateral_tournament.start_tournament()
