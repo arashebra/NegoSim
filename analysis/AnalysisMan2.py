@@ -2,6 +2,8 @@ from core.UtilitySpace import UtilitySpace
 from core.AbstractAnalysisMan import AbstractAnalysisMan
 import pickle
 import time
+import math
+from statistics import mean
 
 
 class AnalysisMan2(AbstractAnalysisMan):
@@ -38,14 +40,46 @@ class AnalysisMan2(AbstractAnalysisMan):
         analysis_data_structure['Utility party2'] = final_utility_party2
         analysis_data_structure['Social Welfare'] = social_welfare
 
+
+        if self.get_opponent_model_party1() != None:
+            estimated_preferance = self.get_opponent_model_party1().get_preference()
+            total = 0
+            issue_weights = preference_party1.get_weights()
+
+            for issue, weight in issue_weights.items():
+                item_value = preference_party1.get_issue_ItemValue(issue=issue)
+                estimated_item_value = estimated_preferance.get_issue_ItemValue(issue=issue)
+                avg_values = mean(float(x) for x in item_value.values())
+                for item, _ in item_value.items():
+                    v = avg_values - float(estimated_item_value[item])
+                    total += float(weight) * (v**2)
+            wrmse1 = math.sqrt(total)
+            analysis_data_structure['WRMSE 1'] = wrmse1
+
+        if self.get_opponent_model_party2() != None:
+            estimated_preferance = self.get_opponent_model_party2().get_preference()
+            total = 0
+            issue_weights = preference_party2.get_weights()
+
+            for issue, weight in issue_weights.items():
+                item_value = preference_party2.get_issue_ItemValue(issue=issue)
+                estimated_item_value = estimated_preferance.get_issue_ItemValue(issue=issue)
+                avg_values = mean(float(x) for x in item_value.values())
+                for item, _ in item_value.items():
+                    v = avg_values - float(estimated_item_value[item])
+                    total += float(weight) * (v**2)
+            wrmse2 = math.sqrt(total)
+            analysis_data_structure['WRMSE 2'] = wrmse2
+
+
         file_name = 'sessionData_picked'+str(time.time_ns())
         sessionData = open(f'./logs/{file_name}', 'ab')
         pickle.dump(analysis_data_structure, sessionData)
         sessionData.close()
 
-        if self.get_opponent_model_party1() != None:
-            print('self.get_opponent_model_party1().get_preference()', self.get_opponent_model_party1().get_preference())
-        if self.get_opponent_model_party2() != None:
-            print('self.get_opponent_model_party2().get_preference()', self.get_opponent_model_party2().get_preference())
+        # if self.get_opponent_model_party1() != None:
+        #     print('self.get_opponent_model_party1().get_preference()', self.get_opponent_model_party1().get_preference())
+        # if self.get_opponent_model_party2() != None:
+        #     print('self.get_opponent_model_party2().get_preference()', self.get_opponent_model_party2().get_preference())
 
         return analysis_data_structure

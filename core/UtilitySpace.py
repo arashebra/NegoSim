@@ -64,4 +64,4 @@ class UtilitySpace:
         '''
         bid = offer.get_bid()
         time = offer.get_time()
-        return self.get_utility(bid)* (self.__preference.get_d()**time)
+        return self.get_utility(bid)* (self.__preference.get_discount_factor()**time)

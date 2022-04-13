@@ -19,18 +19,22 @@ class Preference:
         'Monitor': [0.18, {'15': 30, '10': 25, '11': 20}],
         'HDD': [0.38, {'1T': 25, '2T': 32, '3T': 35}]
     }
+
+    d refers to discount factor
     """
 
     def __init__(self, domain_name: str, xml_file_name: str):
-        """
+        '''
         preference_data_structure = {
             'Brand': [0.45, {'Lenovo': 10, 'Assus': 20, 'Mac': 30}],
             'Monitor': [0.18, {'15': 30, '10': 25, '11': 20}],
-            'HDD': [0.38, {'1T': 25, '2T': 32, '3T': 35}]
+            'HDD': [0.38, {'1T': 25, '2T': 32, '3T': 35}],
+            'discount factor = 1,
+            'reservation value = 0
         }
         :param domain_name:
         :param preference_name:
-        """
+        '''
         if not isinstance(domain_name, str):
             raise TypeError('domain_name argument must be a string')
         if not isinstance(xml_file_name, str):
@@ -49,15 +53,35 @@ class Preference:
             self.__reservation = float(self.__preference_data_structure['reservation'])
 
     def get_preference_data_structure(self):
+        '''
+        this method returns data structure like this:
+        preference_data_structure = {
+            'Brand': [0.45, {'Lenovo': 10, 'Assus': 20, 'Mac': 30}],
+            'Monitor': [0.18, {'15': 30, '10': 25, '11': 20}],
+            'HDD': [0.38, {'1T': 25, '2T': 32, '3T': 35}],
+            'discount factor = 1,
+            'reservation value = 0
+        }
+        :param domain_name:
+        :param preference_name:
+        :return: preference_data_structure
+        '''
         return self.__preference_data_structure
 
     def get_issue_weight(self, issue: str):
-        return self.__preference_data_structure[issue][0]
+        '''
+        this method gets an issue like External Monitor and returns weight of that issue like 0.33
+        :param issue: an issue like: External Monitor
+        :return:
+        '''
+        return float(self.__preference_data_structure[issue][0])
 
     def get_issue_item_value(self, issue: str, item: str):
         """
-        :param item:
-        :param issue: str
+        this method gets an issue like External Monitor and its item like 15'' then returns
+        the value of that item and the max value of issue's item
+        :param item: like External Monitor
+        :param issue: str like 15''
         :return: value, max_value
         """
         if not isinstance(issue, str):
@@ -68,11 +92,34 @@ class Preference:
         max_value = max(float(x) for x in item_value_dict.values())
         return float(item_value_dict[item]), max_value
 
+    def get_discount_factor(self):
+        return self.__preference_data_structure['discount_factor']
+
+    def get_reservation(self):
+        return self.__preference_data_structure['reservation']
+
+    def get_weights(self):
+        '''
+        this method returns all weights of preference
+        :return: dict of weights
+        '''
+        data_structure = self.__preference_data_structure
+        items = data_structure.items()
+        return {key: value[0] for key, value in items if (key != 'discount_factor' and key != 'reservation')}
+
+    def get_issue_ItemValue(self, issue):
+        '''
+        this method gives issue and returns item, value
+        :param issue: issue
+        :return: {'Lenovo': 10, 'Assus': 20, 'Mac': 30}
+        '''
+        return self.get_preference_data_structure()[issue][1]
+
     def __copy__(self):
         new_instance = Preference(self.__domain_name, self.__xml_file_name)
         return new_instance
 
-    def get_d(self):
+    def get_discount_factor(self):
         '''
         :return: discount_factor
         '''
@@ -91,7 +138,7 @@ class Preference:
             s += ': ['
             s += str(weight_item_value[0])
             s += ', {'
-            if issue != 'discount_factor' and issue != 'reservation' :
+            if issue != 'discount_factor' and issue != 'reservation':
                 for item, value in (weight_item_value[1]).items():
                     s += str(item)
                     s += ': '
