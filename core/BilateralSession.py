@@ -8,9 +8,9 @@ from core.TimeLine import TimeLine
 
 class BilateralSession:
 
-    def __init__(self, protocol_name: str, analysis_man_name: str, party1_name: str,
-                 party2_name: str, domain_name: str, first_preference_name: str,
-                 second_preference_name: str, deadline):
+    def __init__(self, protocol_name: str, analysis_man_name: str, deadline,
+                 first_preference_name: str, second_preference_name: str,
+                 party1_name: str, party2_name: str, domain_name: str):
         try:
             preference1 = Preference(domain_name, first_preference_name)
             party1 = CreateObjectByPath.get_object(AGENTS_PACKAGE_NAME, party1_name, preference1)

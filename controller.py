@@ -26,7 +26,7 @@ class Controller:
         domains = self.model.fetch_domins()
         return domains
 
-    def fetch_preferences_of_domain(self, domain):
+    def fetch_preferences_of_domain(self, domain: str):
         preferences_of_domain = self.model.fetch_preferences_of_domain(domain)
         return preferences_of_domain
 

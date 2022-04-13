@@ -2,15 +2,16 @@ import tkinter as tk
 from configurations import *
 import CreateObjectByPath
 from controller import Controller
+from core.BilateralTournament import BilateralSession
 
 
 class Tournament:
     def __init__(self, window):
         self.window = window
         self.controller = Controller()
-        self.create_tournament()
+        self.create_tournamentGUI()
 
-    def create_tournament(self):
+    def create_tournamentGUI(self):
         widget_names = self.controller.fetch_tournament_gui_segments()
         widgets = []
         frames = []
@@ -42,7 +43,7 @@ class Tournament:
             obj.set_gui_widgets(all_widgets_in_Gui)
 
 
-    # def create_tournament(self):
+    # def create_tournamentGUI(self):
     #     tournament_frame = tk.Frame(self.window)
     #     tournament_frame.grid(row=0, column=0, columnspan=10)
     #

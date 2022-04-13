@@ -361,11 +361,11 @@ class Session:
         deadline = float(self.var_deadline.get())
         self.bilateral_session = BilateralSession(protocol_name=protocol_name,
                                                   analysis_man_name=analysis_man_name,
-                                                  party1_name=file_name1, party2_name=file_name2,
-                                                  domain_name=self.var_domain_name.get(),
+                                                  deadline=deadline,
                                                   first_preference_name=first_preference_name,
                                                   second_preference_name=second_preference_name,
-                                                  deadline=deadline)
+                                                  party1_name=file_name1, party2_name=file_name2,
+                                                  domain_name=self.var_domain_name.get())
         self.bilateral_session.start_session()
 
     def get_text_from_listbox(self, row):

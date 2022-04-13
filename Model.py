@@ -38,7 +38,7 @@ class GUIContent:
         domain_lists = [name for name in os.listdir(DOMAIN_PATH)]
         return domain_lists
 
-    def fetch_preferences_of_domain(self, domain):
+    def fetch_preferences_of_domain(self, domain: str):
         path = DOMAIN_PATH + '/' + domain
         if isdir(path):
             preference_profile_list = [name for name in os.listdir(path)]

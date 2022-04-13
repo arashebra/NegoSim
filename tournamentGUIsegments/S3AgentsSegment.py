@@ -16,7 +16,7 @@ class S3AgentsSegment(SegmentInterface, ABC):
 
         lebel1 = Label(master=frame_left, text='Agent ')
 
-        listbox_agents1 = Listbox(master=frame_left, width=25, exportselection=0)
+        listbox_agents1 = Listbox(master=frame_left, width=25, selectmode="multiple", exportselection=0)
         list_agents1 = ['agent 1', 'agent 2', 'agent 3', 'agent 4']
         listbox_agents1.insert(END, *list_agents1)
 

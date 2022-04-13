@@ -1,8 +1,6 @@
 from core.AbstractGUISegment import SegmentInterface
-from tkinter import Frame, messagebox
+from tkinter import messagebox
 from tkinter.ttk import Button
-import CreateObjectByPath
-from configurations import *
 
 
 class S5StartTournamentButtonSegment(SegmentInterface):
@@ -29,7 +27,7 @@ class S5StartTournamentButtonSegment(SegmentInterface):
         if selected_analysis == 'Select an analysis':
             return messagebox.showerror('Error', 'Please select Analysis!')
 
-        listbox_domain = row_widgets[2][1] # widget in row=2 and col=1
+        listbox_domain = row_widgets[2][1]  # widget in row=2 and col=1
         domain_indexes = listbox_domain.curselection()
         if len(domain_indexes) > 0:
             selected_domains = []
@@ -38,10 +36,13 @@ class S5StartTournamentButtonSegment(SegmentInterface):
         else:
             return messagebox.showerror('Error', 'Please select domain(s)!')
 
-        listbox_agent1 = row_widgets[3][1] # widget in row=3 and col=1
-        agent1_index = listbox_agent1.curselection()
-        if len(agent1_index) > 0:
-            agent1_name = listbox_agent1.get(agent1_index)
+        agent1_names = []
+        listbox_agent1 = row_widgets[3][1]  # widget in row=3 and col=1
+        agent1_indexes = listbox_agent1.curselection()
+        if len(agent1_indexes) > 0:
+            for agent1_index in agent1_indexes:
+                agent1_name = listbox_agent1.get(agent1_index)
+                agent1_names.append(agent1_name)
         else:
             return messagebox.showerror('Error', 'Please select an Agent!')
 
@@ -55,7 +56,11 @@ class S5StartTournamentButtonSegment(SegmentInterface):
         else:
             return messagebox.showerror('Error', 'Please select opponent(s)!')
 
-        print(selected_protocol,' - ', selected_analysis, ' - ')
+        deadline_var_tuple = self.get_var_dict()['S4DeadlineSegment.py']
+        deadline_var = deadline_var_tuple[0]
+        print(deadline_var.get())
+
+        print(selected_protocol, ' - ', selected_analysis, ' - ')
         print(selected_domains)
-        print(agent1_name)
+        print(agent1_names)
         print(opponent_names)
