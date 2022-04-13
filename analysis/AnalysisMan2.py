@@ -43,4 +43,9 @@ class AnalysisMan2(AbstractAnalysisMan):
         pickle.dump(analysis_data_structure, sessionData)
         sessionData.close()
 
+        if self.get_opponent_model_party1() != None:
+            print('self.get_opponent_model_party1().get_preference()', self.get_opponent_model_party1().get_preference())
+        if self.get_opponent_model_party2() != None:
+            print('self.get_opponent_model_party2().get_preference()', self.get_opponent_model_party2().get_preference())
+
         return analysis_data_structure

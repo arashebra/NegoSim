@@ -14,7 +14,12 @@ class AbstractOpponentModel(OpponentModelInterface):
         self.__preference_data_structure = self.__preference.get_preference_data_structure()
         for issue in self.__preference_data_structure:
             if issue != 'discount_factor' and issue != 'reservation': # don't cont in discount_factor and reservation
-                self.__preference_data_structure[issue][0] = 1.0 / len(self.__preference_data_structure)
+                t = 0
+                if 'discount_factor' in self.__preference_data_structure:
+                    t += 1
+                if 'reservation' in self.__preference_data_structure:
+                    t += 1
+                self.__preference_data_structure[issue][0] = 1.0 / (len(self.__preference_data_structure)-t)
                 for key in self.__preference_data_structure[issue][1]:
                     self.__preference_data_structure[issue][1][key] = 1
 

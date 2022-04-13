@@ -91,11 +91,16 @@ class Preference:
             s += ': ['
             s += str(weight_item_value[0])
             s += ', {'
-            for item, value in (weight_item_value[1]).items():
-                s += str(item)
-                s += ': '
-                s += str(value)
-                s += ', '
+            if issue != 'discount_factor' and issue != 'reservation' :
+                for item, value in (weight_item_value[1]).items():
+                    s += str(item)
+                    s += ': '
+                    s += str(value)
+                    s += ', '
+            if issue == 'discount_factor':
+                s += weight_item_value
+            if issue == 'reservation':
+                s += weight_item_value
             s += '}, '
             s += '] '
         s += '}'

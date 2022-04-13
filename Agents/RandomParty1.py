@@ -17,7 +17,7 @@ class RandomParty1(AbstractNegoParty):
         bid = self.generate_random_bid()
         if len(opponen_offer) > 0:
             op_bid = opponen_offer[len(opponen_offer) - 1].get_bid()
-            if self.get_utilitiy_space().get_utility(op_bid) >= self.get_utilitiy_space().get_utility(bid) and self.get_utilitiy_space().get_utility(op_bid) > 0.7:
+            if self.get_utility_space().get_utility(op_bid) >= self.get_utility_space().get_utility(bid) and self.get_utility_space().get_utility(op_bid) > 0.7:
                 return op_bid
         return bid
 

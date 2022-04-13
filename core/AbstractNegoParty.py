@@ -12,12 +12,16 @@ class AbstractNegoParty(NegoPartyInterface, ABC):
     def __init__(self, preference: Preference):
         self.__preference = preference
         self.__utility_space = UtilitySpace(self.__preference)
+        self.opponent_model = None
 
     def get_preference(self):
         return self.__preference
 
-    def get_utilitiy_space(self):
+    def get_utility_space(self):
         return self.__utility_space
+
+    def get_opponent_model(self):
+        return self.opponent_model
 
     def generate_random_bid(self):
         issue_items = {}

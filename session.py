@@ -404,7 +404,11 @@ class Session:
             self.protocol = self.create_object_by_path('protocols', protocol_name, time_line, nego_table)
 
             analysis_man_name = self.text_splitor(self.var_analyse_name.get(), '.')[0]
-            self.analysis_man = self.create_object_by_path('analysis', analysis_man_name,  party1, party2, nego_table, preference1, preference2)
+            self.analysis_man = self.create_object_by_path('analysis', analysis_man_name,
+                                                           party1, party2, nego_table,
+                                                           preference1, preference2,
+                                                           party1.get_opponent_model(),
+                                                           party2.get_opponent_model())
 
 
             self.create_progress_bar(0)
