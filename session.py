@@ -1,18 +1,9 @@
-import importlib
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 import controller
-from core.NegoTable import NegoTable
-from core.Preference import Preference
-from core.TimeLine import TimeLine
-from core.StateInfo import StateInfo
 from core.BidSpace import BidSpace
 from visualization.Charts import Charts
-import importlib.util
-from tkinter.ttk import Progressbar
-from configurations import *
-from threading import Thread
 from core.BilateralSession import BilateralSession
 
 WINDOW_NAME = 'New Session'
@@ -47,34 +38,6 @@ class Session:
 
     def init_controller(self):
         self.controller = controller.Controller()
-
-    def progressbar_session_visualization(self, progress, protocol):
-
-        b = [False for j in range(5)]
-        while protocol.get_nego_table().get_state_info().get_negotiation_state() == 0:
-            t = protocol.get_time()
-            if not b[0] and t <= 0.2:
-                progress["value"] = 20
-                root.update()
-                b[0] = True
-            elif not b[1] and t > 0.2 and t <= 0.4:
-                progress["value"] = 40
-                root.update()
-                b[1] = True
-            elif not b[2] and t > 0.4 and t <= 0.6:
-                progress["value"] = 60
-                root.update()
-                b[2] = True
-            elif not b[3] and t > 0.6 and t <= 0.8:
-                progress["value"] = 80
-                root.update()
-                b[3] = True
-            elif not b[4] and t >= 1:
-                progress["value"] = 100
-                root.update()
-                b[4] = True
-        if progress["value"] != 100:
-            progress["value"] = 100
 
     def create_visualization_window(self, frame):
 
@@ -147,11 +110,11 @@ class Session:
         listbox_party2_bids.insert(tk.END, *all_offers[party2])
         listbox_party2_bids.insert(tk.END, analysis_data)
 
-    def create_progress_bar(self, row):
-        self.my_row += 1
-        self.progress = Progressbar(self.frame_session, orient=tk.HORIZONTAL, length=100, mode='determinate')
-        self.progress.grid(row=row, column=0, columnspan=3, sticky='we', pady=10)
-        self.my_row += 1
+    # def create_progress_bar(self, row):
+    #     self.my_row += 1
+    #     self.progress = Progressbar(self.frame_session, orient=tk.HORIZONTAL, length=100, mode='determinate')
+    #     self.progress.grid(row=row, column=0, columnspan=3, sticky='we', pady=10)
+    #     self.my_row += 1
 
     def create_session_gui(self):
 
@@ -386,7 +349,6 @@ class Session:
         self.frame_visualization = tk.Frame(self.window)
         self.frame_visualization.grid(row=0, column=11)
         self.start_negotiation1()
-
         self.create_visualization_window(self.frame_visualization)
 
     def start_negotiation1(self):
