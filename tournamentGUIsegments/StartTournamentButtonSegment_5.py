@@ -1,10 +1,10 @@
-from AbstractGUISegment import SegmentInterface
+from GUI.AbstractGUISegment import AbstractGUISegment
 from tkinter import messagebox
 from tkinter.ttk import Button
 from core.BilateralTournament import BilateralTournament
 
 
-class S5StartTournamentButtonSegment(SegmentInterface):
+class StartTournamentButtonSegment_5(AbstractGUISegment):
 
     def get_widget(self):
         frame = self.get_frame()
@@ -13,17 +13,17 @@ class S5StartTournamentButtonSegment(SegmentInterface):
         return btn_start,
 
     def get_name(self):
-        return 'S5StartTournamentButtonSegment'
+        return 'StartTournamentButtonSegment_5.py'
 
     def start_tournament(self):
         row_widgets = self.get_gui_widgets()
 
-        optionMenu_protocol_var_tuple = self.my_dict['S0ProtocolSegment.py']
+        optionMenu_protocol_var_tuple = self.my_dict['ProtocolSegment_0.py']
         selected_protocol = optionMenu_protocol_var_tuple[0].get()
         if selected_protocol == 'Select a protocol':
             return messagebox.showerror('Error', 'Please select Protocol')
 
-        optionMenu_analysis_var_tuple = self.my_dict['S1AnalysisSegment.py']
+        optionMenu_analysis_var_tuple = self.my_dict['AnalysisSegment_1.py']
         selected_analysis = optionMenu_analysis_var_tuple[0].get()
         if selected_analysis == 'Select an analysis':
             return messagebox.showerror('Error', 'Please select Analysis!')
@@ -57,7 +57,7 @@ class S5StartTournamentButtonSegment(SegmentInterface):
         else:
             return messagebox.showerror('Error', 'Please select opponent(s)!')
 
-        deadline_var_tuple = self.get_var_dict()['S4DeadlineSegment.py']
+        deadline_var_tuple = self.get_var_dict()['DeadlineSegment_4.py']
         deadline_var = deadline_var_tuple[0]
         deadline = deadline_var.get()
 

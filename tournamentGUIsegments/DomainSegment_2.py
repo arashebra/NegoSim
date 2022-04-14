@@ -1,10 +1,10 @@
 from abc import ABC
-from AbstractGUISegment import SegmentInterface
+from GUI.AbstractGUISegment import AbstractGUISegment
 from tkinter import Listbox, END, Label
 from controller import Controller
 
 
-class S2DomainSegment(SegmentInterface, ABC):
+class DomainSegment_2(AbstractGUISegment, ABC):
 
     def get_widget(self):
         ctrl = Controller()
@@ -18,4 +18,4 @@ class S2DomainSegment(SegmentInterface, ABC):
         return lebel_Vs, listbox_domain
 
     def get_name(self):
-        return 'S2DomainSegment.py'
+        return 'DomainSegment_2.py'

@@ -1,6 +1,6 @@
 import tkinter as tk
 from configurations import *
-from GUIsegments import GUIsegments
+from GUI.gui import GUIsegments
 
 
 class Tournament:

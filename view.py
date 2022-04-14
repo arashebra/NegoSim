@@ -2,7 +2,7 @@ from configurations import *
 import tkinter as tk
 from tkinter import ttk
 import sessionGUI
-import tournamentGUI
+from GUI import tournamentGUI
 import controller
 from core.BidSpace import BidSpace
 from tkinter import messagebox

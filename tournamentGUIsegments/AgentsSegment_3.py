@@ -1,10 +1,10 @@
 from abc import ABC
-from AbstractGUISegment import SegmentInterface
+from GUI.AbstractGUISegment import AbstractGUISegment
 from tkinter import Frame, Listbox, END, Label
 from controller import Controller
 
 
-class S3AgentsSegment(SegmentInterface, ABC):
+class AgentsSegment_3(AbstractGUISegment, ABC):
 
     def get_widget(self):
         ctrl = Controller()
@@ -32,4 +32,4 @@ class S3AgentsSegment(SegmentInterface, ABC):
         return lebel1, listbox_agents1, lebel_Vs, listbox_agents2
 
     def get_name(self):
-        return 'S3AgentsSegment.py'
+        return 'AgentsSegment_3.py'

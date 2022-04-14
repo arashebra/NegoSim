@@ -23,16 +23,29 @@ class GUIsegments:
         frames = []
         var_dict = {}
         segments = []
-        for segments_name in segments_names:
-            var_dict[segments_name] = tuple(tk.StringVar() for x in range(10))
+
+        segments_nums = [s.split('_')[1].split('.')[0] for s in segments_names]
+
+        def my_map_func(f_segments_name, f_segments_num):
+            return f_segments_name, f_segments_num
+
+        segments_names_num_map = map(my_map_func, segments_names, segments_nums)
+        segments_names_num_list = list(segments_names_num_map)
+        segments_names_num_list.sort(key=lambda tup: int(tup[1]))
+        segments_names = [s[0] for s in segments_names_num_list]
 
         for segments_name in segments_names:
+            var_dict[segments_name] = tuple(tk.StringVar() for x in range(10))
             frame = tk.Frame(master=self.window)
             frames.append(frame)
-            obj = CreateObjectByPath.get_object(segments_path, segments_name, frame, var_dict)
+
+            i = 0
+        for segments_name in segments_names:
+            obj = CreateObjectByPath.get_object(segments_path, segments_name, self.window, frames[i], frames, var_dict)
             segments.append(obj)
             widgets_row = obj.get_widget()
             widgets.append(widgets_row)
+            i += 1
 
         all_widgets_in_Gui = {}
         i = 0

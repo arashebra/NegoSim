@@ -1,10 +1,10 @@
 from abc import ABC
-from AbstractGUISegment import SegmentInterface
+from GUI.AbstractGUISegment import AbstractGUISegment
 import tkinter as tk
 from controller import Controller
 
 
-class S5PartySegment(SegmentInterface, ABC):
+class PartySegment_5(AbstractGUISegment, ABC):
 
     def get_widget(self):
         ctrl = Controller()
@@ -18,4 +18,4 @@ class S5PartySegment(SegmentInterface, ABC):
         return lable, optionMenu_party
 
     def get_name(self):
-        return 'S5PartySegment.py'
+        return 'PartySegment_5.py'

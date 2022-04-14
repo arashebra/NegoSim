@@ -1,10 +1,10 @@
 from abc import ABC
-from AbstractGUISegment import SegmentInterface
+from GUI.AbstractGUISegment import AbstractGUISegment
 import tkinter as tk
 from controller import Controller
 
 
-class S0ProtocolSegment(SegmentInterface, ABC):
+class ProtocolSegment_0(AbstractGUISegment, ABC):
 
     def get_widget(self):
         ctrl = Controller()
@@ -14,7 +14,8 @@ class S0ProtocolSegment(SegmentInterface, ABC):
         optionMenu_protocol = tk.OptionMenu(self.get_frame(), my_dict[self.get_name()][0], *protocol_list)
         optionMenu_protocol.configure(width=25)
         lable = tk.Label(master=self.get_frame(), text='Protocol                ')
+
         return lable, optionMenu_protocol
 
     def get_name(self):
-        return 'S0ProtocolSegment.py'
+        return 'ProtocolSegment_0.py'
