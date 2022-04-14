@@ -1,5 +1,5 @@
 from abc import ABC
-from core.AbstractGUISegment import SegmentInterface
+from AbstractGUISegment import SegmentInterface
 from tkinter import Label, OptionMenu
 from controller import Controller
 

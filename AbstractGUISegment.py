@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from tkinter import Frame, StringVar
+from tkinter import Frame
 
 
 class SegmentInterface(ABC):

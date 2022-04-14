@@ -1,4 +1,4 @@
-from core.AbstractGUISegment import SegmentInterface
+from AbstractGUISegment import SegmentInterface
 from tkinter import messagebox
 from tkinter.ttk import Button
 from core.BilateralTournament import BilateralTournament

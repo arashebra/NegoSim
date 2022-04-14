@@ -12,9 +12,8 @@ class S0ProtocolSegment(SegmentInterface, ABC):
         my_dict = self.get_var_dict()
         my_dict[self.get_name()][0].set('Select a protocol')
         optionMenu_protocol = tk.OptionMenu(self.get_frame(), my_dict[self.get_name()][0], *protocol_list)
-
-        lable = tk.Label(master=self.get_frame(), text='Protocol')
-
+        optionMenu_protocol.configure(width=25)
+        lable = tk.Label(master=self.get_frame(), text='Protocol                ')
         return lable, optionMenu_protocol
 
     def get_name(self):

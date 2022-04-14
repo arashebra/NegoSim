@@ -1,5 +1,5 @@
 from abc import ABC
-from core.AbstractGUISegment import SegmentInterface
+from AbstractGUISegment import SegmentInterface
 from tkinter import Label, Spinbox, IntVar
 from tkinter import ttk
 

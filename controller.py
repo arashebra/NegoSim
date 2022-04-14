@@ -66,6 +66,10 @@ class Controller:
         tournament_gui_segments = self.model.fetch_tournament_gui_segments()
         return tournament_gui_segments
 
+    def fetch_session_gui_segments(self):
+        session_gui_segments = self.model.fetch_session_gui_segments()
+        return session_gui_segments
+
 if __name__ == '__main__':
     c = Controller()
     print(c.fetch_preference_data_structure('laptop', 'laptop_buyer_utility.xml'))
