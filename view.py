@@ -6,7 +6,7 @@ from GUI import tournamentGUI
 import controller
 from core.BidSpace import BidSpace
 from tkinter import messagebox
-from visualization.Charts import Charts
+from GUI.visualization.Charts import Charts
 
 
 EUBOA_SEPERATOR = ' ---> '

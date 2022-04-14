@@ -3,6 +3,7 @@ import CreateObjectByPath
 from configurations import *
 from controller import Controller
 
+
 class GUIsegments:
 
     def __init__(self, window, segments_path: str):
@@ -13,6 +14,25 @@ class GUIsegments:
 
 
     def create_sessionGUI(self, segments_path, package_name):
+
+        # 5 horizontal frame reserved
+        horizontal_frame1 = tk.Frame(master=self.window)
+        horizontal_frame1.pack(side='left')
+        horizontal_frame2 = tk.Frame(master=self.window)
+        horizontal_frame2.pack(side='left')
+        horizontal_frame3 = tk.Frame(master=self.window)
+        horizontal_frame3.pack(side='left')
+        horizontal_frame4 = tk.Frame(master=self.window)
+        horizontal_frame4.pack(side='left')
+        horizontal_frame5 = tk.Frame(master=self.window)
+        horizontal_frame5.pack(side='left')
+        self.__all_horizontal_frames = []
+        self.__all_horizontal_frames.append(horizontal_frame1)
+        self.__all_horizontal_frames.append(horizontal_frame2)
+        self.__all_horizontal_frames.append(horizontal_frame3)
+        self.__all_horizontal_frames.append(horizontal_frame4)
+        self.__all_horizontal_frames.append(horizontal_frame5)
+
         if package_name == SESSION_GUI_PACKAGE_NAME:
             segments_names = self.controller.fetch_session_gui_segments()
         elif package_name == TOURNAMENT_GUI_PACKAGE_NAME:
@@ -36,12 +56,12 @@ class GUIsegments:
 
         for segments_name in segments_names:
             var_dict[segments_name] = tuple(tk.StringVar() for x in range(10))
-            frame = tk.Frame(master=self.window)
+            frame = tk.Frame(master=horizontal_frame1)
             frames.append(frame)
 
             i = 0
         for segments_name in segments_names:
-            obj = CreateObjectByPath.get_object(segments_path, segments_name, self.window, frames[i], frames, var_dict)
+            obj = CreateObjectByPath.get_object(segments_path, segments_name, self.window, frames[i], frames, self.__all_horizontal_frames,var_dict)
             segments.append(obj)
             widgets_row = obj.get_widget()
             widgets.append(widgets_row)

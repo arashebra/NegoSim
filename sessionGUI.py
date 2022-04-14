@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox
 import controller
 from core.BidSpace import BidSpace
-from visualization.Charts import Charts
+from GUI.visualization.Charts import Charts
 from core.BilateralSession import BilateralSession
 
 WINDOW_NAME = 'New Session'

@@ -4,12 +4,29 @@ from tkinter import Frame
 
 class AbstractGUISegment(ABC):
 
-    def __init__(self, root: Frame, frame: Frame, frames: list, var_dict: dict):
+    def __init__(self, root: Frame, frame: Frame, frames: list, all_horizontal_frames: list, var_dict: dict):
         self.__root = root
         self.__frame = frame
         self.__all_frames = frames
         self.__var_dict = var_dict
         self.__gui_widgets_dict = {}
+        self.__all_horizontal_frames = all_horizontal_frames
+
+    def get_all_horizontal_frames(self):
+        return self.__all_horizontal_frames
+
+    def get_special_horizontal_frame(self, index: int):
+        return self.__all_horizontal_frames[index]
+
+    def replace_special_horizontal_frame(self, index: int, frame: Frame):
+        frame = self.__all_horizontal_frames[index]
+        frame.destroy()
+        self.__all_horizontal_frames.pop(index)
+        frame.pack(side='left')
+        self.add_new_frame(index, frame)
+
+    def add_horizontal_frame(self, index: int, frame: Frame):
+        self.__all_horizontal_frames.insert(index, frame)
 
     def get_root(self):
         return self.__root
