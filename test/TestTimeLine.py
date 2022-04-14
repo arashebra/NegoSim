@@ -15,10 +15,18 @@ class TestTimeLine(unittest.TestCase):
         time.sleep(2)
         print(TestTimeLine.timeline.get_time())
         self.assertFalse(TestTimeLine.timeline.is_time_ended())
-        time.sleep(8)
+        time.sleep(2)
         print(TestTimeLine.timeline.get_time())
         self.assertFalse(TestTimeLine.timeline.is_time_ended())
-
+        time.sleep(2)
+        print(TestTimeLine.timeline.get_time())
+        self.assertFalse(TestTimeLine.timeline.is_time_ended())
+        time.sleep(2)
+        print(TestTimeLine.timeline.get_time())
+        self.assertFalse(TestTimeLine.timeline.is_time_ended())
+        time.sleep(2)
+        print(TestTimeLine.timeline.get_time())
+        self.assertTrue(TestTimeLine.timeline.is_time_ended())
 
 
 if __name__ == '__main__':
