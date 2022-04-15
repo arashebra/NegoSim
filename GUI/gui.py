@@ -73,7 +73,7 @@ class GUIsegments:
             frames[i].pack(side='top')
             all_row_widgets = []
             for widget_col in widgets_row:
-                widget_col.pack(side='left', padx=5, pady=5)
+                widget_col.pack(side='left', padx=5, pady=5, fill='both')
                 all_row_widgets.append(widget_col)
             all_widgets_in_Gui[i] = all_row_widgets
             i += 1
