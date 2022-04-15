@@ -17,14 +17,15 @@ class AnalysisTournament1(AbstractTournamentAnalysisMan):
         session_analysis_dataset = self.get_session_analysis_dataset()
         i = 1
         for session_analysis_data in session_analysis_dataset:
-
             for key, value in session_analysis_data.items():
-                if key not in self.__tournament_analysis_data:
-                    self.__tournament_analysis_data[key] = value
-                else:
-                    self.__tournament_analysis_data[key] = (value + (self.__tournament_analysis_data[key] * i)) / (
-                                i + 1)
-                    i = i + 1
+                if key.split('_')[0] == 'party1' or key.split('_')[1] == 'SocialWelfare':
+                    if key not in self.__tournament_analysis_data:
+                        self.__tournament_analysis_data[key] = value
+                    else:
+                        self.__tournament_analysis_data[key] = (value + (self.__tournament_analysis_data[key] * i)) / (
+                                    i + 1)
+                        i = i + 1
+
         return self.__tournament_analysis_data
 
     def save_analysis_data(self):

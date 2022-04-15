@@ -34,9 +34,9 @@ class Analysis_man0(AbstractAnalysisMan):
 
             social_welfare = final_utility_party1 + final_utility_party2
 
-            self.analysis_data_structure[party1.get_name()] = final_utility_party1
-            self.analysis_data_structure[party2.get_name()] = final_utility_party2
-            self.analysis_data_structure['Social Welfare'] = social_welfare
+            self.analysis_data_structure['party1_'+party1.get_name()] = final_utility_party1
+            self.analysis_data_structure['party2_'+party2.get_name()] = final_utility_party2
+            self.analysis_data_structure[party1.get_name()+'_SocialWelfare'] = social_welfare
 
         return self.analysis_data_structure
 

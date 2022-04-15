@@ -39,9 +39,9 @@ class AnalysisMan2(AbstractAnalysisMan):
                    party2_offers]
         self.analysis_data_structure['party2 offers'] = offers2
 
-        self.analysis_data_structure['Utility party1'] = final_utility_party1
-        self.analysis_data_structure['Utility party2'] = final_utility_party2
-        self.analysis_data_structure['Social Welfare'] = social_welfare
+        self.analysis_data_structure['party1_'+party1.get_name()] = final_utility_party1
+        self.analysis_data_structure['party2_'+party2.get_name()] = final_utility_party2
+        self.analysis_data_structure[party1.get_name()+'_SocialWelfare'] = social_welfare
 
         if self.get_opponent_model_party1() != None:
             estimated_preferance = self.get_opponent_model_party1().get_preference()

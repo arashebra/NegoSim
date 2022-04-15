@@ -20,6 +20,9 @@ class BilateralTournament:
                                                                        Tournament_analysis_name,
                                                                        agent_names)
 
+    def get_tournament_analysis_man(self):
+        return self.__tournament_analysis_man
+
     def start_tournament(self):
         ctrl = Controller()
         for domain_name in self.__domain_names:
@@ -44,7 +47,7 @@ class BilateralTournament:
         print('**************************** Final Result ****************************')
         print(self.__tournament_analysis_man.get_tournament_analysis_data())
         print('**********************************************************************')
-        # self.__tournament_analysis_man.save_analysis_data()
+        self.__tournament_analysis_man.save_analysis_data()
 
     def get_tournament_analysis_man(self):
         return self.__tournament_analysis_man
