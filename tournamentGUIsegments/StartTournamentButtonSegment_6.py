@@ -1,16 +1,19 @@
 from GUI.AbstractGUISegment import AbstractGUISegment
 from tkinter import messagebox
 from tkinter.ttk import Button
+from GUI.visualization.Charts import Charts
 from core.BilateralTournament import BilateralTournament
+import tkinter as tk
 
 NOTSELECTIONMESSAGE = 'Please select '
 
 
 class StartTournamentButtonSegment_6(AbstractGUISegment):
 
-    def get_widget(self):
+    def get_widget(self)-> tuple:
+        self.__first_clicked = False
         frame = self.get_frame()
-        self.my_dict = self.get_var_dict()
+        # self.my_dict = self.get_var_dict()
         btn_start = Button(master=frame, text='Start Tournament', width=50, padding=5, command=self.start_tournament)
         return btn_start,
 
@@ -40,8 +43,8 @@ class StartTournamentButtonSegment_6(AbstractGUISegment):
 
         listbox_domain = row_widgets[3][1]  # widget in row=3 and col=1
         domain_indexes = listbox_domain.curselection()
+        selected_domains = []
         if len(domain_indexes) > 0:
-            selected_domains = []
             for index in domain_indexes:
                 selected_domains.append(listbox_domain.get(index))
         else:
@@ -85,10 +88,25 @@ class StartTournamentButtonSegment_6(AbstractGUISegment):
 
         bilateral_tournament = BilateralTournament(protocol_name=selected_protocol,
                                                    analysis_man_name=selected_analysis,
-                                                   Tournament_analysis_name= selected_tournament_analysis,
+                                                   Tournament_analysis_name=selected_tournament_analysis,
                                                    deadline=deadline,
                                                    agent_names=agent1_names,
                                                    opponent_names=opponent_names,
                                                    domain_names=selected_domains)
 
+
         bilateral_tournament.start_tournament()
+        h_frame1 = self.get_special_horizontal_frame(1)
+        if not self.__first_clicked:
+            self.create_tournament_visualization_window(h_frame1)
+        else:
+            h_frame_alternative1 = tk.Frame(master=self.get_root())
+            self.replace_frame(1, h_frame_alternative1)
+            self.create_tournament_visualization_window(h_frame_alternative1)
+        self.__first_clicked = True
+
+
+
+    def create_tournament_visualization_window(self, h_frame1):
+        # chart = Charts()
+        pass

@@ -55,8 +55,6 @@ class BtnStartSession_11(AbstractGUISegment):
             self.replace_frame(1, h_frame_alternative1)
             self.create_visualization_window(h_frame_alternative1)
 
-
-
     def party_preference_text_separator(self, party_preference_text: str) -> tuple:
         temp = party_preference_text.split(PARTY_PREFERENCE_SEPERATOR)
         return temp[0], temp[1]
