@@ -62,6 +62,10 @@ class Controller:
         analysis_men = self.model.fetch_analysis_men()
         return analysis_men
 
+    def fetch_tournament_analysis_men(self):
+        tournament_analysis_men = self.model.fetch_Tournament_analysis_men()
+        return tournament_analysis_men
+
     def fetch_tournament_gui_segments(self):
         tournament_gui_segments = self.model.fetch_tournament_gui_segments()
         return tournament_gui_segments

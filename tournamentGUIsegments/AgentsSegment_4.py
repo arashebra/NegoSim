@@ -4,7 +4,7 @@ from tkinter import Frame, Listbox, END, Label, Scrollbar
 from controller import Controller
 
 
-class AgentsSegment_3(AbstractGUISegment, ABC):
+class AgentsSegment_4(AbstractGUISegment, ABC):
 
     def get_widget(self):
         ctrl = Controller()
@@ -36,4 +36,4 @@ class AgentsSegment_3(AbstractGUISegment, ABC):
         return lebel1, listbox_agents1, scroll_bar1, lebel_Vs, listbox_agents2, scroll_bar2
 
     def get_name(self):
-        return 'AgentsSegment_3.py'
+        return 'AgentsSegment_4.py'

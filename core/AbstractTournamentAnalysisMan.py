@@ -7,6 +7,8 @@ class AbstractTournamentAnalysisMan(ABC):
         self.__agent_names = agent_names
         self.__session_analysis_dataset = []  # list of session analysis data
 
+
+
     def get_agent_names(self):
         return self.__agent_names
 

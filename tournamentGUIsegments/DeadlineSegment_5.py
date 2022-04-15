@@ -9,13 +9,13 @@ INITIAL_DEADLINE_TIME = 60
 MAX_DEADLINE_TIME = 3600000
 
 
-class DeadlineSegment_4(AbstractGUISegment, ABC):
+class DeadlineSegment_5(AbstractGUISegment, ABC):
 
     def get_widget(self):
         frame = self.get_frame()
-        my_dict = self.get_var_dict()
+        string_var = self.get_special_segment_special_StringVar(5, 0)
         lebel1 = Label(frame, text=' Deadline ')
-        spinbox_deadline = Spinbox(frame, from_=1, to=MAX_DEADLINE_TIME, textvariable=my_dict[self.get_name()][0])
+        spinbox_deadline = Spinbox(frame, from_=1, to=MAX_DEADLINE_TIME, textvariable=string_var)
         spinbox_deadline.delete(0, 'end')
         spinbox_deadline.insert(0, INITIAL_DEADLINE_TIME)
 
@@ -26,4 +26,4 @@ class DeadlineSegment_4(AbstractGUISegment, ABC):
         return lebel1, spinbox_deadline, time_type
 
     def get_name(self):
-        return 'DeadlineSegment_4.py'
+        return 'DeadlineSegment_5.py'

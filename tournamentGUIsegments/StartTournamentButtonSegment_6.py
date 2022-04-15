@@ -3,8 +3,10 @@ from tkinter import messagebox
 from tkinter.ttk import Button
 from core.BilateralTournament import BilateralTournament
 
+NOTSELECTIONMESSAGE = 'Please select '
 
-class StartTournamentButtonSegment_5(AbstractGUISegment):
+
+class StartTournamentButtonSegment_6(AbstractGUISegment):
 
     def get_widget(self):
         frame = self.get_frame()
@@ -13,69 +15,80 @@ class StartTournamentButtonSegment_5(AbstractGUISegment):
         return btn_start,
 
     def get_name(self):
-        return 'StartTournamentButtonSegment_5.py'
+        return 'StartTournamentButtonSegment_6.py'
 
     def start_tournament(self):
 
-
+        message = NOTSELECTIONMESSAGE
 
         row_widgets = self.get_gui_widgets()
 
-        optionMenu_protocol_var_tuple = self.my_dict['ProtocolSegment_0.py']
-        selected_protocol = optionMenu_protocol_var_tuple[0].get()
+        optionMenu_protocol_var = self.get_special_segment_special_StringVar(0, 0)
+        selected_protocol = optionMenu_protocol_var.get()
         if selected_protocol == 'Select a protocol':
-            return messagebox.showerror('Error', 'Please select Protocol')
+            message += 'Protocol, '
 
-        optionMenu_analysis_var_tuple = self.my_dict['AnalysisSegment_1.py']
-        selected_analysis = optionMenu_analysis_var_tuple[0].get()
+        selected_analysis_string_var = self.get_special_segment_special_StringVar(1, 0)
+        selected_analysis = selected_analysis_string_var.get()
         if selected_analysis == 'Select an analysis':
-            return messagebox.showerror('Error', 'Please select Analysis!')
+            message += 'Analysis, '
 
-        listbox_domain = row_widgets[2][1]  # widget in row=2 and col=1
+        selected_tournament_analysis_string_var = self.get_special_segment_special_StringVar(2, 0)
+        selected_tournament_analysis = selected_tournament_analysis_string_var.get()
+        if selected_tournament_analysis == 'Select a Tournament Analysis':
+            message += 'Tournament Analysis, '
+
+        listbox_domain = row_widgets[3][1]  # widget in row=3 and col=1
         domain_indexes = listbox_domain.curselection()
         if len(domain_indexes) > 0:
             selected_domains = []
             for index in domain_indexes:
                 selected_domains.append(listbox_domain.get(index))
         else:
-            return messagebox.showerror('Error', 'Please select domain(s)!')
+            message += 'Domain(s), '
 
         agent1_names = []
-        listbox_agent1 = row_widgets[3][1]  # widget in row=3 and col=1
+        listbox_agent1 = row_widgets[4][1]  # widget in row=3 and col=1
         agent1_indexes = listbox_agent1.curselection()
         if len(agent1_indexes) > 0:
             for agent1_index in agent1_indexes:
                 agent1_name = listbox_agent1.get(agent1_index)
                 agent1_names.append(agent1_name)
         else:
-            return messagebox.showerror('Error', 'Please select an Agent!')
+            message += 'Agent(s), '
 
         opponent_names = []
-        listbox_opponent = row_widgets[3][3]  # widget in row=3 and col=1
+        listbox_opponent = row_widgets[4][4]  # widget in row=3 and col=1
         opponent_indexes = listbox_opponent.curselection()
         if len(opponent_indexes) > 0:
             for opponent_index in opponent_indexes:
                 opponent_name = listbox_opponent.get(opponent_index)
                 opponent_names.append(opponent_name)
         else:
-            return messagebox.showerror('Error', 'Please select opponent(s)!')
+            message += 'opponent(s)'
 
-        deadline_var_tuple = self.get_var_dict()['DeadlineSegment_4.py']
+        deadline_var_tuple = self.get_var_dict()['DeadlineSegment_5.py']
         deadline_var = deadline_var_tuple[0]
         deadline = deadline_var.get()
+
+
+        if message != NOTSELECTIONMESSAGE:
+            return messagebox.showerror('Error', message)
 
         # print('deadline: ', deadline)
         # print('Protocol: ', selected_protocol)
         # print('Analysis: ', selected_analysis)
+        # print('Tornament Analysis: ', selected_tournament_analysis)
         # print('Domain(s): ', selected_domains)
         # print('Agent(s) A: ', agent1_names)
         # print('Agent(s) B: ', opponent_names)
 
         bilateral_tournament = BilateralTournament(protocol_name=selected_protocol,
                                                    analysis_man_name=selected_analysis,
+                                                   Tournament_analysis_name= selected_tournament_analysis,
                                                    deadline=deadline,
-                                                   party1_names=agent1_names,
-                                                   party2_names=opponent_names,
+                                                   agent_names=agent1_names,
+                                                   opponent_names=opponent_names,
                                                    domain_names=selected_domains)
 
         bilateral_tournament.start_tournament()

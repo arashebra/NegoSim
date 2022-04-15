@@ -4,7 +4,7 @@ from tkinter import Listbox, END, Label, Scrollbar
 from controller import Controller
 
 
-class DomainSegment_2(AbstractGUISegment, ABC):
+class DomainSegment_3(AbstractGUISegment, ABC):
 
     def get_widget(self):
         ctrl = Controller()
@@ -21,4 +21,4 @@ class DomainSegment_2(AbstractGUISegment, ABC):
         return lebel_Vs, listbox_domain, scroll_bar
 
     def get_name(self):
-        return 'DomainSegment_2.py'
+        return 'DomainSegment_3.py'

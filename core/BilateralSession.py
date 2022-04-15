@@ -36,6 +36,7 @@ class BilateralSession:
         self.protocol.negotiate()
         print('----------------- Negotiation Result -----------------')
         print(self.analysis_man.get_analysis_data())
+        print('------------------------------------------------------\n')
         self.analysis_man.save_analysis_data()
 
     def get_protocol(self):
