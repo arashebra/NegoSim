@@ -48,7 +48,7 @@ class StartTournamentButtonSegment_5(AbstractGUISegment):
             return messagebox.showerror('Error', 'Please select an Agent!')
 
         opponent_names = []
-        listbox_opponent = row_widgets[3][3]  # widget in row=3 and col=1
+        listbox_opponent = row_widgets[3][4]  # widget in row=3 and col=1
         opponent_indexes = listbox_opponent.curselection()
         if len(opponent_indexes) > 0:
             for opponent_index in opponent_indexes:
@@ -61,12 +61,12 @@ class StartTournamentButtonSegment_5(AbstractGUISegment):
         deadline_var = deadline_var_tuple[0]
         deadline = deadline_var.get()
 
-        print('deadline: ', deadline)
-        print('Protocol: ', selected_protocol)
-        print('Analysis: ', selected_analysis)
-        print('Domain(s): ', selected_domains)
-        print('Agent(s) A: ', agent1_names)
-        print('Agent(s) B: ', opponent_names)
+        # print('deadline: ', deadline)
+        # print('Protocol: ', selected_protocol)
+        # print('Analysis: ', selected_analysis)
+        # print('Domain(s): ', selected_domains)
+        # print('Agent(s) A: ', agent1_names)
+        # print('Agent(s) B: ', opponent_names)
 
         bilateral_tournament = BilateralTournament(protocol_name=selected_protocol,
                                                    analysis_man_name=selected_analysis,
