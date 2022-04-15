@@ -16,6 +16,9 @@ class StartTournamentButtonSegment_5(AbstractGUISegment):
         return 'StartTournamentButtonSegment_5.py'
 
     def start_tournament(self):
+
+
+
         row_widgets = self.get_gui_widgets()
 
         optionMenu_protocol_var_tuple = self.my_dict['ProtocolSegment_0.py']
@@ -61,12 +64,12 @@ class StartTournamentButtonSegment_5(AbstractGUISegment):
         deadline_var = deadline_var_tuple[0]
         deadline = deadline_var.get()
 
-        print('deadline: ', deadline)
-        print('Protocol: ', selected_protocol)
-        print('Analysis: ', selected_analysis)
-        print('Domain(s): ', selected_domains)
-        print('Agent(s) A: ', agent1_names)
-        print('Agent(s) B: ', opponent_names)
+        # print('deadline: ', deadline)
+        # print('Protocol: ', selected_protocol)
+        # print('Analysis: ', selected_analysis)
+        # print('Domain(s): ', selected_domains)
+        # print('Agent(s) A: ', agent1_names)
+        # print('Agent(s) B: ', opponent_names)
 
         bilateral_tournament = BilateralTournament(protocol_name=selected_protocol,
                                                    analysis_man_name=selected_analysis,

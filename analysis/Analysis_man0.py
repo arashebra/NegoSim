@@ -4,7 +4,7 @@ import pickle
 import time
 
 
-class AnalysisMan1(AbstractAnalysisMan):
+class Analysis_man0(AbstractAnalysisMan):
 
     def get_analysis_data(self) -> dict:
         '''
@@ -41,8 +41,4 @@ class AnalysisMan1(AbstractAnalysisMan):
         return self.analysis_data_structure
 
     def save_analysis_data(self):
-        file_name = 'sessionData_pickled' + str(time.time_ns())
-        session_data = open(f'./logs/{file_name}', 'ab')
-        data = self.analysis_data_structure if len(self.analysis_data_structure) > 0 else self.get_analysis_data()
-        pickle.dump(data, session_data)
-        session_data.close()
+        pass
