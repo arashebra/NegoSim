@@ -8,10 +8,10 @@ from core.BidSpace import BidSpace
 from tkinter import messagebox
 from GUI.visualization.Charts import Charts
 
-
 EUBOA_SEPERATOR = ' ---> '
 SELECT_PREFERENCE_2 = 'Please Select Preference 2'
 SELECT_PREFERENCE_1 = 'Please Select Preference 1'
+
 
 class View:
     def __init__(self, parent, controller):
@@ -59,25 +59,31 @@ class View:
         self.parent.config(menu=self.menu_bar)
 
     def add_domain_file(self):
-        pass
+        tk.messagebox.showinfo('Try manually!',
+                               'This part is not completed! \nYou have to add the domain file to Domains folder manually')
 
     def add_elicitation_strategy_file(self):
-        pass
+        tk.messagebox.showinfo('Try manually!', 'This part is not completed! \n'
+                                                'You have to add the elicitation strategy file to the elicitation_strategies folder manually')
 
     def add_user_model_file(self):
-        pass
+        tk.messagebox.showinfo('Try manually!',
+                               'This part is not completed! \nYou have to add the user model file to the users folder manually')
 
     def add_bidding_strategy_file(self):
-        pass
+        tk.messagebox.showinfo('Try manually!',
+                               'This part is not completed! \nYou have to add the bidding strategy file to the bidding_strategies folder manually')
 
     def add_opponent_model_file(self):
-        pass
+        tk.messagebox.showinfo('Try manually!',
+                               'This part is not completed! \nYou have to add the opponent model file to the opponent_models folder manually')
 
     def add_acceptance_strategy_file(self):
-        pass
+        tk.messagebox.showinfo('Try manually!',
+                               'This part is not completed! \nYou have to add the acceptance strategy file to the acceptance_strategies folder manually')
 
     def create_domain_set(self):
-        pass
+        tk.messagebox.showinfo('Try manually!', 'This part is not completed!')
 
     def session_window(self):
         self.open_session_window()
@@ -144,22 +150,19 @@ class View:
                                                       self.var_selected_preference1_name, *preference_lists)
         optionMenu_select_preference1.pack(side='bottom')
 
-
-
-
-
     def create_notebook_window(self, frame):
         notebook_component = ttk.Notebook(frame, height=400)
         # notebook_component.grid(row=0, column=0)
         notebook_component.pack(side=tk.LEFT, fill=tk.BOTH)
 
-        frame_domain_set = ttk.Frame(notebook_component)
+        # frame_domain_set = ttk.Frame(notebook_component)
         self.frame_domain = ttk.Frame(notebook_component)
         frame_user = ttk.Frame(notebook_component)
         frame_euboa = ttk.Frame(notebook_component)
         frame_protocol = ttk.Frame(notebook_component)
         frame_analyses = ttk.Frame(notebook_component)
         frame_plugins = ttk.Frame(notebook_component)
+        frame_tournament_plugins = ttk.Frame(notebook_component)
 
         listbox_domain = tk.Listbox(self.frame_domain)
         i = 1
@@ -211,9 +214,15 @@ class View:
 
         listbox_plugins = tk.Listbox(frame_plugins)
         i = 1
-        for item in self.controller.fetch_tournament_gui_segments():
+        for item in self.controller.fetch_session_gui_segments():
             listbox_plugins.insert(i, item)
         listbox_plugins.pack(fill='both')
+
+        listbox_tournament_plugins = tk.Listbox(frame_tournament_plugins)
+        i = 1
+        for item in self.controller.fetch_tournament_gui_segments():
+            listbox_tournament_plugins.insert(i, item)
+        listbox_tournament_plugins.pack(fill='both')
 
         # notebook_component.add(frame_domain_set, text=' Domain Set ')
         notebook_component.add(self.frame_domain, text=' Domain ')
@@ -221,7 +230,8 @@ class View:
         notebook_component.add(frame_euboa, text=' EUBOA Component')
         notebook_component.add(frame_protocol, text=' Protocols ')
         notebook_component.add(frame_analyses, text=' Analyses ')
-        notebook_component.add(frame_plugins, text=' Theme plugins ')
+        notebook_component.add(frame_plugins, text='Session theme plugins')
+        notebook_component.add(frame_tournament_plugins, text='Tournament theme plugins')
 
     def close_diagram(self, btn_preference_visualization, frame_right):
         frame_right.destroy()
@@ -240,8 +250,10 @@ class View:
         ttk.Button(master=frame_right, text='Close',
                    command=lambda: self.close_diagram(btn_preference_visualization, frame_right)).pack(fill='x')
 
-        preference1 = self.controller.fetch_preference(self.selected_domain_name, self.var_selected_preference1_name.get())
-        preference2 = self.controller.fetch_preference(self.selected_domain_name, self.var_selected_preference2_name.get())
+        preference1 = self.controller.fetch_preference(self.selected_domain_name,
+                                                       self.var_selected_preference1_name.get())
+        preference2 = self.controller.fetch_preference(self.selected_domain_name,
+                                                       self.var_selected_preference2_name.get())
         bid_space1 = BidSpace(preference1)
         bid_space2 = BidSpace(preference2)
         data = {self.var_selected_preference1_name.get(): bid_space1.get_all_bids_utility(),

@@ -127,15 +127,3 @@ class StartTournamentButtonSegment_6(AbstractGUISegment):
                 }
         chart.bar_chart(data=data, frame=h_frame1, col1_name='Agents', col2_name='SocialWelfare')
 
-
-
-    # def create_tournament_visualization_window2(self, h_frame2):
-    #     chart = Charts()
-    #     tournament_analysis_man = self.bilateral_tournament.get_tournament_analysis_man()
-    #     my_data = tournament_analysis_man.get_tournament_analysis_data()
-    #     agents_names = [key.split('_')[0] for key, value in my_data.items() if key.split('_')[1] == 'SocialWelfare']
-    #     agents_utilities = [value for key, value in my_data.items() if key.split('_')[1] == 'SocialWelfare']
-    #     data = {'Agents': agents_names,
-    #             'Social Welfare': agents_utilities
-    #             }
-    #     chart.bar_chart(data=data, frame=h_frame2, col1_name='Agents', col2_name='Social Welfare')
