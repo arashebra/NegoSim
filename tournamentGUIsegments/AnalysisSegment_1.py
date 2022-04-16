@@ -9,10 +9,10 @@ class AnalysisSegment_1(AbstractGUISegment, ABC):
     def get_widget(self):
         ctrl = Controller()
         frame = self.get_frame()
-        my_dict = self.get_var_dict()
         analysis_list = ctrl.fetch_analysis_men()
-        my_dict[self.get_name()][0].set('Select an analysis')
-        optionMenu_Analysis = OptionMenu(frame, my_dict[self.get_name()][0], *analysis_list)
+        string_var = self.get_special_segment_special_StringVar(1, 0)
+        string_var.set('Select an analysis')
+        optionMenu_Analysis = OptionMenu(frame, string_var, *analysis_list)
 
         lable = Label(master=frame, text='Analysis ')
 

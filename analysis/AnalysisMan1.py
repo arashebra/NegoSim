@@ -8,7 +8,11 @@ class AnalysisMan1(AbstractAnalysisMan):
 
     def get_analysis_data(self) -> dict:
         '''
-        :return: a dict
+        :return: a dict {
+                         'Utility party1': 1.000051804171754,
+                         'Utility party2': 0.8151053951696905,
+                         'Social Welfare': 1.8151571993414446
+                         }
         '''
 
         self.analysis_data_structure = {}
@@ -19,6 +23,7 @@ class AnalysisMan1(AbstractAnalysisMan):
         preference_party2 = self.get_preference_of_party2()
         utility_space_party2 = UtilitySpace(preference_party2)
         party1 = self.get_party1()
+        party2 = self.get_party2()
         offers_on_table = self.get_nego_table().get_offers_on_table()
         party1_offers = offers_on_table[party1]
         if len(party1_offers) > 0:
@@ -29,15 +34,15 @@ class AnalysisMan1(AbstractAnalysisMan):
 
             social_welfare = final_utility_party1 + final_utility_party2
 
-            self.analysis_data_structure['Utility party1'] = final_utility_party1
-            self.analysis_data_structure['Utility party2'] = final_utility_party2
-            self.analysis_data_structure['Social Welfare'] = social_welfare
+            self.analysis_data_structure['party1_'+party1.get_name()] = final_utility_party1
+            self.analysis_data_structure['party2_'+party2.get_name()] = final_utility_party2
+            self.analysis_data_structure[party1.get_name()+'_SocialWelfare'] = social_welfare
 
         return self.analysis_data_structure
 
     def save_analysis_data(self):
-        file_name = 'sessionData_picked' + str(time.time_ns())
-        sessionData = open(f'./logs/{file_name}', 'ab')
+        file_name = 'sessionData_pickled' + str(time.time_ns())
+        session_data = open(f'./logs/{file_name}', 'ab')
         data = self.analysis_data_structure if len(self.analysis_data_structure) > 0 else self.get_analysis_data()
-        pickle.dump(data, sessionData)
-        sessionData.close()
+        pickle.dump(data, session_data)
+        session_data.close()

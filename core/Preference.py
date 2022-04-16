@@ -52,6 +52,12 @@ class Preference:
         if 'reservation' in self.__preference_data_structure:
             self.__reservation = float(self.__preference_data_structure['reservation'])
 
+    def get_domain_name(self):
+        return self.__domain_name
+
+    def get_preference_name(self):
+        return self.__xml_file_name
+
     def get_preference_data_structure(self):
         '''
         this method returns data structure like this:
