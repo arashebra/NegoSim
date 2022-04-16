@@ -1,5 +1,6 @@
 from GUI.AbstractGUISegment import AbstractGUISegment
 import tkinter as tk
+from tkinter import messagebox
 from core.BilateralSession import BilateralSession
 from core.BidSpace import BidSpace
 from GUI.visualization.Charts import Charts
@@ -18,31 +19,35 @@ class BtnStartSession_11(AbstractGUISegment):
 
     def start_negotiation(self):
         protocol_strinVar = self.get_special_segment_special_StringVar(0, 0)
-        protocol_name = protocol_strinVar.get()
+        self.protocol_name = protocol_strinVar.get()
 
         domain_strinVar = self.get_special_segment_special_StringVar(1, 0)
         self.domain_name = domain_strinVar.get()
 
         analysis_stringVar = self.get_special_segment_special_StringVar(2, 0)
-        analysis_name = analysis_stringVar.get()
-
-        listbox_party_preference = self.get_special_widget(8, 0)
-        party_preference1_txt = self.get_text_from_listbox(listbox_party_preference, 0)
-        party1_name, self.party1_preference_name = self.party_preference_text_separator(party_preference1_txt)
-
-        party_preference2_txt = self.get_text_from_listbox(listbox_party_preference, 1)
-        party2_name, self.party2_preference_name = self.party_preference_text_separator(party_preference2_txt)
+        self.analysis_name = analysis_stringVar.get()
 
         deadline_var = self.get_special_segment_special_StringVar(10, 0)
         deadline = deadline_var.get()
 
-        self.bilateral_session = BilateralSession(protocol_name=protocol_name,
-                                                  analysis_man_name=analysis_name,
+        message = self.check_errors()
+        if message != 'Please select ':
+            return messagebox.showerror('Error', message)
+
+        listbox_party_preference = self.get_special_widget(8, 0)
+        party_preference1_txt = self.get_text_from_listbox(listbox_party_preference, 0)
+        self.party1_name, self.party1_preference_name = self.party_preference_text_separator(party_preference1_txt)
+
+        party_preference2_txt = self.get_text_from_listbox(listbox_party_preference, 1)
+        self.party2_name, self.party2_preference_name = self.party_preference_text_separator(party_preference2_txt)
+
+        self.bilateral_session = BilateralSession(protocol_name=self.protocol_name,
+                                                  analysis_man_name=self.analysis_name,
                                                   deadline=deadline,
                                                   first_preference_name=self.party1_preference_name,
                                                   second_preference_name=self.party2_preference_name,
-                                                  party1_name=party1_name,
-                                                  party2_name=party2_name,
+                                                  party1_name=self.party1_name,
+                                                  party2_name=self.party2_name,
                                                   domain_name=self.domain_name)
         self.first_clicked = True
 
@@ -54,6 +59,19 @@ class BtnStartSession_11(AbstractGUISegment):
             h_frame_alternative1 = tk.Frame(master=self.get_root())
             self.replace_frame(1, h_frame_alternative1)
             self.create_visualization_window(h_frame_alternative1)
+
+    def check_errors(self):
+        message = 'Please select '
+        if self.protocol_name == 'Select a protocol':
+            message += 'Protocol, '
+        if self.analysis_name == 'Select a AnalysisMan':
+            message += 'AnalysisMan, '
+        m_participant_list = self.get_special_widget(8, 0)
+        if m_participant_list.size() < 2:
+            message += 'participant, '
+        if self.domain_name == 'Select a Domain':
+            message += 'Domain'
+        return message
 
     def party_preference_text_separator(self, party_preference_text: str) -> tuple:
         temp = party_preference_text.split(PARTY_PREFERENCE_SEPERATOR)

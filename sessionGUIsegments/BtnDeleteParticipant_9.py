@@ -5,9 +5,9 @@ import tkinter as tk
 class BtnDeleteParticipant_9(AbstractGUISegment):
 
     def get_widget(self) -> tuple:
-        self.btn_delete_participant = tk.Button(master=self.get_frame(), text='Delete Participant',
+        btn_delete_participant = tk.Button(master=self.get_frame(), text='Delete Participant',
                                                 width=42, command=self.delete_participant)
-        return self.btn_delete_participant,
+        return btn_delete_participant,
 
     def delete_participant(self):
         listbox_party_and_preference = self.get_special_widget(8, 0)
