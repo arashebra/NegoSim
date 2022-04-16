@@ -2,7 +2,7 @@ from configurations import *
 import tkinter as tk
 from tkinter import ttk
 import sessionGUI
-from GUI import tournamentGUI
+from GUI import tournamentGUI, sessionGUI2
 import controller
 from core.BidSpace import BidSpace
 from tkinter import messagebox
@@ -88,11 +88,17 @@ class View:
     def session_window(self):
         self.open_session_window()
 
+    # def open_session_window(self):
+    #     window_session = tk.Toplevel(self.parent)
+    #     # window_session.geometry("400x400")
+    #     window_session.title("New Session")
+    #     sessionGUI.Session(window_session)
+
     def open_session_window(self):
         window_session = tk.Toplevel(self.parent)
         # window_session.geometry("400x400")
         window_session.title("New Session")
-        sessionGUI.Session(window_session)
+        sessionGUI2.SessionGUI2(window_session)
 
     def tornument_window(self):
         self.open_tornument_window()

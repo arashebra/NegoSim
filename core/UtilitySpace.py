@@ -43,7 +43,7 @@ class UtilitySpace:
         scores_max_values = []
         issue_item = bid.get_issues_items()
         for issue in issue_item:
-            if issue != 'discount_factor' and issue != 'reservation': # don't cont in discount_factor and reservation
+            if issue != 'discount_factor' and issue != 'reservation':  # don't cont in discount_factor and reservation
                 weights.append(self.__preference.get_issue_weight(issue))
                 score, max_value = self.__preference.get_issue_item_value(issue, issue_item[issue])
                 scores_max_values.append((score, max_value))
@@ -64,4 +64,4 @@ class UtilitySpace:
         '''
         bid = offer.get_bid()
         time = offer.get_time()
-        return self.get_utility(bid)* (self.__preference.get_discount_factor()**time)
+        return self.get_utility(bid) * (self.__preference.get_discount_factor() ** time)
