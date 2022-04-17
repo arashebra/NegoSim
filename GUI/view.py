@@ -1,7 +1,6 @@
 from configurations import *
 import tkinter as tk
 from tkinter import ttk
-import sessionGUI
 from GUI import tournamentGUI, sessionGUI2
 import controller
 from core.BidSpace import BidSpace
