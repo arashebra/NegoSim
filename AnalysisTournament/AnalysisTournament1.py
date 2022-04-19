@@ -32,7 +32,7 @@ class AnalysisTournament1(AbstractTournamentAnalysisMan):
         '''
         This method saves data in logs folder
         '''
-        file_name = 'TournamentData_pickled' + str(time.time_ns())
+        file_name = 'TournamentData_pickled' + str(time.strftime('%Y%m%d-%H%M%S'))
         tournament_data = open(f'./TournamentLogs/{file_name}', 'ab')
         data = self.__tournament_analysis_data if len(self.__tournament_analysis_data) > 0 else self.get_tournament_analysis_data()
         pickle.dump(data, tournament_data)

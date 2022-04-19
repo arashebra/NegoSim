@@ -76,7 +76,7 @@ class AnalysisMan2(AbstractAnalysisMan):
         return self.analysis_data_structure
 
     def save_analysis_data(self):
-        file_name = 'sessionData_picked' + str(time.time_ns())
+        file_name = 'sessionData_picked' + str(time.strftime('%Y%m%d-%H%M%S'))
         sessionData = open(f'./logs/{file_name}', 'ab')
         data = self.analysis_data_structure if len(self.analysis_data_structure) > 0 else self.get_analysis_data()
         pickle.dump(data, sessionData)
