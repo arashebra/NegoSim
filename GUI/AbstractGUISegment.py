@@ -19,11 +19,11 @@ class AbstractGUISegment(ABC):
         return self.__all_horizontal_frames[index]
 
     def replace_special_horizontal_frame(self, index: int, frame: Frame):
-        frame = self.__all_horizontal_frames[index]
-        frame.destroy()
+        frame1 = self.__all_horizontal_frames[index]
+        frame1.destroy()
         self.__all_horizontal_frames.pop(index)
         frame.pack(side='left')
-        self.add_new_frame(index, frame)
+        self.add_horizontal_frame(index, frame)
 
     def add_horizontal_frame(self, index: int, frame: Frame):
         self.__all_horizontal_frames.insert(index, frame)

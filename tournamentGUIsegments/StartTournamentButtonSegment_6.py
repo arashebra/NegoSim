@@ -96,7 +96,7 @@ class StartTournamentButtonSegment_6(AbstractGUISegment):
             self.create_tournament_visualization_window1(h_frame1)
         else:
             h_frame_alternative1 = tk.Frame(master=self.get_root())
-            self.replace_frame(1, h_frame_alternative1)
+            self.replace_special_horizontal_frame(1, h_frame_alternative1)
             self.create_tournament_visualization_window1(h_frame_alternative1)
 
         h_frame2 = self.get_special_horizontal_frame(2)
@@ -104,7 +104,7 @@ class StartTournamentButtonSegment_6(AbstractGUISegment):
             self.create_tournament_visualization_window2(h_frame2)
         else:
             h_frame_alternative1 = tk.Frame(master=self.get_root())
-            self.replace_frame(2, h_frame_alternative1)
+            self.replace_special_horizontal_frame(2, h_frame_alternative1)
             self.create_tournament_visualization_window2(h_frame_alternative1)
 
         self.__first_clicked = True
