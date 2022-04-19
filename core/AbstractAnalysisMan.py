@@ -1,4 +1,8 @@
+import pickle
+import time
 from abc import ABC, abstractmethod
+from pathlib import Path
+
 from core.Preference import Preference
 from core.OpponentModelInterface import OpponentModelInterface
 from core.NegoTable import NegoTable
@@ -6,7 +10,6 @@ from core.NegoPartyInterface import NegoPartyInterface
 
 
 class AbstractAnalysisMan(ABC):
-
     '''
     analysis_data_structure = {
         'parties_utility': {party1: 0.74, party2: 0.85},
@@ -15,7 +18,8 @@ class AbstractAnalysisMan(ABC):
     }
     '''
 
-    def __init__(self, party1, party2, nego_table, preference_of_party1, preference_of_party2, opponent_model_party1=None, opponent_model_party2=None):
+    def __init__(self, party1, party2, nego_table, preference_of_party1, preference_of_party2,
+                 opponent_model_party1=None, opponent_model_party2=None):
         if not isinstance(party1, NegoPartyInterface):
             raise TypeError('party1 argument must be an instance of NegoPartyInterface')
         if not isinstance(party2, NegoPartyInterface):
@@ -37,6 +41,7 @@ class AbstractAnalysisMan(ABC):
         self.__preference_of_party2 = preference_of_party2
         self.__opponent_model_party1 = opponent_model_party1
         self.__opponent_model_party2 = opponent_model_party2
+        self.analysis_data_structure = {}
 
     def get_party1(self):
         return self.__party1
@@ -66,9 +71,12 @@ class AbstractAnalysisMan(ABC):
         '''
         raise NotImplementedError()
 
-    @abstractmethod
     def save_analysis_data(self):
-        '''
-        This method saves data in logs folder
-        '''
-        raise NotImplementedError()
+        file_name = 'sessionData_pickled' + str(time.strftime('%Y%m%d-%H%M%S'))
+        log_dir = Path("logs")
+        if not log_dir.exists():
+            log_dir.mkdir(parents=True)
+        session_data = open(f'./logs/{file_name}', 'ab')
+        data = self.analysis_data_structure if len(self.analysis_data_structure) > 0 else self.get_analysis_data()
+        pickle.dump(data, session_data)
+        session_data.close()

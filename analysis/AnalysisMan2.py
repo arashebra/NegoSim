@@ -1,7 +1,5 @@
 from core.UtilitySpace import UtilitySpace
 from core.AbstractAnalysisMan import AbstractAnalysisMan
-import pickle
-import time
 import math
 from statistics import mean
 
@@ -12,9 +10,6 @@ class AnalysisMan2(AbstractAnalysisMan):
         '''
         :return: a dict
         '''
-
-        self.analysis_data_structure = {}
-
         negotiation_state = self.get_nego_table().get_state_info().get_negotiation_state()
         preference_party1 = self.get_preference_of_party1()
         utility_space_party1 = UtilitySpace(preference_party1)
@@ -75,9 +70,3 @@ class AnalysisMan2(AbstractAnalysisMan):
 
         return self.analysis_data_structure
 
-    def save_analysis_data(self):
-        file_name = 'sessionData_picked' + str(time.strftime('%Y%m%d-%H%M%S'))
-        sessionData = open(f'./logs/{file_name}', 'ab')
-        data = self.analysis_data_structure if len(self.analysis_data_structure) > 0 else self.get_analysis_data()
-        pickle.dump(data, sessionData)
-        sessionData.close()

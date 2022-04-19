@@ -1,4 +1,7 @@
+import pickle
+import time
 from abc import ABC, abstractmethod
+from pathlib import Path
 
 
 class AbstractTournamentAnalysisMan(ABC):
@@ -6,6 +9,7 @@ class AbstractTournamentAnalysisMan(ABC):
     def __init__(self, agent_names: list):
         self.__agent_names = agent_names
         self.__session_analysis_dataset = []  # list of session analysis data
+        self.tournament_analysis_data = {}
 
     def get_agent_names(self):
         return self.__agent_names
@@ -27,9 +31,13 @@ class AbstractTournamentAnalysisMan(ABC):
         '''
         raise NotImplementedError()
 
-    @abstractmethod
+
     def save_analysis_data(self):
-        '''
-        This method saves data in logs folder
-        '''
-        raise NotImplementedError()
+        file_name = 'TournamentData_pickled' + str(time.strftime('%Y%m%d-%H%M%S'))
+        log_dir = Path("TournamentLogs")
+        if not log_dir.exists():
+            log_dir.mkdir(parents=True)
+        tournament_data = open(f'./TournamentLogs/{file_name}', 'ab')
+        data = self.tournament_analysis_data if len(self.tournament_analysis_data) > 0 else self.tournament_analysis_data
+        pickle.dump(data, tournament_data)
+        tournament_data.close()

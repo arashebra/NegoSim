@@ -1,8 +1,5 @@
 from core.UtilitySpace import UtilitySpace
 from core.AbstractAnalysisMan import AbstractAnalysisMan
-import pickle
-import time
-
 
 class AnalysisMan1(AbstractAnalysisMan):
 
@@ -14,9 +11,6 @@ class AnalysisMan1(AbstractAnalysisMan):
                          'Social Welfare': 1.8151571993414446
                          }
         '''
-
-        self.analysis_data_structure = {}
-
         negotiation_state = self.get_nego_table().get_state_info().get_negotiation_state()
         preference_party1 = self.get_preference_of_party1()
         utility_space_party1 = UtilitySpace(preference_party1)
@@ -27,22 +21,18 @@ class AnalysisMan1(AbstractAnalysisMan):
         offers_on_table = self.get_nego_table().get_offers_on_table()
         party1_offers = offers_on_table[party1]
         if len(party1_offers) > 0:
-            last_offer = party1_offers[len(party1_offers)-1]
+            last_offer = party1_offers[len(party1_offers) - 1]
 
-            final_utility_party1 = utility_space_party1.get_utility_distinct(last_offer) if negotiation_state == 1 else 0.0
-            final_utility_party2 = utility_space_party2.get_utility_distinct(last_offer) if negotiation_state == 1 else 0.0
+            final_utility_party1 = utility_space_party1.get_utility_distinct(
+                last_offer) if negotiation_state == 1 else 0.0
+            final_utility_party2 = utility_space_party2.get_utility_distinct(
+                last_offer) if negotiation_state == 1 else 0.0
 
             social_welfare = final_utility_party1 + final_utility_party2
 
-            self.analysis_data_structure['party1_'+party1.get_name()] = final_utility_party1
-            self.analysis_data_structure['party2_'+party2.get_name()] = final_utility_party2
-            self.analysis_data_structure[party1.get_name()+'_SocialWelfare'] = social_welfare
+            self.analysis_data_structure['party1_' + party1.get_name()] = final_utility_party1
+            self.analysis_data_structure['party2_' + party2.get_name()] = final_utility_party2
+            self.analysis_data_structure[party1.get_name() + '_SocialWelfare'] = social_welfare
 
         return self.analysis_data_structure
 
-    def save_analysis_data(self):
-        file_name = 'sessionData_pickled' + str(time.strftime('%Y%m%d-%H%M%S'))
-        session_data = open(f'./logs/{file_name}', 'ab')
-        data = self.analysis_data_structure if len(self.analysis_data_structure) > 0 else self.get_analysis_data()
-        pickle.dump(data, session_data)
-        session_data.close()
