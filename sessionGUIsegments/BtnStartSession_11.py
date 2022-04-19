@@ -61,7 +61,7 @@ class BtnStartSession_11(AbstractGUISegment):
             self.create_visualization_window(h_frame1)
         else:
             h_frame_alternative1 = tk.Frame(master=self.get_root())
-            self.replace_frame(1, h_frame_alternative1)
+            self.replace_special_horizontal_frame(1, h_frame_alternative1)
             self.create_visualization_window(h_frame_alternative1)
 
     def check_errors(self):
