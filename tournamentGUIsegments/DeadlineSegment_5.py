@@ -19,8 +19,8 @@ class DeadlineSegment_5(AbstractGUISegment, ABC):
         spinbox_deadline.delete(0, 'end')
         spinbox_deadline.insert(0, INITIAL_DEADLINE_TIME)
 
-        var_time_type = IntVar()
-        time_type = ttk.OptionMenu(frame, var_time_type, 's', *['s'])
+        var_time_type = self.get_special_segment_special_StringVar(5, 1)
+        time_type = ttk.OptionMenu(frame, var_time_type, 's', *['s', 'ms'])
         time_type.config(width=3)
 
         return lebel1, spinbox_deadline, time_type

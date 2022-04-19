@@ -74,6 +74,9 @@ class StartTournamentButtonSegment_6(AbstractGUISegment):
         deadline_var = deadline_var_tuple[0]
         deadline = deadline_var.get()
 
+        deadline_type_var = self.get_special_segment_special_StringVar(5, 1)
+        deadline_type = deadline_type_var.get()
+
         if message != NOTSELECTIONMESSAGE:
             return messagebox.showerror('Error', message)
 
@@ -81,6 +84,7 @@ class StartTournamentButtonSegment_6(AbstractGUISegment):
                                                         analysis_man_name=selected_analysis,
                                                         Tournament_analysis_name=selected_tournament_analysis,
                                                         deadline=deadline,
+                                                        deadline_type=deadline_type,
                                                         agent_names=agent1_names,
                                                         opponent_names=opponent_names,
                                                         domain_names=selected_domains)

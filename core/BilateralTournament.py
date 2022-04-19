@@ -7,8 +7,8 @@ from configurations import *
 
 class BilateralTournament:
 
-    def __init__(self, protocol_name: str, analysis_man_name: str, Tournament_analysis_name: str, deadline,
-                 agent_names: list, opponent_names: list, domain_names: list):
+    def __init__(self, protocol_name: str, analysis_man_name: str, Tournament_analysis_name: str,
+                 deadline, deadline_type, agent_names: list, opponent_names: list, domain_names: list):
 
         self.__domain_names = domain_names
         self.__agent_names = agent_names
@@ -16,6 +16,7 @@ class BilateralTournament:
         self.__protocol_name = protocol_name
         self.__analysis_man_name = analysis_man_name
         self.__deadline = deadline
+        self.__deadline_type = deadline_type
         self.__tournament_analysis_man = CreateObjectByPath.get_object(ANALYSIS_TOURNAMENT_PACKAGE_NAME,
                                                                        Tournament_analysis_name,
                                                                        agent_names)
@@ -34,6 +35,7 @@ class BilateralTournament:
                             bilateral_session = BilateralSession(protocol_name=self.__protocol_name,
                                                                  analysis_man_name=self.__analysis_man_name,
                                                                  deadline=self.__deadline,
+                                                                 deadline_type=self.__deadline_type,
                                                                  first_preference_name=preference_permutations[0],
                                                                  second_preference_name=preference_permutations[1],
                                                                  party1_name=party1_name,

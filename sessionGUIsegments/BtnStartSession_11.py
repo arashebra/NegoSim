@@ -30,6 +30,9 @@ class BtnStartSession_11(AbstractGUISegment):
         deadline_var = self.get_special_segment_special_StringVar(10, 0)
         deadline = deadline_var.get()
 
+        deadline_type_var = self.get_special_segment_special_StringVar(10, 1)
+        deadline_type = deadline_type_var.get()
+
         message = self.check_errors()
         if message != 'Please select ':
             return messagebox.showerror('Error', message)
@@ -44,6 +47,7 @@ class BtnStartSession_11(AbstractGUISegment):
         self.bilateral_session = BilateralSession(protocol_name=self.protocol_name,
                                                   analysis_man_name=self.analysis_name,
                                                   deadline=deadline,
+                                                  deadline_type=deadline_type,
                                                   first_preference_name=self.party1_preference_name,
                                                   second_preference_name=self.party2_preference_name,
                                                   party1_name=self.party1_name,
