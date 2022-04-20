@@ -20,7 +20,7 @@ class Charts:
 
     def bar_chart(self, data, frame: Frame, col1_name: str, col2_name: str):
         df1 = pd.DataFrame(data, columns=[col1_name, col2_name])
-        figure1 = plt.Figure(figsize=(6, 10), dpi=60)
+        figure1 = plt.Figure(figsize=(3, 10), dpi=60)
         ax1 = figure1.add_subplot(111)
         bar1 = FigureCanvasTkAgg(figure1, frame)
         bar1.get_tk_widget().pack(side=LEFT, fill=BOTH)

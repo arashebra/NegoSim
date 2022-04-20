@@ -4,11 +4,13 @@ from tkinter.ttk import Button
 from GUI.visualization.Charts import Charts
 from core.BilateralTournament import BilateralTournament
 import tkinter as tk
+from pandastable import Table, TableModel
+import pandas as pd
 
 NOTSELECTIONMESSAGE = 'Please select '
 
 
-class StartTournamentButtonSegment_6(AbstractGUISegment):
+class StartTournamentButtonSegment_7(AbstractGUISegment):
 
     def get_widget(self) -> tuple:
         self.__first_clicked = False
@@ -18,7 +20,7 @@ class StartTournamentButtonSegment_6(AbstractGUISegment):
         return btn_start,
 
     def get_name(self):
-        return 'StartTournamentButtonSegment_6.py'
+        return 'StartTournamentButtonSegment_7.py'
 
     def start_tournament(self):
 
@@ -77,6 +79,9 @@ class StartTournamentButtonSegment_6(AbstractGUISegment):
         deadline_type_var = self.get_special_segment_special_StringVar(5, 1)
         deadline_type = deadline_type_var.get()
 
+        tournament_repetition_var = self.get_special_segment_special_StringVar(6, 0)
+        tournament_repetition = tournament_repetition_var.get()
+
         if message != NOTSELECTIONMESSAGE:
             return messagebox.showerror('Error', message)
 
@@ -87,7 +92,8 @@ class StartTournamentButtonSegment_6(AbstractGUISegment):
                                                         deadline_type=deadline_type,
                                                         agent_names=agent1_names,
                                                         opponent_names=opponent_names,
-                                                        domain_names=selected_domains)
+                                                        domain_names=selected_domains,
+                                                        tournament_repetition=tournament_repetition)
 
         self.bilateral_tournament.start_tournament()
 
@@ -103,16 +109,24 @@ class StartTournamentButtonSegment_6(AbstractGUISegment):
         if not self.__first_clicked:
             self.create_tournament_visualization_window2(h_frame2)
         else:
-            h_frame_alternative1 = tk.Frame(master=self.get_root())
-            self.replace_special_horizontal_frame(2, h_frame_alternative1)
-            self.create_tournament_visualization_window2(h_frame_alternative1)
+            h_frame_alternative2 = tk.Frame(master=self.get_root())
+            self.replace_special_horizontal_frame(2, h_frame_alternative2)
+            self.create_tournament_visualization_window2(h_frame_alternative2)
+
+        h_frame3 = self.get_special_horizontal_frame(3)
+        if not self.__first_clicked:
+            self.create_tournament_visualization_window3(h_frame3)
+        else:
+            h_frame_alternative3 = tk.Frame(master=self.get_root())
+            self.replace_special_horizontal_frame(3, h_frame_alternative3)
+            self.create_tournament_visualization_window3(h_frame_alternative3)
 
         self.__first_clicked = True
 
     def create_tournament_visualization_window1(self, h_frame1):
         chart = Charts()
-        tournament_analysis_man = self.bilateral_tournament.get_tournament_analysis_man()
-        my_data = tournament_analysis_man.get_tournament_analysis_data()
+        my_data = self.bilateral_tournament.get_avg_all_tournament_analysis_data()
+        print(my_data)
         agents_names = [key.split('_')[1] for key, value in my_data.items() if key.split('_')[0] == 'party1']
         agents_utilities = [value for key, value in my_data.items() if key.split('_')[0] == 'party1']
         data = {'Agents': agents_names,
@@ -120,14 +134,24 @@ class StartTournamentButtonSegment_6(AbstractGUISegment):
                 }
         chart.bar_chart(data=data, frame=h_frame1, col1_name='Agents', col2_name='Utility')
 
-    def create_tournament_visualization_window2(self, h_frame1):
+    def create_tournament_visualization_window2(self, h_frame2):
         chart = Charts()
-        tournament_analysis_man = self.bilateral_tournament.get_tournament_analysis_man()
-        my_data = tournament_analysis_man.get_tournament_analysis_data()
+        my_data = self.bilateral_tournament.get_avg_all_tournament_analysis_data()
         agents_names = [key.split('_')[0] for key, value in my_data.items() if key.split('_')[1] == 'SocialWelfare']
         agents_utilities = [value for key, value in my_data.items() if key.split('_')[1] == 'SocialWelfare']
         data = {'Agents': agents_names,
                 'SocialWelfare': agents_utilities
                 }
-        chart.bar_chart(data=data, frame=h_frame1, col1_name='Agents', col2_name='SocialWelfare')
+        chart.bar_chart(data=data, frame=h_frame2, col1_name='Agents', col2_name='SocialWelfare')
 
+    def create_tournament_visualization_window3(self, h_frame3):
+        data = self.bilateral_tournament.get_avg_all_tournament_analysis_data()
+        my_dict1 = {key.split('_')[1]: value for key, value in data.items() if key.split('_')[0] == 'party1'}
+        my_dict2 = {key: value for key, value in data.items() if key.split('_')[1] == 'SocialWelfare'}
+        final_dict = {key.split('_')[0]: [my_dict1[key.split('_')[0]], value] for key, value in my_dict2.items()}
+
+        df = pd.DataFrame(data=final_dict).T
+        df.columns = ['Utility', 'Social Welfare']
+        self.table = pt = Table(h_frame3, dataframe=df, showtoolbar=True, showstatusbar=True)
+
+        pt.show()
