@@ -97,29 +97,29 @@ class StartTournamentButtonSegment_7(AbstractGUISegment):
 
         self.bilateral_tournament.start_tournament()
 
+        # h_frame1 = self.get_special_horizontal_frame(1)
+        # if not self.__first_clicked:
+        #     self.create_tournament_visualization_window1(h_frame1)
+        # else:
+        #     h_frame_alternative1 = tk.Frame(master=self.get_root())
+        #     self.replace_special_horizontal_frame(1, h_frame_alternative1)
+        #     self.create_tournament_visualization_window1(h_frame_alternative1)
+        #
+        # h_frame2 = self.get_special_horizontal_frame(2)
+        # if not self.__first_clicked:
+        #     self.create_tournament_visualization_window2(h_frame2)
+        # else:
+        #     h_frame_alternative2 = tk.Frame(master=self.get_root())
+        #     self.replace_special_horizontal_frame(2, h_frame_alternative2)
+        #     self.create_tournament_visualization_window2(h_frame_alternative2)
+
         h_frame1 = self.get_special_horizontal_frame(1)
         if not self.__first_clicked:
-            self.create_tournament_visualization_window1(h_frame1)
+            self.create_tournament_visualization_window3(h_frame1)
         else:
             h_frame_alternative1 = tk.Frame(master=self.get_root())
             self.replace_special_horizontal_frame(1, h_frame_alternative1)
-            self.create_tournament_visualization_window1(h_frame_alternative1)
-
-        h_frame2 = self.get_special_horizontal_frame(2)
-        if not self.__first_clicked:
-            self.create_tournament_visualization_window2(h_frame2)
-        else:
-            h_frame_alternative2 = tk.Frame(master=self.get_root())
-            self.replace_special_horizontal_frame(2, h_frame_alternative2)
-            self.create_tournament_visualization_window2(h_frame_alternative2)
-
-        h_frame3 = self.get_special_horizontal_frame(3)
-        if not self.__first_clicked:
-            self.create_tournament_visualization_window3(h_frame3)
-        else:
-            h_frame_alternative3 = tk.Frame(master=self.get_root())
-            self.replace_special_horizontal_frame(3, h_frame_alternative3)
-            self.create_tournament_visualization_window3(h_frame_alternative3)
+            self.create_tournament_visualization_window3(h_frame_alternative1)
 
         self.__first_clicked = True
 
