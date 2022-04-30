@@ -149,7 +149,6 @@ class StartTournamentButtonSegment_7(AbstractGUISegment):
         my_dict1 = {key.split('_')[1]: value for key, value in data.items() if key.split('_')[0] == 'party1'}
         my_dict2 = {key: value for key, value in data.items() if key.split('_')[1] == 'SocialWelfare'}
         final_dict = {key.split('_')[0]: [key.split('_')[0], my_dict1[key.split('_')[0]], value] for key, value in my_dict2.items()}
-
         df = pd.DataFrame(data=final_dict).T
         df.columns = ['Agents', 'Utility', 'Social Welfare']
         self.table = pt = Table(h_frame3, dataframe=df, showtoolbar=True, showstatusbar=True)

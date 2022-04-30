@@ -51,15 +51,19 @@ class BilateralTournament:
                                 self.__tournament_analysis_man.add_session_analysis_data(
                                     bilateral_session.get_analysis_man().get_analysis_data())
 
-            tournament_analysis_data = self.__tournament_analysis_man.get_tournament_analysis_data()
-            count = 1
-            for key, value in tournament_analysis_data.items():
-                if key not in self.__avg_all_tournament_analysis_data:
-                    self.__avg_all_tournament_analysis_data[key] = value
-                else:
-                    self.__avg_all_tournament_analysis_data[key] = \
-                        (((self.__avg_all_tournament_analysis_data[key]*count) + value)/(count+1))
-                    count += 1
+            self.cal_avg()
+            # tournament_analysis_data = self.__tournament_analysis_man.get_tournament_analysis_data()
+            # count = 1
+            # for key, value in tournament_analysis_data.items():
+            #     if key not in self.__avg_all_tournament_analysis_data:
+            #         self.__avg_all_tournament_analysis_data[key] = value
+            #     else:
+            #         self.__avg_all_tournament_analysis_data[key] = \
+            #             (((self.__avg_all_tournament_analysis_data[key]*count) + value)/(count+1))
+            #         count += 1
+
+
+
 
         print('**************************** Final Result ****************************')
         print(self.__avg_all_tournament_analysis_data)
@@ -69,5 +73,18 @@ class BilateralTournament:
     def get_avg_all_tournament_analysis_data(self):
         return self.__avg_all_tournament_analysis_data
 
-    # def get_tournament_analysis_man(self):
-    #     return self.__tournament_analysis_man
+    def cal_avg(self):
+        '''
+        this method calculates the average over iterations of tournament
+        :return: average
+        '''
+        tournament_analysis_data = self.__tournament_analysis_man.get_tournament_analysis_data()
+        count = 1
+        for key, value in tournament_analysis_data.items():
+            if not isinstance(value, list):
+                if key not in self.__avg_all_tournament_analysis_data:
+                    self.__avg_all_tournament_analysis_data[key] = value
+                else:
+                    self.__avg_all_tournament_analysis_data[key] = \
+                        (((self.__avg_all_tournament_analysis_data[key] * count) + value) / (count + 1))
+                    count += 1

@@ -17,13 +17,21 @@ class AnalysisTournament1(AbstractTournamentAnalysisMan):
         i = 1
         for session_analysis_data in session_analysis_dataset:
             for key, value in session_analysis_data.items():
-                if key.split('_')[0] == 'party1' or key.split('_')[1] == 'SocialWelfare':
-                    if key not in self.tournament_analysis_data:
-                        self.tournament_analysis_data[key] = value
-                    else:
-                        self.tournament_analysis_data[key] = (value + (self.tournament_analysis_data[key] * i)) / (
+                if key.split('_')[0] == 'party1' or key.split('_')[1] == 'SocialWelfare' or key.split('_')[1] == 'opWRMSE':
+                    if not isinstance(value, list):
+                        if key not in self.tournament_analysis_data:
+                            self.tournament_analysis_data[key] = value
+                        else:
+                            self.tournament_analysis_data[key] = (value + (self.tournament_analysis_data[key] * i)) / (
                                     i + 1)
-                        i = i + 1
+                            i = i + 1
+                    elif key.split('_')[1] == 'opWRMSE':
+                        if key not in self.tournament_analysis_data:
+                            self.tournament_analysis_data[key] = value[len(value)-1]
+                        else:
+                            self.tournament_analysis_data[key] = (value[len(value)-1] + (self.tournament_analysis_data[key] * i)) / (
+                                    i + 1)
+                            i = i + 1
 
         return self.tournament_analysis_data
 

@@ -6,6 +6,46 @@ from statistics import mean
 
 class AnalysisMan2(AbstractAnalysisMan):
 
+    def cal_estimation_analysis_data(self) -> dict:
+        preference_party1 = self.get_preference_of_party1()
+        preference_party2 = self.get_preference_of_party2()
+        if self.get_opponent_model_party1() != None:
+            estimated_preference = self.get_opponent_model_party1().get_preference()
+            total = 0
+            issue_weights = preference_party1.get_weights()
+
+            for issue, weight in issue_weights.items():
+                item_value = preference_party1.get_issue_ItemValue(issue=issue)
+                estimated_item_value = estimated_preference.get_issue_ItemValue(issue=issue)
+                avg_values = mean(float(x) for x in item_value.values())
+                for item, _ in item_value.items():
+                    v = avg_values - float(estimated_item_value[item])
+                    total += float(weight) * (v ** 2)
+            wrmse1 = math.sqrt(total)
+            if not (self.get_party1().get_name()+'_opWRMSE') in self.estimation_analysis_data_structure:
+                self.estimation_analysis_data_structure[self.get_party1().get_name()+'_opWRMSE'] = [wrmse1]
+            else:
+                self.estimation_analysis_data_structure[self.get_party1().get_name()+'_opWRMSE'].append(wrmse1)
+
+        if self.get_opponent_model_party2() != None:
+            estimated_preference = self.get_opponent_model_party2().get_preference()
+            total = 0
+            issue_weights = preference_party2.get_weights()
+
+            for issue, weight in issue_weights.items():
+                item_value = preference_party2.get_issue_ItemValue(issue=issue)
+                estimated_item_value = estimated_preference.get_issue_ItemValue(issue=issue)
+                avg_values = mean(float(x) for x in item_value.values())
+                for item, _ in item_value.items():
+                    v = avg_values - float(estimated_item_value[item])
+                    total += float(weight) * (v ** 2)
+            wrmse2 = math.sqrt(total)
+            if not (self.get_party2().get_name()+'_opWRMSE') in self.estimation_analysis_data_structure:
+                self.estimation_analysis_data_structure[self.get_party2().get_name()+'_opWRMSE'] = wrmse2
+            else:
+                self.estimation_analysis_data_structure[self.get_party2().get_name()+'_opWRMSE'].append(wrmse2)
+
+
     def get_analysis_data(self) -> dict:
         '''
         :return: a dict
@@ -29,44 +69,17 @@ class AnalysisMan2(AbstractAnalysisMan):
 
         offers1 = [(offer.get_bid(), offer.get_time(), utility_space_party1.get_utility_distinct(offer)) for offer in
                    party1_offers]
-        self.analysis_data_structure['party1 offers'] = offers1
+        self.analysis_data_structure['party1_offers'] = offers1
         offers2 = [(offer.get_bid(), offer.get_time(), utility_space_party2.get_utility_distinct(offer)) for offer in
                    party2_offers]
-        self.analysis_data_structure['party2 offers'] = offers2
+        self.analysis_data_structure['party2_offers'] = offers2
 
-        self.analysis_data_structure['party1_'+party1.get_name()] = final_utility_party1
-        self.analysis_data_structure['party2_'+party2.get_name()] = final_utility_party2
-        self.analysis_data_structure[party1.get_name()+'_SocialWelfare'] = social_welfare
+        self.analysis_data_structure['party1_' + party1.get_name()] = final_utility_party1
+        self.analysis_data_structure['party2_' + party2.get_name()] = final_utility_party2
+        self.analysis_data_structure[party1.get_name() + '_SocialWelfare'] = social_welfare
 
-        if self.get_opponent_model_party1() != None:
-            estimated_preferance = self.get_opponent_model_party1().get_preference()
-            total = 0
-            issue_weights = preference_party1.get_weights()
-
-            for issue, weight in issue_weights.items():
-                item_value = preference_party1.get_issue_ItemValue(issue=issue)
-                estimated_item_value = estimated_preferance.get_issue_ItemValue(issue=issue)
-                avg_values = mean(float(x) for x in item_value.values())
-                for item, _ in item_value.items():
-                    v = avg_values - float(estimated_item_value[item])
-                    total += float(weight) * (v ** 2)
-            wrmse1 = math.sqrt(total)
-            self.analysis_data_structure['WRMSE 1'] = wrmse1
-
-        if self.get_opponent_model_party2() != None:
-            estimated_preferance = self.get_opponent_model_party2().get_preference()
-            total = 0
-            issue_weights = preference_party2.get_weights()
-
-            for issue, weight in issue_weights.items():
-                item_value = preference_party2.get_issue_ItemValue(issue=issue)
-                estimated_item_value = estimated_preferance.get_issue_ItemValue(issue=issue)
-                avg_values = mean(float(x) for x in item_value.values())
-                for item, _ in item_value.items():
-                    v = avg_values - float(estimated_item_value[item])
-                    total += float(weight) * (v ** 2)
-            wrmse2 = math.sqrt(total)
-            self.analysis_data_structure['WRMSE 2'] = wrmse2
+        if len(self.analysis_data_structure) > 0:
+            for key in self.estimation_analysis_data_structure:
+                self.analysis_data_structure[key] = self.estimation_analysis_data_structure[key]
 
         return self.analysis_data_structure
-

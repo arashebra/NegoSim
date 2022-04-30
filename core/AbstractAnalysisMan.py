@@ -50,6 +50,7 @@ class AbstractAnalysisMan(ABC):
         self.__opponent_model_party2 = opponent_model_party2
         self.__user_model_party1 = user_model_party1
         self.__user_model_party2 = user_model_party2
+        self.estimation_analysis_data_structure = {}
         self.analysis_data_structure = {}
 
     def get_party1(self):
@@ -78,6 +79,13 @@ class AbstractAnalysisMan(ABC):
 
     def get_user_model_party2(self):
         return self.__user_model_party2
+
+    @abstractmethod
+    def cal_estimation_analysis_data(self) -> dict:
+        '''
+        :return: a dict
+        '''
+        raise NotImplementedError()
 
     @abstractmethod
     def get_analysis_data(self) -> dict:

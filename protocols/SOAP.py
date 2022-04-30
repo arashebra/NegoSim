@@ -22,6 +22,7 @@ class SOAP(AbstractProtocol):
                     offer = Offer(bid, self.get_time())
                     self.get_nego_table().add_offer(party, offer)
                     print(party.get_name(), ' -> ', offer)
+                    self.get_analysis_man().cal_estimation_analysis_data()
                 if self.is_agreement() is True:
                     self.get_nego_table().get_state_info().set_negotiation_state(1)
                     print("Negotiation was ended due to reaching Agreement!")

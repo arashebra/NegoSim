@@ -6,6 +6,9 @@ import time
 
 class Analysis_man0(AbstractAnalysisMan):
 
+    def cal_estimation_analysis_data(self) -> dict:
+        return None
+
     def get_analysis_data(self) -> dict:
         '''
         :return: a dict {
