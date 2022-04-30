@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod, abstractclassmethod
 from core.NegoPartyInterface import NegoPartyInterface
 from core.Preference import Preference
 from core.UtilitySpace import UtilitySpace
@@ -12,7 +12,7 @@ class AbstractNegoParty(NegoPartyInterface, ABC):
     def __init__(self, preference: Preference):
         self.__preference = preference
         self.__utility_space = UtilitySpace(self.__preference)
-        self.opponent_model = None
+        # self.opponent_model = None
 
     def get_preference(self):
         return self.__preference
@@ -20,8 +20,8 @@ class AbstractNegoParty(NegoPartyInterface, ABC):
     def get_utility_space(self):
         return self.__utility_space
 
-    def get_opponent_model(self):
-        return self.opponent_model
+    # def get_opponent_model(self):
+    #     return self.opponent_model
 
     def generate_random_bid(self):
         issue_items = {}
@@ -46,5 +46,19 @@ class AbstractNegoParty(NegoPartyInterface, ABC):
     def get_name(self):
         """
         :return: Party Name
+        """
+        raise NotImplementedError()
+
+    @abstractmethod
+    def get_opponent_model(self):
+        """
+        :return: opponent model
+        """
+        raise NotImplementedError()
+
+    @abstractmethod
+    def get_user_model(self):
+        """
+        :return: user model
         """
         raise NotImplementedError()

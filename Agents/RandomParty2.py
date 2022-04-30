@@ -34,3 +34,15 @@ class RandomParty2(AbstractNegoParty):
 
     def get_name(self):
         return 'Random2'
+
+    def get_opponent_model(self):
+        """
+        :return: opponent model
+        """
+        return self.opponent_model
+
+    def get_user_model(self):
+        """
+        :return: user model
+        """
+        return None

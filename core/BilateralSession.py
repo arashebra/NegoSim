@@ -44,18 +44,31 @@ class BilateralSession:
 
             nego_table = NegoTable(parties=(self.party1, self.party2), state_info=state_info)
 
-            self.protocol = CreateObjectByPath.get_object(PROTOCOL_PACKAGE_NAME, protocol_name, time_line, nego_table)
+            self.protocol = CreateObjectByPath.get_object(PROTOCOL_PACKAGE_NAME,
+                                                          protocol_name,
+                                                          time_line,
+                                                          nego_table)
 
-            self.analysis_man = CreateObjectByPath.get_object(ANALYSIS_PACKAGE_NAME, analysis_man_name,
-                                                              self.party1, self.party2, nego_table, self.preference1,
-                                                              self.preference2)
+            self.analysis_man = CreateObjectByPath.get_object(ANALYSIS_PACKAGE_NAME,
+                                                              analysis_man_name,
+                                                              self.party1,
+                                                              self.party2,
+                                                              nego_table,
+                                                              self.preference1,
+                                                              self.preference2,
+                                                              self.party1.get_opponent_model(),
+                                                              self.party2.get_opponent_model(),
+                                                              self.party1.get_user_model(),
+                                                              self.party2.get_user_model())
 
         except (ImportError, AttributeError) as e:
             raise ImportError('NegoSim could not import :)', e)
 
     def start_session(self):
         print('----------------- Negotiation Session -----------------')
-        print(self.preference1.get_domain_name(), ',',self.preference2.get_domain_name(), ' -> ', self.party1, '(', self.preference1.get_preference_name(), ')', ' Vs ', self.party2, '(',self.preference2.get_preference_name(), ')')
+        print(self.preference1.get_domain_name(), ',', self.preference2.get_domain_name(), ' -> ', self.party1, '(',
+              self.preference1.get_preference_name(), ')', ' Vs ', self.party2, '(',
+              self.preference2.get_preference_name(), ')')
         print('-------------------------------------------------------')
         self.protocol.negotiate()
         print('----------------- Negotiation Result -----------------')

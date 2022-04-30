@@ -42,3 +42,15 @@ class StupidParty1(NegoPartyInterface):
 
     def get_name(self):
         return 'Stupid1'
+
+    def get_opponent_model(self):
+        """
+        :return: opponent model
+        """
+        return None
+
+    def get_user_model(self):
+        """
+        :return: user model
+        """
+        return None

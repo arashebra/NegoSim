@@ -47,11 +47,11 @@ class TimeDependent(AbstractNegoParty):
     def get_target_utility(self, p_min, p_max, t, k, e):
         # u(t) = Pmin + (Pmax − Pmin) · (1 − F(t)),
         # F(t) = k + (1 − k) · t **1/e
-        u_t = p_min + (p_max - p_min)*(1 - self.f(t, k, e))
+        u_t = p_min + (p_max - p_min) * (1 - self.f(t, k, e))
         return u_t
 
     def f(self, t, k, e):
-        return k + (1 - k)*(t**(1.0/e))
+        return k + (1 - k) * (t ** (1.0 / e))
 
     def set_values(self, p_min, p_max, k, e):
         self.__p_min = p_min
@@ -64,3 +64,15 @@ class TimeDependent(AbstractNegoParty):
         :return: Party Name
         """
         return "Time Dependent"
+
+    def get_opponent_model(self):
+        """
+        :return: opponent model
+        """
+        return None
+
+    def get_user_model(self):
+        """
+        :return: user model
+        """
+        return None
