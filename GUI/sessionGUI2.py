@@ -10,7 +10,7 @@ class SessionGUI2(GUIsegments):
 
 if __name__ == '__main__':
     root = tk.Tk()
-    root.title('New Tournament')
+    root.title('New Session')
     # root.geometry('400x400')
     SessionGUI2(root)
     root.mainloop()
