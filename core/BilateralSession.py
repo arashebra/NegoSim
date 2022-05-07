@@ -34,17 +34,17 @@ class BilateralSession:
 
         try:
             self.preference1 = Preference(domain_name, first_preference_name)
-            self.party1 = CreateObjectByPath.get_object(AGENTS_PACKAGE_NAME, party1_name, self.preference1)
+            self.party1 = CreateObjectByPath.get_object('../'+AGENTS_PACKAGE_NAME, party1_name, self.preference1)
 
             self.preference2 = Preference(domain_name, second_preference_name)
-            self.party2 = CreateObjectByPath.get_object(AGENTS_PACKAGE_NAME, party2_name, self.preference2)
+            self.party2 = CreateObjectByPath.get_object('../'+AGENTS_PACKAGE_NAME, party2_name, self.preference2)
 
             time_line = TimeLine(float(deadline), deadline_type)
             state_info = StateInfo(time_line=time_line, my_agent_offers=[], opponent_offers={})
 
             nego_table = NegoTable(parties=(self.party1, self.party2), state_info=state_info)
 
-            self.analysis_man = CreateObjectByPath.get_object(ANALYSIS_PACKAGE_NAME,
+            self.analysis_man = CreateObjectByPath.get_object('../'+ANALYSIS_PACKAGE_NAME,
                                                               analysis_man_name,
                                                               self.party1,
                                                               self.party2,
@@ -56,7 +56,7 @@ class BilateralSession:
                                                               self.party1.get_user_model(),
                                                               self.party2.get_user_model())
 
-            self.protocol = CreateObjectByPath.get_object(PROTOCOL_PACKAGE_NAME,
+            self.protocol = CreateObjectByPath.get_object('../'+PROTOCOL_PACKAGE_NAME,
                                                           protocol_name,
                                                           time_line,
                                                           nego_table,

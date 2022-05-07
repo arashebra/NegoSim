@@ -35,8 +35,10 @@ class GUIContent:
         return party_list
 
     def fetch_domins(self):
+        # if isdir(DOMAIN_PATH):
         domain_lists = [name for name in os.listdir(DOMAIN_PATH)]
         return domain_lists
+        # raise FileNotFoundError(f"There is a problem fetching domains from path '{DOMAIN_PATH}'")
 
     def fetch_preferences_of_domain(self, domain: str):
         path = DOMAIN_PATH + '/' + domain
