@@ -18,7 +18,7 @@ class BilateralTournament:
         self.__analysis_man_name = analysis_man_name
         self.__deadline = deadline
         self.__deadline_type = deadline_type
-        self.__tournament_analysis_man = CreateObjectByPath.get_object('../'+ANALYSIS_TOURNAMENT_PACKAGE_NAME,
+        self.__tournament_analysis_man = CreateObjectByPath.get_object(ANALYSIS_TOURNAMENT_PATH,
                                                                        Tournament_analysis_name,
                                                                        agent_names)
         self.__tournament_repetition = int(tournament_repetition)

@@ -5,6 +5,7 @@ from core.BilateralSession import BilateralSession
 from core.BidSpace import BidSpace
 from GUI.visualization.Charts import Charts
 from controller import Controller
+from core.Preference import Preference
 
 PARTY_PREFERENCE_SEPERATOR = ' -> '
 
@@ -87,9 +88,12 @@ class BtnStartSession_11(AbstractGUISegment):
 
     def create_visualization_window(self, frame):
 
-        ctrl = Controller()
-        preference1 = ctrl.fetch_preference(self.domain_name, self.party1_preference_name)
-        preference2 = ctrl.fetch_preference(self.domain_name, self.party2_preference_name)
+        preference1 = Preference(self.domain_name, self.party1_preference_name)
+        preference2 = Preference(self.domain_name, self.party2_preference_name)
+
+        # ctrl = Controller()
+        # preference1 = ctrl.fetch_preference(self.domain_name, self.party1_preference_name)
+        # preference2 = ctrl.fetch_preference(self.domain_name, self.party2_preference_name)
         bid_space1 = BidSpace(preference1)
         bid_space2 = BidSpace(preference2)
         data = {self.party1_preference_name: bid_space1.get_all_bids_utility(),

@@ -1,6 +1,6 @@
 import Model
 from Model import PreferenceXMLParser
-from core.Preference import Preference
+# from core.Preference import Preference
 
 
 class Controller:
@@ -54,9 +54,9 @@ class Controller:
         acceptance_strategies = self.model.fetch_acceptance_strategies()
         return acceptance_strategies
 
-    def fetch_preference(self, domain_name, xml_file):
-        preference = Preference(domain_name, xml_file)
-        return preference
+    # def fetch_preference(self, domain_name, xml_file):
+    #     preference = Preference(domain_name, xml_file)
+    #     return preference
 
     def fetch_analysis_men(self):
         analysis_men = self.model.fetch_analysis_men()
