@@ -19,23 +19,26 @@ class BidSpace:
     # ////////////////////////////////////////////////////////////////////////////
     def get_all_bids(self) -> tuple:
         q = []
-        values = self.preference.get_preference_data_structure().values()
+        mValues = self.preference.get_preference_data_structure()
+        mValues.popitem()  # remove distinct factor
+        mValues.popitem()  # remove reservation value
+        values = mValues.values()
         for x in values:
             q.append(list(x[1]))
         return tuple(itertools.product(*q))
 
     def get_all_bids_with_utility(self):
         issues = self.preference.get_preference_data_structure().keys()
-        issue_item = {}
         bids_with_utility = {}
         q = []
         mValues = self.preference.get_preference_data_structure()
-        mValues.popitem() # remove distinct factor
-        mValues.popitem() # remove reservation value
+        mValues.popitem()  # remove distinct factor
+        mValues.popitem()  # remove reservation value
         values = mValues.values()
         for x in values:
             q.append(list(x[1]))
         for i in itertools.product(*q):
+            issue_item = {}
             for j in range(len(issues)):
                 issue_item[tuple(issues)[j]] = i[j]
             bid = Bid(issue_item)
@@ -61,7 +64,6 @@ class BidSpace:
 
         return bids_utility
 
-
     # def product(self, *iterables):
     #     """ which does NOT build intermediate results.
     #         Omitted 'repeat' option.
@@ -82,7 +84,6 @@ class BidSpace:
     #             j = p/lstRemaining[i]%lstLenths[i]
     #             lstVals.append(iterables[int(i)][int(j)])
     #         yield tuple(lstVals)
-
 
 # if __name__ == '__main__':
 #     get_all_bids_with_utility()

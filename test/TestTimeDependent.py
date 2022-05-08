@@ -24,9 +24,12 @@ class MyTestCase(unittest.TestCase):
         self.protocol = SOAP(self.time_line, nego_table, self.analysis_man)
 
     def test_something(self):
-        self.party1.send_bid(self.protocol, self.time_line)
+        # self.party1.get_bid_space().get_all_bids_with_utility()
+        print(self.party1.get_bid_space().get_all_bids_with_utility())
+        # print(self.party1.send_bid(self.protocol, self.time_line))
         # self.protocol.negotiate()
         # print('@@@@@@@@@@@@@@@@@@@@@@', self.analysis_man.get_analysis_data())
+
 
 if __name__ == '__main__':
     unittest.main()

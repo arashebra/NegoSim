@@ -4,6 +4,7 @@ from core.Preference import Preference
 from core.UtilitySpace import UtilitySpace
 from core.TimeLine import TimeLine
 from core.Bid import Bid
+from core.BidSpace import BidSpace
 import random
 
 
@@ -12,6 +13,7 @@ class AbstractNegoParty(NegoPartyInterface, ABC):
     def __init__(self, preference: Preference):
         self.__preference = preference
         self.__utility_space = UtilitySpace(self.__preference)
+        self.__bid_space = BidSpace(self.__preference)
         # self.opponent_model = None
 
     def get_preference(self):
@@ -19,6 +21,9 @@ class AbstractNegoParty(NegoPartyInterface, ABC):
 
     def get_utility_space(self):
         return self.__utility_space
+
+    def get_bid_space(self) -> BidSpace:
+        return self.__bid_space
 
     # def get_opponent_model(self):
     #     return self.opponent_model
