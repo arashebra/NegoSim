@@ -6,6 +6,7 @@ import controller
 from core.BidSpace import BidSpace
 from tkinter import messagebox
 from GUI.visualization.Charts import Charts
+from core.Preference import Preference
 
 EUBOA_SEPERATOR = ' ---> '
 SELECT_PREFERENCE_2 = 'Please Select Preference 2'
@@ -255,10 +256,15 @@ class View:
         ttk.Button(master=frame_right, text='Close',
                    command=lambda: self.close_diagram(btn_preference_visualization, frame_right)).pack(fill='x')
 
-        preference1 = self.controller.fetch_preference(self.selected_domain_name,
-                                                       self.var_selected_preference1_name.get())
-        preference2 = self.controller.fetch_preference(self.selected_domain_name,
-                                                       self.var_selected_preference2_name.get())
+        # preference1 = self.controller.fetch_preference(self.selected_domain_name,
+        #                                                self.var_selected_preference1_name.get())
+        # preference2 = self.controller.fetch_preference(self.selected_domain_name,
+        #                                                self.var_selected_preference2_name.get())
+
+        preference1 = Preference(self.selected_domain_name, self.var_selected_preference1_name.get())
+        preference2 = Preference(self.selected_domain_name, self.var_selected_preference2_name.get())
+
+
         bid_space1 = BidSpace(preference1)
         bid_space2 = BidSpace(preference2)
         data = {self.var_selected_preference1_name.get(): bid_space1.get_all_bids_utility(),

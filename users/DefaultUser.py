@@ -2,13 +2,14 @@ from core.Offer import Offer
 from core.Preference import Preference
 from core.UtilitySpace import UtilitySpace
 from core.AbstractUser import AbstractUser
+from core.BidSpace import BidSpace
 
 
 class DefaultUser(AbstractUser):
 
     """
-    Default user answers all question that has got from
-    elicitation strategy
+    DefaultUser returns 10 percent bids as ordered bids
+    which exists minimum and maximum bids
     """
 
     def get_initial_bids_rank(self) -> list:
@@ -19,6 +20,9 @@ class DefaultUser(AbstractUser):
     def get_initial_preference(self) -> Preference:
         """This method returns initial preference in certain situation.
         """
+        bid_space = BidSpace(self.get_preference())
+        all_bids_with_utility = bid_space.get_all_bids_with_utility()
+
         return self.preference
 
     def get_offer_rank(self, offer: Offer) -> list:
