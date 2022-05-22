@@ -3,6 +3,7 @@ from abc import abstractmethod
 from core.Offer import Offer
 from core.UserInterface import UserInterface
 from core.Preference import Preference
+from core.UtilitySpace import UtilitySpace
 
 
 class AbstractUser(UserInterface):
@@ -11,9 +12,13 @@ class AbstractUser(UserInterface):
         if not isinstance(preference, Preference):
             raise TypeError('preference argument must be an instance of Preference')
         self.__preference = preference
+        self.__utility_space = UtilitySpace(preference)
 
     def get_preference(self):
         return self.__preference
+
+    def get_utility_space(self):
+        return self.__utility_space
 
     @abstractmethod
     def get_initial_bids_rank(self) -> list:

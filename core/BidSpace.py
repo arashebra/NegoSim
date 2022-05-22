@@ -1,6 +1,7 @@
 from core.UtilitySpace import UtilitySpace
 import itertools
 from core.Bid import Bid
+import operator
 
 
 class BidSpace:
@@ -13,27 +14,38 @@ class BidSpace:
     """
 
     def __init__(self, preference):
-        self.preference = preference
-        self.utility_space = UtilitySpace(preference)
+        self.__preference = preference
+        self.__utility_space = UtilitySpace(preference)
 
     # ////////////////////////////////////////////////////////////////////////////
-    def get_all_bids(self) -> tuple:
-        q = []
-        mValues = self.preference.get_preference_data_structure()
-        mValues.popitem()  # remove distinct factor
-        mValues.popitem()  # remove reservation value
+    def get_number_of_bids(self):
+        mValues = self.__preference.get_preference_data_structure().copy()
+        mValues.pop('discount_factor', None)  # remove distinct factor
+        mValues.pop('reservation', None)  # remove reservation value
         values = mValues.values()
-        for x in values:
-            q.append(list(x[1]))
-        return tuple(itertools.product(*q))
+        size = 1
+        for value in values:
+            size *= len(value[1])
+        return size
 
-    def get_all_bids_with_utility(self):
-        issues = self.preference.get_preference_data_structure().keys()
-        bids_with_utility = {}
+    # def get_all_bids(self) -> tuple:
+    #     q = []
+    #     mValues = self.__preference.get_preference_data_structure().copy()
+    #     mValues.pop('discount_factor', None)  # remove distinct factor
+    #     mValues.pop('reservation', None)  # remove reservation value
+    #     values = mValues.values()
+    #     for x in values:
+    #         q.append(list(x[1]))
+    #     return tuple(itertools.product(*q))
+
+    def get_all_bids(self) -> list:
+        issues = list(self.__preference.get_preference_data_structure().keys())
+        issues = issues[0:-2]
+        bids = []
         q = []
-        mValues = self.preference.get_preference_data_structure()
-        mValues.popitem()  # remove distinct factor
-        mValues.popitem()  # remove reservation value
+        mValues = self.__preference.get_preference_data_structure().copy()
+        mValues.pop('discount_factor', None)  # remove distinct factor
+        mValues.pop('reservation', None)  # remove reservation value
         values = mValues.values()
         for x in values:
             q.append(list(x[1]))
@@ -42,24 +54,73 @@ class BidSpace:
             for j in range(len(issues)):
                 issue_item[tuple(issues)[j]] = i[j]
             bid = Bid(issue_item)
-            utility = self.utility_space.get_utility(bid)
+            bids.append(bid)
+
+        return bids
+
+    def get_best_bid(self):
+        issues_item = {}
+        mValues = self.__preference.get_preference_data_structure().copy()
+        mValues.pop('discount_factor', None)  # remove distinct factor
+        mValues.pop('reservation', None)  # remove reservation value
+        for key, value in mValues.items():
+            issues_item[key] = max(value[1].items(), key=operator.itemgetter(1))[0]
+
+        best_bid = Bid(issues_item)
+
+        return best_bid
+
+    def get_worst_bid(self):
+        issues_item = {}
+        mValues = self.__preference.get_preference_data_structure().copy()
+        mValues.pop('discount_factor', None)  # remove distinct factor
+        mValues.pop('reservation', None)  # remove reservation value
+        for key, value in mValues.items():
+            issues_item[key] = min(value[1].items(), key=operator.itemgetter(1))[0]
+
+        best_bid = Bid(issues_item)
+
+        return best_bid
+
+    def get_all_bids_with_utility(self) -> dict:
+        issues = list(self.__preference.get_preference_data_structure().keys())
+        issues = issues[0:-2]
+        bids_with_utility = {}
+        q = []
+        mValues = self.__preference.get_preference_data_structure().copy()
+        mValues.pop('discount_factor', None)  # remove distinct factor
+        mValues.pop('reservation', None)  # remove reservation value
+        values = mValues.values()
+        for x in values:
+            q.append(list(x[1]))
+        for i in itertools.product(*q):
+            issue_item = {}
+            for j in range(len(issues)):
+                issue_item[tuple(issues)[j]] = i[j]
+            bid = Bid(issue_item)
+            utility = self.__utility_space.get_utility(bid)
             bids_with_utility[bid] = utility
 
         return bids_with_utility
 
+    def get_sorted_all_bids_with_utility(self) -> list:
+        all_bids = self.get_all_bids_with_utility()
+        bids_list = list(all_bids.items())
+        return sorted(bids_list, key=lambda x: x[1])
+
     def get_all_bids_utility(self):
-        issues = self.preference.get_preference_data_structure().keys()
+        issues = self.__preference.get_preference_data_structure().keys()
         issue_item = {}
         bids_utility = []
         q = []
-        values = self.preference.get_preference_data_structure().values()
+        values = self.__preference.get_preference_data_structure().values()
         for x in values:
             q.append(list(x[1]))
         for i in itertools.product(*q):
             for j in range(len(issues)):
                 issue_item[tuple(issues)[j]] = i[j]
             bid = Bid(issue_item)
-            utility = self.utility_space.get_utility(bid)
+            utility = self.__utility_space.get_utility(bid)
             bids_utility.append(utility)
 
         return bids_utility
