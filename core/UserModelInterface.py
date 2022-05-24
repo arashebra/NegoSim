@@ -15,9 +15,13 @@ from core.Offer import Offer
 class UserModelInterface(ABC):
 
     @abstractmethod
-    def generate_initial_preference(self) -> Preference:
+    def generate_initial_preference(self, initial_ranked_bids) -> Preference:
         raise NotImplementedError()
 
     @abstractmethod
     def get_utility(self, offer: Offer) -> float:
+        raise NotImplementedError()
+
+    @abstractmethod
+    def update_preference(self, ranked_bids: list):
         raise NotImplementedError()

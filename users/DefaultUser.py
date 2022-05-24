@@ -42,10 +42,10 @@ class DefaultUser(AbstractUser):
 
         return self.__sorted_bids
 
-    def get_initial_preference(self) -> Preference:
+    def get_initial_preference(self):
         """This method returns initial preference in certain situation.
         """
-        pass
+        return None
 
     def get_offer_rank(self, offer: Offer) -> list:
         """This method returns a list of bids that exist special bid which has been sent
@@ -58,8 +58,9 @@ class DefaultUser(AbstractUser):
         return self.__sorted_bids
 
     def get_utility(self, offer: Offer) -> float:
-        """This method returns exact utility of an offer
+        """This method should returns exact utility of an offer
+        but DefaultUser instead of returning exact utility returns -1.0
         """
         # utility_space = UtilitySpace(self.preference)
         # return utility_space.get_utility(offer.get_bid())
-        pass
+        return -1.0

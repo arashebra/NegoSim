@@ -8,6 +8,9 @@ from core.AbstractNegoParty import AbstractNegoParty
 
 
 class RandomParty2(AbstractNegoParty):
+    """
+    Bilateral Random Agent (Using BOA framework)
+    """
 
     def __init__(self, preference: Preference):
         super(RandomParty2, self).__init__(preference)

@@ -3,6 +3,9 @@ from core.Preference import Preference
 
 
 class Boulware(TimeDependent):
+    """
+    Bilateral Boulware Agent
+    """
 
     def __init__(self, preference: Preference):
         TimeDependent.__init__(self, preference=preference)

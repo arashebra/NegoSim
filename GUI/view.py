@@ -1,7 +1,7 @@
 from configurations import *
 import tkinter as tk
 from tkinter import ttk
-from GUI import tournamentGUI, sessionGUI2
+from GUI import tournamentGUI, sessionGUI2, sessionGUI
 import controller
 from core.BidSpace import BidSpace
 from tkinter import messagebox
@@ -35,7 +35,13 @@ class View:
         self.start_menu.add_command(
             label='Negotiation', command=self.session_window)
         self.start_menu.add_command(
-            label='Tornument', command=self.tornument_window)
+            label='Tournament', command=self.tornument_window)
+
+        self.start_menu.add_command(
+            label='Negotiation (Uncertain condition)', command=self.session_window_uncertain_condition)
+        self.start_menu.add_command(
+            label='Tournament (Uncertain condition)', command=self.tornument_window)
+
         self.menu_bar.add_cascade(label='Start', menu=self.start_menu)
         self.parent.config(menu=self.menu_bar)
 
@@ -88,6 +94,9 @@ class View:
     def session_window(self):
         self.open_session_window()
 
+    def session_window_uncertain_condition(self):
+        self.open_session_window_uncertain_condition()
+
     # def open_session_window(self):
     #     window_session = tk.Toplevel(self.parent)
     #     # window_session.geometry("400x400")
@@ -99,6 +108,12 @@ class View:
         # window_session.geometry("400x400")
         window_session.title("New Session")
         sessionGUI2.SessionGUI2(window_session)
+
+    def open_session_window_uncertain_condition(self):
+        window_session = tk.Toplevel(self.parent)
+        # window_session.geometry("400x400")
+        window_session.title("New Session (Uncertain condition)")
+        sessionGUI.Session(window_session)
 
     def tornument_window(self):
         self.open_tornument_window()

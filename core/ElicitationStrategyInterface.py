@@ -15,6 +15,10 @@ from core.StateInfo import StateInfo
 class ElicitationStrategyInterface(ABC):
 
     @abstractmethod
+    def ask_initial_ranked_bids_from_user(self):
+        raise NotImplementedError()
+
+    @abstractmethod
     def ask_initial_preference_from_user(self):
         raise NotImplementedError()
 

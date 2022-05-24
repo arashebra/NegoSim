@@ -3,18 +3,37 @@ from core.ElicitationStrategyInterface import ElicitationStrategyInterface
 from core.UserInterface import UserInterface
 from core.Offer import Offer
 from core.StateInfo import StateInfo
+from core.UserModelInterface import UserModelInterface
 
 
 class AbstractElicitationStrategy(ElicitationStrategyInterface):
 
-    def __init__(self, user: UserInterface):
+    def __init__(self, user: UserInterface, user_model: UserModelInterface):
         if not isinstance(user, UserInterface):
             raise TypeError('user argument must be an instance of UserInterface')
+        if not isinstance(user_model, UserModelInterface):
+            raise TypeError('user_model argument must be an instance of UserModelInterface')
         self.__user = user
+        self.__user_model = user_model
+        self.__initial_ranked_bids = None
+        self.__initial_preference = None
+
+    def get_user_model(self) -> UserModelInterface:
+        return self.__user_model
+
+    def get_initial_ranked_bids(self) -> list:
+        return self.__initial_ranked_bids
+
+    def get_initial_preference(self):
+        return self.__initial_preference
+
+    def ask_initial_ranked_bids_from_user(self):
+        self.__initial_ranked_bids = self.__user.get_initial_bids_rank()
+        return self.__initial_ranked_bids
 
     def ask_initial_preference_from_user(self):
-        initial_preference = self.__user.get_initial_preference()
-        return initial_preference
+        self.__initial_preference = self.__user.get_initial_preference()
+        return self.__initial_preference
 
     @abstractmethod
     def is_asking_time_from_use(self, state_info: StateInfo):
@@ -28,10 +47,10 @@ class AbstractElicitationStrategy(ElicitationStrategyInterface):
     def ask_offer_rank_from_user(self, offer: Offer) -> list:
         """This method returns a list of ranked bids
         """
-        self.__user.get_utility(offer)
+        return self.__user.get_offer_rank(offer=offer)
 
     def ask_offer_utility_from_user(self, offer: Offer) -> float:
-        raise NotImplementedError()
+        return self.__user.get_utility(offer=offer)
 
     def get_user(self) -> UserInterface:
         return self.__user

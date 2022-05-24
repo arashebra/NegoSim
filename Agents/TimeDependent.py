@@ -6,6 +6,9 @@ from core.TimeLine import TimeLine
 
 
 class TimeDependent(AbstractNegoParty):
+    """
+    Bilateral TimeDependent Agent (linear conceder)
+    """
 
     def __init__(self, preference: Preference):
         AbstractNegoParty.__init__(self, preference)
