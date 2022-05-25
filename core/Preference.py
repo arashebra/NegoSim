@@ -23,7 +23,7 @@ class Preference:
     d refers to discount factor
     """
 
-    def __init__(self, domain_name: str, xml_file_name: str):
+    def __init__(self, domain_name: str = None, xml_file_name: str = None, preference_data_structure: dict = None):
         '''
         preference_data_structure = {
             'Brand': [0.45, {'Lenovo': 10, 'Assus': 20, 'Mac': 30}],
@@ -43,8 +43,12 @@ class Preference:
         self.__domain_name = domain_name
         self.__xml_file_name = xml_file_name
 
-        my_controler = controller.Controller()
-        self.__preference_data_structure = my_controler.fetch_preference_data_structure(domain_name, xml_file_name)
+        if preference_data_structure is None:
+            my_controler = controller.Controller()
+            self.__preference_data_structure = my_controler.fetch_preference_data_structure(domain_name, xml_file_name)
+        else:
+            self.__preference_data_structure = preference_data_structure
+
         self.__d = 1.0
         self.__reservation = 0.0
         if 'discount_factor' in self.__preference_data_structure:
@@ -98,11 +102,11 @@ class Preference:
         max_value = max(float(x) for x in item_value_dict.values())
         return float(item_value_dict[item]), max_value
 
-    def get_discount_factor(self):
-        return self.__preference_data_structure['discount_factor']
-
-    def get_reservation(self):
-        return self.__preference_data_structure['reservation']
+    # def get_discount_factor(self):
+    #     return self.__preference_data_structure['discount_factor']
+    #
+    # def get_reservation(self):
+    #     return self.__preference_data_structure['reservation']
 
     def get_weights(self):
         '''
@@ -112,6 +116,25 @@ class Preference:
         data_structure = self.__preference_data_structure
         items = data_structure.items()
         return {key: value[0] for key, value in items if (key != 'discount_factor' and key != 'reservation')}
+
+    def update_weight(self, new_weight: float, issue: str):
+        """
+        This method updates the weight of issue
+        :param new_weight:
+        :param issue: the issue (e.g. 'Brand') that must be changed its weight
+        :return:
+        """
+        self.__preference_data_structure[issue][0] = new_weight
+
+    def update_value(self, new_value: float, issue: str, item: str):
+        """
+        This method updates the value of item in special issue
+        :param new_value:
+        :param issue: e.g. 'Brand'
+        :param item: e.g. 'Lenovo'
+        :return:
+        """
+        self.__preference_data_structure[issue][1][item] = new_value
 
     def get_issue_ItemValue(self, issue):
         '''

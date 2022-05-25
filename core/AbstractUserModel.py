@@ -21,7 +21,7 @@ class AbstractUserModel(UserModelInterface):
         raise NotImplementedError()
 
     @abstractmethod
-    def update_preference(self, ranked_bids: list):
+    def update_preference(self, ranked_bids: list) -> Preference:
         raise NotImplementedError()
 
     def get_must_be_asked_offer(self) -> Offer:
