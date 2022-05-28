@@ -54,3 +54,6 @@ class AbstractProtocol(ProtocolInterface):
 
     def get_analysis_man(self):
         return self.__analysis_man
+
+    def get_state_info(self):
+        return self.__nego_table.get_state_info()

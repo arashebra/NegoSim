@@ -25,3 +25,15 @@ class UserModelInterface(ABC):
     @abstractmethod
     def update_preference(self, ranked_bids: list) -> Preference:
         raise NotImplementedError()
+
+    @abstractmethod
+    def get_must_be_asked_offers(self) -> list:
+        raise NotImplementedError()
+
+    @abstractmethod
+    def set_must_be_asked_offers(self, offers: list):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def get_preference(self):
+        raise NotImplementedError()

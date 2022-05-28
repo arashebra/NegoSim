@@ -8,7 +8,8 @@
 # 
 #######################################################
 import controller
-
+import random
+from core.Bid import Bid
 
 class Preference:
     """
@@ -136,6 +137,27 @@ class Preference:
         """
         self.__preference_data_structure[issue][1][item] = new_value
 
+    def get_initial_preference(self):
+        """
+        preference = {
+        'Brand': [0.33, {'Lenovo': 1.0, 'Assus': 1.0, 'Mac': 1.0}],
+        'Monitor': [0.33, {'15': 1.0, '10': 1.0, '11': 1.0}],
+        'HDD': [0.33, {'1T': 1.0, '2T': 1.0, '3T': 1.0}]
+        }
+        :return: preference
+        """
+        initial_preference_data_structure = {}
+        size = len(self.__preference_data_structure)
+        for issue, value in self.__preference_data_structure.items():
+            temp_list = [(1.0/size),]
+            temp_dict = {}
+            for item, val in value[1]:
+                temp_dict[item] = 1.0
+            temp_list.append(temp_dict)
+            initial_preference_data_structure[issue] = temp_list
+        initial_preference = Preference(preference_data_structure=initial_preference_data_structure)
+        return initial_preference
+
     def get_issue_ItemValue(self, issue):
         '''
         this method gives issue and returns item, value
@@ -145,8 +167,38 @@ class Preference:
         return self.get_preference_data_structure()[issue][1]
 
     def __copy__(self):
-        new_instance = Preference(self.__domain_name, self.__xml_file_name)
+        """preference_data_structure = {
+            'Brand': [0.45, {'Lenovo': 10, 'Assus': 20, 'Mac': 30}],
+            'Monitor': [0.18, {'15': 30, '10': 25, '11': 20}],
+            'HDD': [0.38, {'1T': 25, '2T': 32, '3T': 35}],
+            'discount factor = 1,
+            'reservation value = 0
+        }"""
+        new_instance = None
+        # if self.__domain_name is not None and self.__xml_file_name is not None:
+        #     new_instance = Preference(self.__domain_name, self.__xml_file_name)
+        # else:
+        m_initial_preference_data_structure = {}
+        for issue, value in self.__preference_data_structure.items():
+            temp_list = [value[0], ]
+            temp_dict = {}
+            for item, val in value[1]:
+                temp_dict[item] = val
+            temp_list.append(temp_dict)
+            m_initial_preference_data_structure[issue] = temp_list
+        new_instance = Preference(preference_data_structure=m_initial_preference_data_structure)
         return new_instance
+
+    def generate_random_bid(self):
+        issue_items = {}
+        preference_data_structure = self.__preference_data_structure
+        for issue in preference_data_structure:
+            if issue != 'discount_factor' and issue != 'reservation':
+                issue_item = list((preference_data_structure[issue][1]).keys())
+                issue_items[issue] = random.choice(issue_item)
+
+        bid = Bid(issue_items)
+        return bid
 
     def get_discount_factor(self):
         '''

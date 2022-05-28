@@ -14,8 +14,9 @@ class RandomParty2(AbstractNegoParty):
 
     def __init__(self, preference: Preference):
         super(RandomParty2, self).__init__(preference)
-        self.opponent_model = DefaultOpponentModel(preference=self.get_preference())
-        self.bidding_strategy = RandomStrategy(opponent_model=self.opponent_model, preference=self.get_preference())
+        preference = self.get_preference()
+        self.opponent_model = DefaultOpponentModel(preference=preference.get_initial_preference())
+        self.bidding_strategy = RandomStrategy(opponent_model=self.opponent_model, preference=preference)
         self.acceptance_strategy = ACNext(utility_space=self.get_utility_space())
 
     def send_bid(self, protocol, timeline: TimeLine) -> Bid:

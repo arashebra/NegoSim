@@ -64,3 +64,11 @@ class DefaultUser(AbstractUser):
         # utility_space = UtilitySpace(self.preference)
         # return utility_space.get_utility(offer.get_bid())
         return -1.0
+
+    def update_total_bothering(self) -> float:
+        """
+        this method updates total bothering amount
+        :return: new total bothering amount
+        """
+        new_total_bothering = self.get_total_bothering() + self.get_bothering()
+        self.set_total_bothering(new_total_bothering)

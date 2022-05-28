@@ -37,3 +37,19 @@ class UserInterface(ABC):
         """This method returns exact utility of an offer
         """
         raise NotImplementedError()
+
+    @abstractmethod
+    def get_bothering(self):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def get_total_bothering(self):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def update_total_bothering(self) -> float:
+        """
+        this method updates total bothering amount
+        :return: new total bothering amount
+        """
+        raise NotImplementedError()

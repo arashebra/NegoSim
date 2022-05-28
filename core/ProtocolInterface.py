@@ -47,3 +47,7 @@ class ProtocolInterface(ABC):
     @abstractmethod
     def get_parties(self) -> NegoPartyInterface:
         raise NotImplementedError()
+
+    @abstractmethod
+    def get_state_info(self):
+        raise NotImplementedError()
