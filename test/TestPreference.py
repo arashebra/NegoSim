@@ -20,7 +20,9 @@ class TestPreference(unittest.TestCase):
     #     print(self.preference.get_weights())
 
     def test_get_issue_ItemValue(self):
-        print(self.preference.get_issue_ItemValue('Laptop'))
+        # print(self.preference.get_issue_ItemValue('Laptop'))
+        print(self.preference)
+        print(self.preference.get_initial_preference())
 
 if __name__ == '__main__':
     unittest.main()

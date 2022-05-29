@@ -36,9 +36,9 @@ class Preference:
         :param domain_name:
         :param preference_name:
         '''
-        if not isinstance(domain_name, str):
+        if not isinstance(domain_name, str) and domain_name is not None:
             raise TypeError('domain_name argument must be a string')
-        if not isinstance(xml_file_name, str):
+        if not isinstance(xml_file_name, str) and xml_file_name is not None:
             raise TypeError('xml_file_name argument must be a string')
 
         self.__domain_name = domain_name
@@ -147,14 +147,17 @@ class Preference:
         :return: preference
         """
         initial_preference_data_structure = {}
-        size = len(self.__preference_data_structure)
+        size = len(self.__preference_data_structure)-2
         for issue, value in self.__preference_data_structure.items():
-            temp_list = [(1.0/size),]
-            temp_dict = {}
-            for item, val in value[1]:
-                temp_dict[item] = 1.0
-            temp_list.append(temp_dict)
-            initial_preference_data_structure[issue] = temp_list
+            if issue != 'discount_factor' and issue != 'reservation':
+                temp_list = [(1.0/size),]
+                temp_dict = {}
+                for item, val in value[1].items():
+                    temp_dict[item] = 1.0
+                temp_list.append(temp_dict)
+                initial_preference_data_structure[issue] = temp_list
+        initial_preference_data_structure['discount_factor'] = self.__preference_data_structure['discount_factor']
+        initial_preference_data_structure['reservation'] = self.__preference_data_structure['reservation']
         initial_preference = Preference(preference_data_structure=initial_preference_data_structure)
         return initial_preference
 
@@ -180,12 +183,15 @@ class Preference:
         # else:
         m_initial_preference_data_structure = {}
         for issue, value in self.__preference_data_structure.items():
-            temp_list = [value[0], ]
-            temp_dict = {}
-            for item, val in value[1]:
-                temp_dict[item] = val
-            temp_list.append(temp_dict)
-            m_initial_preference_data_structure[issue] = temp_list
+            if issue != 'discount_factor' and issue != 'reservation':
+                temp_list = [value[0], ]
+                temp_dict = {}
+                for item, val in value[1].items():
+                    temp_dict[item] = val
+                temp_list.append(temp_dict)
+                m_initial_preference_data_structure[issue] = temp_list
+        m_initial_preference_data_structure['discount_factor'] = self.__preference_data_structure['discount_factor']
+        m_initial_preference_data_structure['reservation'] = self.__preference_data_structure['reservation']
         new_instance = Preference(preference_data_structure=m_initial_preference_data_structure)
         return new_instance
 

@@ -6,7 +6,8 @@ from core.BidSpace import BidSpace
 import math
 import random
 
-PERCENT = 0.1
+PERCENT = 0.1  # Initial percent of ranked bids
+BOTHERING = 0.1
 
 
 class DefaultUser(AbstractUser):
@@ -16,7 +17,7 @@ class DefaultUser(AbstractUser):
     """
 
     def __init__(self, preference: Preference):
-        super().__init__(preference)
+        super().__init__(preference, bothering=BOTHERING)
         self.__sorted_bids = []
         self.__utility_space = self.get_utility_space()
 
