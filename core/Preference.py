@@ -10,6 +10,8 @@
 import controller
 import random
 from core.Bid import Bid
+import operator
+
 
 class Preference:
     """
@@ -217,6 +219,33 @@ class Preference:
         :return: reservation
         '''
         return self.__reservation
+
+    def get_best_bid(self):
+        issues_item = {}
+        mValues = self.__preference_data_structure.copy()
+        mValues.pop('discount_factor', None)  # remove distinct factor
+        mValues.pop('reservation', None)  # remove reservation value
+        for key, value in mValues.items():
+            issues_item[key] = max(value[1].keys(), key=lambda k: float(value[1][k]))
+
+        best_bid = Bid(issues_item)
+
+        return best_bid
+
+    def get_worst_bid(self):
+        issues_item = {}
+        mValues = self.__preference_data_structure.copy()
+        mValues.pop('discount_factor', None)  # remove distinct factor
+        mValues.pop('reservation', None)  # remove reservation value
+        for key, value in mValues.items():
+            issues_item[key] = min(value[1].keys(), key=lambda k: float(value[1][k]))
+
+        worst_bid = Bid(issues_item)
+
+        return worst_bid
+
+
+
 
     def __repr__(self):
         s = '{'

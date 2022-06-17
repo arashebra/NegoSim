@@ -77,5 +77,9 @@ highest cost." cost="250">
 </weight> 
 <weight index="6" value="0.364294663018663"> 
 </weight> 
-</objective> 
+</objective>
+<discount_factor value="1.0">
+</discount_factor>
+<reservation value="0.0">
+</reservation>
 </utility_space> 

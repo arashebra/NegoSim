@@ -36,9 +36,10 @@ class TimeDependent(AbstractNegoParty):
             if self.get_utility_space().get_utility_distinct(Offer(bid=bid, time=t)) >= target_utility:
                 break
             count -= 1
+            bid = None
 
         if bid is None:
-            bid = self.generate_random_bid()
+            bid = self.get_preference().get_best_bid()
 
         if len(opponen_offer) > 0:
             op_bid = opponen_offer[len(opponen_offer) - 1].get_bid()

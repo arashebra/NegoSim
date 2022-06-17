@@ -60,11 +60,11 @@ class BidSpace:
 
     def get_best_bid(self):
         issues_item = {}
-        mValues = self.__preference.get_preference_data_structure().copy()
+        mValues = self.__preference_data_structure.copy()
         mValues.pop('discount_factor', None)  # remove distinct factor
         mValues.pop('reservation', None)  # remove reservation value
         for key, value in mValues.items():
-            issues_item[key] = max(value[1].items(), key=operator.itemgetter(1))[0]
+            issues_item[key] = max(value[1].keys(), key=lambda k: float(value[1][k]))
 
         best_bid = Bid(issues_item)
 
@@ -72,15 +72,15 @@ class BidSpace:
 
     def get_worst_bid(self):
         issues_item = {}
-        mValues = self.__preference.get_preference_data_structure().copy()
+        mValues = self.__preference_data_structure.copy()
         mValues.pop('discount_factor', None)  # remove distinct factor
         mValues.pop('reservation', None)  # remove reservation value
         for key, value in mValues.items():
-            issues_item[key] = min(value[1].items(), key=operator.itemgetter(1))[0]
+            issues_item[key] = min(value[1].keys(), key=lambda k: float(value[1][k]))
 
-        best_bid = Bid(issues_item)
+        worst_bid = Bid(issues_item)
 
-        return best_bid
+        return worst_bid
 
     def get_all_bids_with_utility(self) -> dict:
         issues = list(self.__preference.get_preference_data_structure().keys())
