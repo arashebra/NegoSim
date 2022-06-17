@@ -37,10 +37,10 @@ class View:
         self.start_menu.add_command(
             label='Tournament', command=self.tornument_window)
 
-        self.start_menu.add_command(
-            label='Negotiation (Uncertain condition)', command=self.session_window_uncertain_condition)
-        self.start_menu.add_command(
-            label='Tournament (Uncertain condition)', command=self.tornument_window)
+        # self.start_menu.add_command(
+        #     label='Negotiation (Uncertain condition)', command=self.session_window_uncertain_condition)
+        # self.start_menu.add_command(
+        #     label='Tournament (Uncertain condition)', command=self.tornument_window)
 
         self.menu_bar.add_cascade(label='Start', menu=self.start_menu)
         self.parent.config(menu=self.menu_bar)
@@ -50,7 +50,7 @@ class View:
         self.file_menu.add_command(
             label='Add Domain', command=self.add_domain_file)
         self.file_menu.add_command(
-            label='Add Elisitation Strategy', command=self.add_elicitation_strategy_file)
+            label='Add Elicitation Strategy', command=self.add_elicitation_strategy_file)
         self.file_menu.add_command(
             label='Add User GUIContent', command=self.add_user_model_file)
         self.file_menu.add_command(
